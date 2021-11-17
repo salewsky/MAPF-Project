@@ -5,8 +5,8 @@
 % Number of Robots:                 2
 % Number of Shelves:                2
 % Number of Picking Stations:       0
-% Number of Products:               0
-% Number of Orders:                 0
+% Number of Products:               2
+% Number of Orders:                 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Nodes
@@ -39,7 +39,18 @@ init(object(node,25),value(at,(5,5))).
 % Robot 1
 init(object(robot,1),value(at,(1,3))).
 init(object(shelf,1),value(at,(5,3))).
+init(object(order,1),value(line,(1,1))).
+init(object(order,1),value(pickingStation,1)).
+init(object(product,1),value(on,(1,1))).
+
 
 % Robot 2
 init(object(robot,2),value(at,(3,1))).
 init(object(shelf,2),value(at,(3,5))).
+init(object(order,2),value(line,(2,1))).
+init(object(order,2),value(pickingStation,1)).
+init(object(product,2),value(on,(2,1))).
+
+
+% Picking Station
+init(object(pickingStation,1),value(at,(1,1))).
