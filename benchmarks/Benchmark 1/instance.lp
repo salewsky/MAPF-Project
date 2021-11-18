@@ -4,7 +4,7 @@
 % Number of Nodes:                  25
 % Number of Robots:                 2
 % Number of Shelves:                2
-% Number of Picking Stations:       0
+% Number of Picking Stations:       1
 % Number of Products:               2
 % Number of Orders:                 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
