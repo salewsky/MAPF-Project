@@ -1,5 +1,6 @@
 % Declaring Time Array ------------------------------------------------------------------
 time(1..Horizon) :- Horizon == #sum{1,X: init(object(node,X),_)}.
+horizon(Horizon) :- Horizon == #max{X: time(X)}.
 
 % Declaring Directions ------------------------------------------------------------------
 dir((X,Y)) :- X=-1..1, Y=-1..1, |X+Y|=1.
