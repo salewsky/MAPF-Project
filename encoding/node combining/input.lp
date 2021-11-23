@@ -1,4 +1,3 @@
-#program base.
 robot(R)                     :- init(object(robot,R),_).
 shelf(S)                     :- init(object(shelf,S),_).
 station(P)                   :- init(object(pickingStation,P),_).
@@ -22,26 +21,36 @@ position(station(P),(X,Y))   	:- init(object(pickingStation,P), value(at,(X,Y)))
 position(R,(X,Y),0) 			:- init(object(robot,R),value(at,(X,Y))).
 position(shelf(S),(X,Y),0) 		:- init(object(shelf,S),value(at,(X,Y))).
 
-dir((X,Y)) :- X=-1..1, Y=-1..1, |X+Y|=1.
 
-nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)), position((X,Y)), position((X',Y')),
-                                 (X,Y)=(X'-DX,Y'-DY), (X',Y')=(X+DX,Y+DY).
-
+max_X(A) :- A = #max{X: init(object(node,_),value(at,(X,_)))}.
+max_Y(A) :- A = #max{Y: init(object(node,_),value(at,(_,Y)))}.
 
 
-occurs(object(robot,R),action(move,D),1) :- move(R,D,1).
+comb_position((1,1),1,(1..2,1..2)).
+comb_position((2,1),2,(3..4,1..2)).
+comb_position((3,1),3,(5..6,1..2)).
+comb_position((4,1),4,(7..8,1..2)).
+comb_position((1,2),5,(1..2,3..4)).
+comb_position((2,2),6,(3..4,3..4)).
+comb_position((3,2),7,(5..6,3..4)).
+comb_position((4,2),8,(7..8,3..4)).
+comb_position((1,3),9,(1..2,5..6)).
+comb_position((2,3),10,(3..4,5..6)).
+comb_position((3,3),11,(5..6,5..6)).
+comb_position((4,3),12,(7..8,5..6)).
+comb_position((1,4),13,(1..2,7..8)).
+comb_position((2,4),14,(3..4,7..8)).
+comb_position((3,4),15,(5..6,7..8)).
+comb_position((4,4),16,(7..8,7..8)).
 
-#program check(t).
-:- ordered(O,A), shelved(shelf(S),A), isRobot(robot(R)), position(shelf(S),C2,0),
-   position(R,C1,t), C1!=C2, R=S, query(t).
-   
-#program step(t).
-time(t).
-0 {move(R,D,t) : dir(D)} 1 :- isRobot(robot(R)).
 
-position(R,C,t) :- move(R,D,t), position(R,C',t-1),     nextto(C',D,C).
-                :- move(R,D,t), position(R,C ,t-1), not nextto(C ,D,_).
-occurs(object(robot,R),action(move,D),t) :- move(R,D,t).
+comb_position((X,Y)) :- comb_position((X,Y),_,_).
 
 
-#show occurs/3.
+comb_position(R,C,0) :- position(R,C',0), comb_position(C,_,C').
+comb_position(shelf(S),C,0) :- position(shelf(S),C',0), comb_position(C,_,C').
+
+ 
+
+
+
