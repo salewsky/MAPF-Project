@@ -10,15 +10,23 @@ robot_nr = int(input("Number of Robots:"))
 
 sys.stdout = open('instance.lp', 'w')
 
-x_rand = []
-for i in range(robot_nr*2):
+robot_rand = []
+i = 0
+while(i < robot_nr):
 	n = random.randint(1,x_max)
-	x_rand.append(n)
-	
-y_rand = []
-for i in range(robot_nr*2):
-	n = random.randint(1,y_max)
-	y_rand.append(n)
+	m = random.randint(1,y_max)
+	if(not([n,m] in robot_rand)):
+		robot_rand.append([n,m])
+		i = i+1 
+
+shelf_rand = []
+i = 0
+while(i < robot_nr):
+	n = random.randint(1,x_max)
+	m = random.randint(1,y_max)
+	if(not([n,m] in shelf_rand)):
+		shelf_rand.append([n,m])
+		i = i+1 
 
 
 print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
@@ -51,8 +59,8 @@ print("")
 
 for i in range(robot_nr):
 	print("% Robot " + str(i+1))
-	print("init(object(robot,"+str(i+1)+"),value(at,("+ str(x_rand[i])+","+str(y_rand[i])+"))).")
-	print("init(object(shelf,"+str(i+1)+"),value(at,("+ str(x_rand[i+robot_nr])+","+str(y_rand[i+robot_nr])+"))).")
+	print("init(object(robot,"+str(i+1)+"),value(at,("+ str(robot_rand[i][0])+","+str(robot_rand[i][1])+"))).")
+	print("init(object(shelf,"+str(i+1)+"),value(at,("+ str(shelf_rand[i][0])+","+str(shelf_rand[i][1])+"))).")
 	print("init(object(order,"+str(i+1)+"),value(line,("+str(i+1)+",1))).")
 	print("init(object(order,"+str(i+1)+"),value(pickingStation,1)).")
 	print("init(object(product,"+str(i+1)+"),value(on,("+str(i+1)+",1))).")
