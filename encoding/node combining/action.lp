@@ -1,5 +1,17 @@
+#const size = 2.
+
+max_X(A) :- A = #max{X: init(object(node,_),value(at,(X,_)))}.
+max_Y(A) :- A = #max{Y: init(object(node,_),value(at,(_,Y)))}.
+
+comb_position((X,Y),(X',Y')) 	:- position((X,Y)), X' = (X+1)/size, Y' = (Y+1)/size.
+comb_position(C)	 			:- comb_position(_,C).
+
+comb_position(R,C',0) 			:- position(R,C,0), comb_position(C,C').
+comb_position(shelf(S),C',0) 	:- position(shelf(S),C,0), comb_position(C,C').
+
+
 % Declaring Time Array ------------------------------------------------------------------
-time(1..Horizon) :- Horizon == #sum{1,C: comb_position(C,_,_)}.
+time(1..Horizon) :- Horizon == #sum{1,C: comb_position(_,C)}.
 horizon(Horizon) :- Horizon == #max{X: time(X)}.
 
 % Declaring Directions ------------------------------------------------------------------
@@ -18,7 +30,7 @@ comb_position(R,C,T) :- move(R,D,T), comb_position(R,C',T-1), nextto(C',D,C).
 comb_position(R,C,T) :- comb_position(R,C,T-1), not move(R,_,T), isRobot(robot(R)), time(T).
 
 
-imp_position(C') :- comb_position(R,C,_), comb_position(C,_,C').
+imp_position(C) :- comb_position(R,C',_), comb_position(C,C').
 
 
 % Minimizing Steps ----------------------------------------------------------------------
