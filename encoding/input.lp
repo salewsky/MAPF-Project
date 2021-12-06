@@ -17,6 +17,6 @@ shelved(shelf(S),product(A)) :- init(object(product,A),value(on,(S,_))).
 
 
 position((X,Y))   				:- init(object(node,_),value(at,(X,Y))).
-position(station(P),(X,Y))   	:- init(object(pickingStation,P), value(at,(X,Y))).
+position(station(P),(X,Y),0)   	:- init(object(pickingStation,P), value(at,(X,Y))).
 position(R,(X,Y),0) 			:- init(object(robot,R),value(at,(X,Y))).
 position(shelf(S),(X,Y),0) 		:- init(object(shelf,S),value(at,(X,Y))).

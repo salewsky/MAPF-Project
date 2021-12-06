@@ -1,13 +1,12 @@
 % Transforming Input ----------------------------
-#include "./input.lp".
+#include "encoding/input.lp".
 
 % Calculating Moves -----------------------------
-#include "./action.lp".
+#include "encoding/shortest path/action.lp".
 
 % Goal Condition --------------------------------
-#include "./goal.lp".
+#include "encoding/shortest path/goal.lp".
 
 % Transforming Output ---------------------------
-occurs(object(robot,R),action(move,D),T) :- move(R,D,T).
-#show occurs/3.
+#include "encoding/shortest path/output.lp".
 

@@ -1,6 +1,5 @@
 % Declaring Time Array ------------------------------------------------------------------
-time(1..Horizon) :- Horizon == #sum{1,X: init(object(node,X),_)}.
-horizon(Horizon) :- Horizon == #max{X: time(X)}.
+time(1..horizon).
 
 
 % Declaring Directions ------------------------------------------------------------------
@@ -21,7 +20,7 @@ position(R,C,T) :- not move(R,_,T), position(R,C,T-1), isRobot(robot(R)), time(T
 
 % Minimizing Steps ----------------------------------------------------------------------
 :- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R)), T2<T1.
-#minimize {1,T: move(_,_,T)}.
+#minimize {1,(R,T): move(R,_,T)}.
 
 
 % Calculating Number of Moves Needed for Each Robot -------------------------------------
