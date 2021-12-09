@@ -24,11 +24,11 @@ position(R,C,T) :- not move(R,_,T), position(R,C,T-1), isRobot(robot(R)), time(T
 
 
 % Calculating Number of Moves Needed for Each Robot -------------------------------------
-makespan(R,N) :- isRobot(robot(R)), N == #max{X: move(R,_,X)}.
+in_reach(R,N) :- isRobot(robot(R)), move(R,_,N).
 
 
 % Calculating Important Positions -------------------------------------------------------
 imp_position(R,C,0,T) 	:- isRobot(robot(R)), position(R,C,T).
-imp_position(R,C,N,T) 	:- isRobot(robot(R)), imp_position(R,C',N-1,T), makespan(R,N'), N+T-1<N', 
+imp_position(R,C,N,T) 	:- isRobot(robot(R)), imp_position(R,C',N-1,T), in_reach(R,N), in_reach(R,N'), N+T<=N', 
 						   nextto(C',_,C).
-
+imp_pos(C,MIN) 			:- imp_position(_,C,MIN,_), MIN == #min{X: imp_position(_,C,X,_)}.

@@ -1,7 +1,4 @@
 % Combining Nodes ---------------------------------------------------------------------------------	 
-#const size_x = 2.
-#const size_y = 2.
-
 comb_position((X,Y),(X',Y')) 	:- position((X,Y)), X' = (X+(size_x-1))/size_x, Y' = (Y+(size_y-1))/size_y.
 comb_position(C)	 			:- comb_position(_,C).
 comb_position(R,C',0) 			:- position(R,C,0), comb_position(C,C').

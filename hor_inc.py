@@ -31,6 +31,12 @@ for i in robots:
 	s_num = re.findall(r'\d+', splitinstance[i+2])
 	x_dis = abs(int(r_num[1]) - int(s_num[1]))
 	y_dis = abs(int(r_num[2]) - int(s_num[2]))
+	if("node combining" in programs):
+		splitencoding = encoding.splitlines()
+		x_size = re.findall(r'\d+', splitencoding[0])
+		y_size = re.findall(r'\d+', splitinstance[1])
+		x_dis = int(x_dis/int(x_size[0]))
+		y_dis = int(y_dis/int(y_size[0]))
 	maxDist = max(maxDist, x_dis + y_dis)
 
 i = maxDist
@@ -46,22 +52,20 @@ while(True):
 	ctl = clingo.Control()
 	ctl.add("base", [], asp)
 	ctl.ground([("base", [])])
-	solution = ""
 	#Saving solution
+	solution = ""
 	with ctl.solve(yield_=True) as handle:
 		for m in handle:
-			solution = solution + str(m)
+			solution = str(m)
+			solution = solution.replace(" ", ". ")
+			solution = solution + "."
 			break
-			
+	check = time.time()
+	if((check - start) > 300):
+		solution = "Timeout. Maximum tested horizon: " + str(i)	
 	if(solution):
 		break
-	check = time.time()
-	if((check - start) > 1800):
-		solution = "Zeitüberschreitung. Aktueller horizon: " + str(i)
 	i = i + 1
-
-solution = solution.replace(" ", ". ")
-solution = solution + "."
 
 end = time.time()
 
