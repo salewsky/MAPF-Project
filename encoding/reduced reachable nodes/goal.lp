@@ -1,7 +1,10 @@
-processed(A,R) :- ordered(O,A), shelved(shelf(S),A), isRobot(robot(R)), position(shelf(S),C,0),
-                  position(R,C,horizon), R=S.
-processed(A)   :- processed(A,R).
-:- ordered(O,A), not processed(A).
+goal(R,C) :- isRobot(robot(R)), position(shelf(S),C,0), R=S.
+:- isRobot(robot(R)), position(R,C,horizon), goal(R,C'), C!=C'.
+
+%processed(A,R) :- ordered(O,A), shelved(shelf(S),A), isRobot(robot(R)), position(shelf(S),C,0),
+%                  position(R,C,horizon), R=S.
+%processed(A)   :- processed(A,R).
+%:- ordered(O,A), not processed(A).
 
 
 

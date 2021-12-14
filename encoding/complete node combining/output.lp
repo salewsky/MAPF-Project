@@ -7,4 +7,7 @@ new_init(object(shelf,S),value(at,(X,Y)))			:- init(object(shelf,S),value(at,(X,
 %new_init(object(product,P),value(on,(T,U))) 		:- init(object(product,P),value(on,(T,U))).
 %new_init(object(pickingStation,P),value(at,(X,Y))) 	:- init(object(pickingStation,P),value(at,(X,Y))).
 
-#show new_init/2.
+%#show new_init/2.
+#show wall/3.
+#show x_arr/1.
+#show y_arr/1.

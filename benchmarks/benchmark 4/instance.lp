@@ -114,17 +114,17 @@ init(object(node,100),value(at,(10,10))).
 % Robot 1
 init(object(robot,1),value(at,(10,10))).
 init(object(shelf,1),value(at,(9,9))).
-init(object(order,1),value(line,(1,1))).
-init(object(order,1),value(pickingStation,1)).
-init(object(product,1),value(on,(1,1))).
+%init(object(order,1),value(line,(1,1))).
+%init(object(order,1),value(pickingStation,1)).
+%init(object(product,1),value(on,(1,1))).
 
 % Robot 2
 init(object(robot,2),value(at,(2,2))).
 init(object(shelf,2),value(at,(3,3))).
-init(object(order,2),value(line,(2,1))).
-init(object(order,2),value(pickingStation,1)).
-init(object(product,2),value(on,(2,1))).
+%init(object(order,2),value(line,(2,1))).
+%init(object(order,2),value(pickingStation,1)).
+%init(object(product,2),value(on,(2,1))).
 
 
 % Picking Station
-init(object(pickingStation,1),value(at,(1,1))).
+%init(object(pickingStation,1),value(at,(1,1))).
