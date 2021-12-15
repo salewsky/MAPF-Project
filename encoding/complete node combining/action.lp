@@ -14,18 +14,32 @@ y_arr(Y) :- Y=1..B, B == #max{A: position((_,A))}.
 % Declaring Directions ----------------------------------------------------------------------------
 dir((X,Y)) :- X=-1..1, Y=-1..1, |X+Y|=1.
 
-wall(down,(X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
-								  not comb_position((X1,Y1),_), not comb_position((X1+1,Y1),_),
-								  (X1/2)+1=X1', Y1/2=Y1',
-								  comb_position((X2',Y2')), X1'=X2', Y1'+1=Y2'.
-wall(right,(X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
-								  not comb_position((X1,Y1),_), not comb_position((X1+1,Y1),_),
-								  (X1/2)+1=X1', Y1/2=Y1',
-								  comb_position((X2',Y2')), X1'=X2', Y1'+1=Y2'.
+wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
+						     not position((X1,Y1)), not position((X1+1,Y1)),
+							 X1' = (X1+(size_x-1))/size_x, Y1' = (Y1+(size_y-1))/size_y,
+							 X1'-1 = X1/size_x, Y1'-1 = Y1/size_y,
+							 comb_position((X2',Y2')), X1'=X2', Y1'-1=Y2'.
+wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
+						     not position((X1,Y1)), not position((X1,Y1+1)),
+							 X1' = (X1+(size_x-1))/size_x, Y1' = (Y1+(size_y-1))/size_y,
+							 X1' = X1/size_x, Y1'-1 = Y1/size_y,
+							 comb_position((X2',Y2')), X1'+1=X2', Y1'=Y2'.
+wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
+						     not position((X1,Y1)), not position((X1+1,Y1)),
+							 X1' = (X1+(size_x-1))/size_x, Y1' = (Y1+(size_y-1))/size_y,
+							 X1'-1 = X1/size_x, Y1' = Y1/size_y,
+							 comb_position((X2',Y2')), X1'=X2', Y1'+1=Y2'.
+wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
+						     not position((X1,Y1)), not position((X1,Y1+1)),
+							 X1' = (X1+(size_x-1))/size_x, Y1' = (Y1+(size_y-1))/size_y,
+							 X1'-1 = X1/size_x, Y1'-1 = Y1/size_y,
+							 comb_position((X2',Y2')), X1'-1=X2', Y1'=Y2'.
+
+
 
 nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)), comb_position((X,Y)), comb_position((X',Y')),
-                                 (X,Y)=(X'-DX,Y'-DY), (X',Y')=(X+DX,Y+DY).% 
-								  not wall(_,(X,Y),(X',Y')), not wall(_(X',Y'),(X,Y)).
+                                 (X,Y)=(X'-DX,Y'-DY), (X',Y')=(X+DX,Y+DY),
+								  not wall((X,Y),(X',Y')), not wall((X',Y'),(X,Y)).
 								 
 
 
