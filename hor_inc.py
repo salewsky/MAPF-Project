@@ -2,6 +2,35 @@ import clingo
 import sys
 import time
 import re
+import multiprocessing
+
+
+def solving(combined,i):
+	start = time.time()
+	while(True):
+		print("Testing Horizon: " + str(i))
+		#ASP encoding
+		horizon = "#const horizon = {}.".format(i)
+		asp = horizon + "\n" + combined
+		#Starting clingo solving
+		ctl = clingo.Control()
+		ctl.add("base", [], asp)
+		ctl.ground([("base", [])])
+		#Saving solution
+		solution = ""
+		with ctl.solve(yield_=True) as handle:
+			for m in handle:
+				solution = str(m)
+				solution = solution.replace(" ", ". ")
+				solution = solution + "."
+				break
+		if(solution):
+			break
+		i = i + 1
+		
+	end = time.time()
+	print(solution)
+	print("Solution time: " + str(end - start) + "s")	
 
 #Encoding and instance as system argument
 programs = sys.argv[1]
@@ -39,35 +68,14 @@ for i in robots:
 		y_dis = int(y_dis/int(y_size[0]))
 	maxDist = max(maxDist, x_dis + y_dis)
 
-i = maxDist
-	
-#Time measuring
-start = time.time()
 
-while(True):
-	#ASP encoding
-	horizon = "#const horizon = {}.".format(i)
-	asp = horizon + "\n" + combined
-	#Starting clingo solving
-	ctl = clingo.Control()
-	ctl.add("base", [], asp)
-	ctl.ground([("base", [])])
-	#Saving solution
-	solution = ""
-	with ctl.solve(yield_=True) as handle:
-		for m in handle:
-			solution = str(m)
-			solution = solution.replace(" ", ". ")
-			solution = solution + "."
-			break
-	check = time.time()
-	if((check - start) > 300):
-		solution = "Timeout. Maximum tested horizon: " + str(i)	
-	if(solution):
-		break
-	i = i + 1
+if __name__ == '__main__':
+	p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,))
+	p.start()
+	p.join(300)
+	if p.is_alive():
+		p.terminate()
+		p.join()
+		print("Timeout")
 
-end = time.time()
 
-print(solution)
-print("Solution time: " + str(end - start) + "s")
