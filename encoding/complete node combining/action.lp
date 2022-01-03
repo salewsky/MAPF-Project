@@ -52,7 +52,7 @@ comb_position(R,C,T) :- comb_position(R,C,T-1), not move(R,_,T), isRobot(robot(R
 
 
 % Finding important positions ---------------------------------------------------------------------
-imp_position(C) :- isRobot(robot(R)), comb_position(R,C',_), comb_position(C,C').
+imp_position(R,C) :- isRobot(robot(R)), comb_position(R,C',_), comb_position(C,C').
 
 
 % Minimizing Steps ----------------------------------------------------------------------
