@@ -4,6 +4,48 @@ import time
 import re
 import multiprocessing
 
+def reading(programs, instances):
+	#Reading content of encoding
+	encodings = open(programs, "r")
+	encoding = encodings.read()
+	encodings.close()
+
+	#Reading content of instance
+	benchmarks = open(instances, "r")
+	instance = benchmarks.read()
+	benchmarks.close()
+
+	return encoding + instance, encoding, instance
+
+def min_horizon(instance,programs,encoding):
+	maxDist = 1
+	robots = []
+	splitinstance = instance.splitlines()
+	for i in range(len(splitinstance)):
+		if("% Robot" in splitinstance[i]):
+			robots.append(i)
+
+	combining = False		
+
+	if("node combining" in programs):
+		combining = True
+		splitencoding = encoding.splitlines()
+		x_size = re.findall(r'\d+', splitencoding[0])
+		y_size = re.findall(r'\d+', splitencoding[1])
+		
+
+	for i in robots:
+		r_num = re.findall(r'\d+', splitinstance[i+1])
+		s_num = re.findall(r'\d+', splitinstance[i+2])
+		x_dis = abs(int(r_num[1]) - int(s_num[1]))
+		y_dis = abs(int(r_num[2]) - int(s_num[2]))
+		if(combining):
+			x_dis = int(x_dis/int(x_size[0]))
+			y_dis = int(y_dis/int(y_size[0]))
+		maxDist = max(maxDist, x_dis + y_dis)
+	
+	return maxDist
+
 
 def solving(combined,i):
 	start = time.time()
@@ -32,44 +74,16 @@ def solving(combined,i):
 	print(solution)
 	print("Solution time: " + str(end - start) + "s")	
 
-#Encoding and instance as system argument
-programs = sys.argv[1]
-instances = sys.argv[2]
 
-#Reading content of encoding
-encodings = open(programs, "r")
-encoding = encodings.read()
-encodings.close()
-
-#Reading content of instance
-benchmarks = open(instances, "r")
-instance = benchmarks.read()
-benchmarks.close()
-
-combined = encoding + instance
-
-#Starting horizon
-maxDist = 0
-robots = []
-splitinstance = instance.splitlines()
-for i in range(len(splitinstance)):
-	if("% Robot" in splitinstance[i]):
-		robots.append(i)
-for i in robots:
-	r_num = re.findall(r'\d+', splitinstance[i+1])
-	s_num = re.findall(r'\d+', splitinstance[i+2])
-	x_dis = abs(int(r_num[1]) - int(s_num[1]))
-	y_dis = abs(int(r_num[2]) - int(s_num[2]))
-	if("node combining" in programs):
-		splitencoding = encoding.splitlines()
-		x_size = re.findall(r'\d+', splitencoding[0])
-		y_size = re.findall(r'\d+', splitinstance[1])
-		x_dis = int(x_dis/int(x_size[0]))
-		y_dis = int(y_dis/int(y_size[0]))
-	maxDist = max(maxDist, x_dis + y_dis)
 
 
 if __name__ == '__main__':
+	#Encoding and instance as system argument
+	combined,encoding,instance = reading(sys.argv[1],sys.argv[2])
+	
+	# Starting horizon
+	maxDist = min_horizon(instance, sys.argv[1], encoding)
+	
 	p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,))
 	p.start()
 	p.join(300)
