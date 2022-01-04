@@ -28,7 +28,6 @@ in_reach(R,N) :- isRobot(robot(R)), move(R,_,N).
 
 
 % Calculating Important Positions -------------------------------------------------------
-imp_position(R,C,0,T) 	:- isRobot(robot(R)), position(R,C,T).
-imp_position(R,C,N,T) 	:- isRobot(robot(R)), imp_position(R,C',N-1,T), in_reach(R,N), in_reach(R,N'), N+T<=N', 
-						   nextto(C',_,C).
-imp_pos(C,MIN) 			:- imp_position(_,C,MIN,_), MIN == #min{X: imp_position(_,C,X,_)}.
+imp_pos(R,C,0,T) 	:- isRobot(robot(R)), position(R,C,T).
+imp_pos(R,C,N,T) 	:- isRobot(robot(R)), imp_pos(R,C',N-1,T), in_reach(R,N'), N+T<=N', nextto(C',_,C).
+imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN,_), MIN == #min{X: imp_pos(R,C,X,_)}.
