@@ -2,11 +2,10 @@
 #include "encoding/input.lp".
 
 % Calculating Moves -----------------------------
-#include "encoding/complete reachable nodes/action.lp".
+#include "encoding/reachable nodes/action.lp".
 
 % Goal Condition --------------------------------
-#include "encoding/complete reachable nodes/goal.lp".
+#include "encoding/reachable nodes/goal.lp".
 
 % Transforming Output ---------------------------
-#include "encoding/complete reachable nodes/output.lp".
-
+#include "encoding/reachable nodes/output.lp".

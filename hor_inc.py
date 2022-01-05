@@ -86,7 +86,7 @@ if __name__ == '__main__':
 	
 	p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,))
 	p.start()
-	p.join(300)
+	p.join(180)
 	if p.is_alive():
 		p.terminate()
 		p.join()

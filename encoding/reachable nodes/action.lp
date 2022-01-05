@@ -23,11 +23,11 @@ position(R,C,T) :- not move(R,_,T), position(R,C,T-1), isRobot(robot(R)), time(T
 #minimize {1,(R,T): move(R,_,T)}.
 
 
-% Calculating Number of Moves Needed for Each Robot -------------------------------------
-in_reach(R,N) :- isRobot(robot(R)), move(R,_,N).
-
-
 % Calculating Important Positions -------------------------------------------------------
-imp_pos(R,C,0,T) 	:- isRobot(robot(R)), position(R,C,T).
-imp_pos(R,C,N,T) 	:- isRobot(robot(R)), imp_pos(R,C',N-1,T), in_reach(R,N'), N+T<=N', nextto(C',_,C).
-imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN,_), MIN == #min{X: imp_pos(R,C,X,_)}.
+imp_pos(R,C,0) 	:- isRobot(robot(R)), position(R,C,_).
+%imp_pos(R,C,N)	:- isRobot(robot(R)), imp_pos(R,C',N-1), nextto(C',_,C), not imp_pos(R,C,N-2),
+					
+imp_pos(R,C,N) 	:- isRobot(robot(R)), imp_pos(R,C',N-1), init(object(node,N),value(at,_)), nextto(C',_,C).
+
+imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN), MIN == #min{X: imp_pos(R,C,X)}.
+
