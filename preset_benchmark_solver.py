@@ -3,6 +3,7 @@ import sys
 import time
 import re
 import multiprocessing
+import random
 
 def reading(programs, instances):
 	#Reading content of encoding
@@ -15,14 +16,14 @@ def reading(programs, instances):
 	instance = benchmarks.read()
 	benchmarks.close()
 
-	return encoding + instance, encoding, instance
+	return encoding, instance
 
 def min_horizon(instance,programs,encoding):
 	maxDist = 1
 	robots = []
 	splitinstance = instance.splitlines()
 	for i in range(len(splitinstance)):
-		if("% Robot" in splitinstance[i]):
+		if("% Robot" in splitinstance[i] and not "%" in splitinstance[i+1]):
 			robots.append(i)
 
 	combining = False		
@@ -46,6 +47,12 @@ def min_horizon(instance,programs,encoding):
 	
 	return maxDist
 
+def new_robot(i, instance):
+	instance = instance.replace("%init(object(robot,{}".format(i), "init(object(robot,{}".format(i))
+	instance = instance.replace("%init(object(shelf,{}".format(i), "init(object(shelf,{}".format(i))
+	
+	return instance
+
 def node_count(instance):
 	splitinstance = instance.splitlines()
 	count = 0
@@ -58,7 +65,7 @@ def solving(combined,i,nodecount):
 	start = time.time()
 	solution = ""
 	while(not solution and i<nodecount):
-		print("Testing Horizon: " + str(i))
+		#print("Testing Horizon: " + str(i))
 		#ASP encoding
 		horizon = "#const horizon = {}.".format(i)
 		asp = horizon + "\n" + combined
@@ -75,30 +82,39 @@ def solving(combined,i,nodecount):
 		i = i + 1
 		
 	end = time.time()
-	if(solution):
-		print(solution)
-	else:
-		print("UNSATISFIABLE")
-	print("Solution time: " + str(end - start) + "s")	
+	print("Solution time: " + str(end - start) + "s\n")	
 
 
 
 
 if __name__ == '__main__':
 	#Encoding and instance as system argument
-	combined,encoding,instance = reading(sys.argv[1],sys.argv[2])
+	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	# Starting horizon
-	maxDist = min_horizon(instance, sys.argv[1], encoding)
-	
+	i = 0
 	nodes = node_count(instance)
 	
-	p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
-	p.start()
-	p.join(180)
-	if p.is_alive():
-		p.terminate()
-		p.join()
-		print("Timeout")
+	while(i<nodes):
+		i = i + 1
+		print("Testing {} Robots".format(i))
+		instance = new_robot(i,instance)
+		combined = encoding + instance
+		# Starting horizon
+		maxDist = min_horizon(instance, sys.argv[1], encoding)
+		p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
+		p.start()
+		p.join(30)
+		if p.is_alive():
+			p.terminate()
+			p.join()
+			print("Timeout")
+			break
+	
+	
+	
+	
+		
+	
+	
 
 
