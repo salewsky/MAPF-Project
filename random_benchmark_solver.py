@@ -47,27 +47,30 @@ def min_horizon(instance,programs,encoding):
 	
 	return maxDist
 
-def new_random(i, instance, robotrand, shelfrand):
+def node_list(instance):
+	splitinstance = instance.splitlines()
+	nodelist = []
+	for i in splitinstance:
+		if "node" in i and not "%" in i:
+			list = (re.findall(r"\d+", i))
+			nodelist.append([int(list[1]),int(list[2])])
+	return nodelist
+
+def new_random(i, instance, robotrand, shelfrand, nodeslist):
 	instance = instance + "\n\n% Robot " + str(i)
 	
-	splitinstance = instance.splitlines()
-	x_max = int((re.findall(r"\d+", splitinstance[1]))[0])
-	y_max = int((re.findall(r"\d+", splitinstance[2]))[0])
-	
 	while(True):
-		n = random.randint(1,x_max)
-		m = random.randint(1,y_max)
-		if(not([n,m] in robotrand) and not ("%init(object(node,\d),value(at,({},{}))).".format(n,m) in instance)):
-			robotrand.append([n,m])
-			instance = instance + "\ninit(object(robot,{}),value(at,({},{}))).".format(i,n,m)
+		n = random.randint(0,len(nodeslist)-1)
+		if(not(n in robotrand)):
+			robotrand.append(n)
+			instance = instance + "\ninit(object(robot,{}),value(at,({},{}))).".format(i,nodeslist[n][0],nodeslist[n][1])
 			break
 	
 	while(True):
-		n = random.randint(1,x_max)
-		m = random.randint(1,y_max)
-		if(not([n,m] in shelfrand) and not ("%init(object(node,\d),value(at,({},{}))).".format(n,m) in instance)):
-			shelfrand.append([n,m])
-			instance = instance + "\ninit(object(shelf,{}),value(at,({},{}))).".format(i,n,m)
+		n = random.randint(0,len(nodeslist)-1)
+		if(not(n in shelfrand)):
+			shelfrand.append(n)
+			instance = instance + "\ninit(object(shelf,{}),value(at,({},{}))).".format(i,nodeslist[n][0],nodeslist[n][1])
 			break
 	return instance, robotrand, shelfrand
 
@@ -116,31 +119,24 @@ if __name__ == '__main__':
 	shelfrand = []
 	
 	nodes = node_count(instance)
-	print(nodes)
-	instance, robotrand, shelfrand = new_random(1,instance,robotrand,shelfrand)
-	instance, robotrand, shelfrand = new_random(2,instance,robotrand,shelfrand)
-	instance, robotrand, shelfrand = new_random(3,instance,robotrand,shelfrand)
-	instance, robotrand, shelfrand = new_random(4,instance,robotrand,shelfrand)
-	print(robotrand)
-	print(shelfrand)
+	nodeslist = node_list(instance)
 	
 	
-	
-	# while(i<nodes):
-		# i = i + 1
-		# print("Testing {} Robots".format(i))
-		# instance, robotrand, shelfrand = new_random(i,instance,robotrand,shelfrand)
-		# combined = encoding + instance
-		# # Starting horizon
-		# maxDist = min_horizon(instance, sys.argv[1], encoding)
-		# p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
-		# p.start()
-		# p.join(10)
-		# if p.is_alive():
-			# p.terminate()
-			# p.join()
-			# print("Timeout")
-			# break
+	while(i<nodes):
+		i = i + 1
+		print("Testing {} Robots".format(i))
+		instance, robotrand, shelfrand = new_random(i,instance,robotrand,shelfrand,nodeslist)
+		combined = encoding + instance
+		# Starting horizon
+		maxDist = min_horizon(instance, sys.argv[1], encoding)
+		p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
+		p.start()
+		p.join(10)
+		if p.is_alive():
+			p.terminate()
+			p.join()
+			print("Timeout")
+			break
 	
 	
 	

@@ -3,7 +3,6 @@ import sys
 import time
 import re
 import multiprocessing
-import random
 
 def reading(programs, instances):
 	#Reading content of encoding
