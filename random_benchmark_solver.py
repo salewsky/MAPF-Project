@@ -74,18 +74,11 @@ def new_random(i, instance, robotrand, shelfrand, nodeslist):
 			break
 	return instance, robotrand, shelfrand
 
-def node_count(instance):
-	splitinstance = instance.splitlines()
-	count = 0
-	for i in splitinstance:
-		if "node" in i and not "%" in i:
-			count = count + 1
-	return count
 
-def solving(combined,i,nodecount):
+def solving(combined,i,nodes):
 	start = time.time()
 	solution = ""
-	while(not solution and i<nodecount):
+	while(not solution and i<len(nodes)):
 		#print("Testing Horizon: " + str(i))
 		#ASP encoding
 		horizon = "#const horizon = {}.".format(i)
@@ -103,7 +96,6 @@ def solving(combined,i,nodecount):
 		i = i + 1
 		
 	end = time.time()
-	print(solution)
 	print("Solution time: " + str(end - start) + "s\n")	
 
 
@@ -118,20 +110,19 @@ if __name__ == '__main__':
 	robotrand = []
 	shelfrand = []
 	
-	nodes = node_count(instance)
-	nodeslist = node_list(instance)
+	nodes = node_list(instance)
 	
 	
-	while(i<nodes):
+	while(i<len(nodes)):
 		i = i + 1
 		print("Testing {} Robots".format(i))
-		instance, robotrand, shelfrand = new_random(i,instance,robotrand,shelfrand,nodeslist)
+		instance, robotrand, shelfrand = new_random(i,instance,robotrand,shelfrand,nodes)
 		combined = encoding + instance
 		# Starting horizon
 		maxDist = min_horizon(instance, sys.argv[1], encoding)
 		p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
 		p.start()
-		p.join(10)
+		p.join(300)
 		if p.is_alive():
 			p.terminate()
 			p.join()
