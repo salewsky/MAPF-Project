@@ -75,28 +75,40 @@ def new_random(i, instance, robotrand, shelfrand, nodeslist):
 	return instance, robotrand, shelfrand
 
 
-def solving(combined,i,nodes):
-	start = time.time()
-	solution = ""
-	while(not solution and i<len(nodes)):
-		#print("Testing Horizon: " + str(i))
-		#ASP encoding
-		horizon = "#const horizon = {}.".format(i)
-		asp = horizon + "\n" + combined
-		#Starting clingo solving
-		ctl = clingo.Control()
-		ctl.add("base", [], asp)
-		ctl.ground([("base", [])])
-		with ctl.solve(yield_=True) as handle:
-			for m in handle:
-				solution = str(m)
-				solution = solution.replace(" ", ". ")
-				solution = solution + "."
-				break
-		i = i + 1
+def solving(instance,encoding):
+	nodes = node_list(instance)
+	j = 0
+	robotrand = []
+	shelfrand = []
+
+	while(j<len(nodes)):
+		j = j + 1
+		print("Testing {} Robots".format(j))
+		instance, robotrand, shelfrand = new_random(j,instance,robotrand,shelfrand,nodes)
+		combined = encoding + instance
+		maxDist = min_horizon(instance, sys.argv[1], encoding)
+		i = maxDist
 		
-	end = time.time()
-	print("Solution time: " + str(end - start) + "s\n")	
+		start = time.time()
+		solution = ""
+		while(not solution):
+			#print("Testing Horizon: " + str(i))
+			#ASP encoding
+			horizon = "#const horizon = {}.".format(i)
+			asp = horizon + "\n" + combined
+			#Starting clingo solving
+			ctl = clingo.Control()
+			ctl.add("base", [], asp)
+			ctl.ground([("base", [])])
+			with ctl.solve(yield_=True) as handle:
+				for m in handle:
+					solution = str(m)
+					solution = solution.replace(" ", ". ")
+					solution = solution + "."
+					break
+			i = i + 1
+		end = time.time()
+		print("Solution time: " + str(end - start) + "s\n")	
 
 
 
@@ -105,29 +117,18 @@ if __name__ == '__main__':
 	#Encoding and instance as system argument
 	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	
-	i = 0
-	robotrand = []
-	shelfrand = []
-	
-	nodes = node_list(instance)
+	seed = random.randrange(sys.maxsize)
+	random.seed(seed)
+	print("Seed: ", seed)
 	
 	
-	while(i<len(nodes)):
-		i = i + 1
-		print("Testing {} Robots".format(i))
-		instance, robotrand, shelfrand = new_random(i,instance,robotrand,shelfrand,nodes)
-		combined = encoding + instance
-		# Starting horizon
-		maxDist = min_horizon(instance, sys.argv[1], encoding)
-		p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
-		p.start()
-		p.join(300)
-		if p.is_alive():
-			p.terminate()
-			p.join()
-			print("Timeout")
-			break
+	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
+	p.start()
+	p.join(600)
+	if p.is_alive():
+		p.terminate()
+		p.join()
+		print("Timeout")
 	
 	
 	

@@ -60,28 +60,46 @@ def node_count(instance):
 			count = count + 1
 	return count
 
-def solving(combined,i,nodecount):
-	start = time.time()
-	solution = ""
-	while(not solution and i<nodecount):
-		#print("Testing Horizon: " + str(i))
-		#ASP encoding
-		horizon = "#const horizon = {}.".format(i)
-		asp = horizon + "\n" + combined
-		#Starting clingo solving
-		ctl = clingo.Control()
-		ctl.add("base", [], asp)
-		ctl.ground([("base", [])])
-		with ctl.solve(yield_=True) as handle:
-			for m in handle:
-				solution = str(m)
-				solution = solution.replace(" ", ". ")
-				solution = solution + "."
-				break
-		i = i + 1
+def robot_count(instance):
+	splitinstance = instance.splitlines()
+	count = 0
+	for i in splitinstance:
+		if "% Robot" in i:
+			count = count + 1
+	return count
+	
+def solving(instance,encoding):
+	j = 0
+	nodes = node_count(instance)
+	robots = robot_count(instance)
+	
+	while(j<robots):
+		j = j + 1
+		print("Testing {} Robots".format(j))
+		instance = new_robot(j,instance)
+		combined = encoding + instance
+		maxDist = min_horizon(instance, sys.argv[1], encoding)
+		i = maxDist
+	
+		start = time.time()
+		solution = ""
+		while(not solution):
+			horizon = "#const horizon = {}.".format(i)
+			asp = horizon + "\n" + combined
+			#Starting clingo solving
+			ctl = clingo.Control()
+			ctl.add("base", [], asp)
+			ctl.ground([("base", [])])
+			with ctl.solve(yield_=True) as handle:
+				for m in handle:
+					solution = str(m)
+					solution = solution.replace(" ", ". ")
+					solution = solution + "."
+					break
+			i = i + 1
 		
-	end = time.time()
-	print("Solution time: " + str(end - start) + "s\n")	
+		end = time.time()
+		print("Solution time: " + str(end - start) + "s\n")	
 
 
 
@@ -90,24 +108,13 @@ if __name__ == '__main__':
 	#Encoding and instance as system argument
 	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	i = 0
-	nodes = node_count(instance)
-	
-	while(i<nodes):
-		i = i + 1
-		print("Testing {} Robots".format(i))
-		instance = new_robot(i,instance)
-		combined = encoding + instance
-		# Starting horizon
-		maxDist = min_horizon(instance, sys.argv[1], encoding)
-		p = multiprocessing.Process(target=solving, name="Solving", args=(combined,maxDist,nodes))
-		p.start()
-		p.join(30)
-		if p.is_alive():
-			p.terminate()
-			p.join()
-			print("Timeout")
-			break
+	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
+	p.start()
+	p.join(600)
+	if p.is_alive():
+		p.terminate()
+		p.join()
+		print("Timeout")
 	
 	
 	
