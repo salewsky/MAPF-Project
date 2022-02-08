@@ -1,20 +1,19 @@
 import sys
+import pandas as pd
+from matplotlib import pyplot as plt
 
-instance = sys.argv[1]
-instance_dir = sys.argv[2]
+result_dir = sys.argv[1]
 
-instances = []
+results = []
 for i in range(5):
-	cur_instance = open(instance_dir + "\preset_{}."format(i+1), "r")
+	cur_result = open(result_dir + "\preset_{}."format(i+1), "r")
 	instances.append(cur_instance.read())
 	cur_instance.close()
-for i in range(5):
-	cur_instance = open(instance_dir + "\random_{}."format(i+1), "r")
-	instances.append(cur_instance.read())	
-	cur_instance.close()
+
 
 times = []
-for i in range(11):
+
+for i in range(6):
 	times.append([])
 
 for i in range(len(instances)):
@@ -34,7 +33,15 @@ for i in range(robots):
 		if(i<len(j)):
 			sum = sum + j[i]
 			count = count + 1
-	times[10].append(sum/count)
+	times[5].append(sum/count)
 
+print(times)
 
+average = times[5]
 
+plt.plot(range(robots), average) 
+plt.title("Small open(16x16)")
+plt.xlabel("Robot count")
+plt.ylabel("Solution Time in s")
+plt.legend(["CNC"])
+plt.show()
