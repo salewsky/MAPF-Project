@@ -96,22 +96,23 @@ def solving(instance,encoding1, encoding2):
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
 					solution = str(m)
-					solution = solution.replace(" ", ". ")
+					solution = solution.replace(" ", ".\n ")
 					solution = solution + "."
 					break
 			i = i + 1
 		
-		end1 = time.time()
-		print("First Solution time: " + str(end1 - start) + "s\n")
+		end = time.time()
+		abstime = end - start
+		print("Abstraction time: " + str(abstime) + "s")
 	
-		
 		new_instance = solution.replace("new_init", "init")
-		print(new_instance)
-		solution = ""
 		combined = encoding2 + new_instance
-		maxDist = min_horizon(new_instance, sys.argv[2], encoding2)
-		i = maxDist
 		nodes = node_count(new_instance)
+		maxDist = min_horizon(instance, sys.argv[2], encoding2)
+		i = maxDist
+
+		start = time.time()
+		solution = ""
 		while(not solution):
 			horizon = "#const horizon = {}.".format(i)
 			asp = horizon + "\n" + combined
@@ -128,10 +129,11 @@ def solving(instance,encoding1, encoding2):
 			i = i + 1
 			if(i>nodes):
 				print("UNSATISFIABLE")
-				break
-		end2 = time.time()
-		print("Second Solution time: " + str(end2 - end1) + "s\n")
-
+				break	
+		end = time.time()
+		solvtime = end - start
+		print("Solving time: " + str(solvtime) + "s")
+		print("Total Time: " + str(abstime + solvtime) + "s\n")
 
 
 
