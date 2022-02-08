@@ -1,14 +1,13 @@
 import sys
-import pandas as pd
 from matplotlib import pyplot as plt
 
 result_dir = sys.argv[1]
 
 results = []
 for i in range(5):
-	cur_result = open(result_dir + "\preset_{}."format(i+1), "r")
-	instances.append(cur_instance.read())
-	cur_instance.close()
+	cur_result = open(result_dir + "\preset_{}.txt".format(i+1), "r")
+	results.append(cur_result.read())
+	cur_result.close()
 
 
 times = []
@@ -16,11 +15,11 @@ times = []
 for i in range(6):
 	times.append([])
 
-for i in range(len(instances)):
-	split = instances[i].splitlines()
+for i in range(len(results)):
+	split = results[i].splitlines()
 	for j in split:
 		if("Solution time" in j):
-			times[i].append(j[15:-1]
+			times[i].append(float(j[15:-1]))
 
 robots = 0
 for i in times:
@@ -39,7 +38,8 @@ print(times)
 
 average = times[5]
 
-plt.plot(range(robots), average) 
+
+plt.plot(range(1,robots+1), average) 
 plt.title("Small open(16x16)")
 plt.xlabel("Robot count")
 plt.ylabel("Solution Time in s")

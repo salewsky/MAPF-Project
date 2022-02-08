@@ -51,8 +51,8 @@ def min_horizon(instance,programs,encoding):
 	return maxDist
 
 def new_robot(i, instance):
-	instance = instance.replace("%init(object(robot,{}".format(i), "init(object(robot,{}".format(i))
-	instance = instance.replace("%init(object(shelf,{}".format(i), "init(object(shelf,{}".format(i))
+	instance = instance.replace("%init(object(robot,{})".format(i), "init(object(robot,{})".format(i))
+	instance = instance.replace("%init(object(shelf,{})".format(i), "init(object(shelf,{})".format(i))
 	
 	return instance
 
@@ -72,7 +72,7 @@ def robot_count(instance):
 			count = count + 1
 	return count
 	
-def solving(instance,encoding):
+def solving(instance,encoding1, encoding2):
 	j = 0
 	robots = robot_count(instance)
 	
@@ -81,7 +81,7 @@ def solving(instance,encoding):
 		print("Testing {} Robots".format(j))
 		instance = new_robot(j,instance)
 		combined = encoding1 + instance
-		maxDist = min_horizon(instance, sys.argv[1], encoding)
+		maxDist = min_horizon(instance, sys.argv[1], encoding1)
 		i = maxDist
 	
 		start = time.time()
@@ -103,10 +103,13 @@ def solving(instance,encoding):
 		
 		end1 = time.time()
 		print("First Solution time: " + str(end1 - start) + "s\n")
-
+	
+		
 		new_instance = solution.replace("new_init", "init")
+		print(new_instance)
 		solution = ""
 		combined = encoding2 + new_instance
+		maxDist = min_horizon(new_instance, sys.argv[2], encoding2)
 		i = maxDist
 		nodes = node_count(new_instance)
 		while(not solution):
@@ -134,11 +137,11 @@ def solving(instance,encoding):
 
 if __name__ == '__main__':
 	#Encoding and instance as system argument
-	encoding,instance = reading(sys.argv[1],sys.argv[2], sys.argv[3])
+	encoding1, encoding2, instance = reading(sys.argv[1],sys.argv[2], sys.argv[3])
 	
-	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
+	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding1, encoding2))
 	p.start()
-	p.join(600)
+	p.join(20)
 	if p.is_alive():
 		p.terminate()
 		p.join()

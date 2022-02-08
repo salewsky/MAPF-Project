@@ -112,12 +112,15 @@ def solving(instance,encoding):
 
 
 
-
 if __name__ == '__main__':
 	#Encoding and instance as system argument
 	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	seed = random.randrange(sys.maxsize)
+	if(len(sys.argv) == 4):
+		seed = int(sys.argv[1])
+	else:
+		seed = random.randrange(sys.maxsize)
+        
 	random.seed(seed)
 	print("Seed: ", seed)
 	
