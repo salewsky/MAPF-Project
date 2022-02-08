@@ -4,22 +4,18 @@ import time
 import re
 import multiprocessing
 
-def reading(program1, program2, instance):
+def reading(programs, instances):
 	#Reading content of encoding
-	encodings = open(program1, "r")
-	encoding1 = encodings.read()
+	encodings = open(programs, "r")
+	encoding = encodings.read()
 	encodings.close()
 
-	encodings = open(program2, "r")
-	encoding2 = encodings.read()
-	encodings.close()
-	
 	#Reading content of instance
-	benchmarks = open(instance, "r")
+	benchmarks = open(instances, "r")
 	instance = benchmarks.read()
 	benchmarks.close()
 
-	return encoding1, encoding2, instance
+	return encoding, instance
 
 def min_horizon(instance,programs,encoding):
 	maxDist = 1
@@ -51,8 +47,8 @@ def min_horizon(instance,programs,encoding):
 	return maxDist
 
 def new_robot(i, instance):
-	instance = instance.replace("%init(object(robot,{})".format(i), "init(object(robot,{})".format(i))
-	instance = instance.replace("%init(object(shelf,{})".format(i), "init(object(shelf,{})".format(i))
+	instance = instance.replace("%init(object(robot,{}".format(i), "init(object(robot,{}".format(i))
+	instance = instance.replace("%init(object(shelf,{}".format(i), "init(object(shelf,{}".format(i))
 	
 	return instance
 
@@ -72,45 +68,19 @@ def robot_count(instance):
 			count = count + 1
 	return count
 	
-def solving(instance,encoding1, encoding2):
+def solving(instance,encoding):
 	j = 0
+	nodes = node_count(instance)
 	robots = robot_count(instance)
 	
 	while(j<robots):
 		j = j + 1
 		print("Testing {} Robots".format(j))
 		instance = new_robot(j,instance)
-		combined = encoding1 + instance
-		maxDist = min_horizon(instance, sys.argv[1], encoding1)
+		combined = encoding + instance
+		maxDist = min_horizon(instance, sys.argv[1], encoding)
 		i = maxDist
 	
-		start = time.time()
-		solution = ""
-		while(not solution):
-			horizon = "#const horizon = {}.".format(i)
-			asp = horizon + "\n" + combined
-			#Starting clingo solving
-			ctl = clingo.Control()
-			ctl.add("base", [], asp)
-			ctl.ground([("base", [])])
-			with ctl.solve(yield_=True) as handle:
-				for m in handle:
-					solution = str(m)
-					solution = solution.replace(" ", ".\n ")
-					solution = solution + "."
-					break
-			i = i + 1
-		
-		end = time.time()
-		abstime = end - start
-		print("Abstraction time: " + str(abstime) + "s")
-	
-		new_instance = solution.replace("new_init", "init")
-		combined = encoding2 + new_instance
-		nodes = node_count(new_instance)
-		maxDist = min_horizon(instance, sys.argv[2], encoding2)
-		i = maxDist
-		print(i)
 		start = time.time()
 		solution = ""
 		while(not solution):
@@ -127,23 +97,20 @@ def solving(instance,encoding1, encoding2):
 					solution = solution + "."
 					break
 			i = i + 1
-			if(i>nodes):
-				print("UNSATISFIABLE")
-				break	
+		
 		end = time.time()
-		solvtime = end - start
-		print("Solving time: " + str(solvtime) + "s")
-		print("Total Time: " + str(abstime + solvtime) + "s\n")
+		print("Solution time: " + str(end - start) + "s\n")	
+
 
 
 
 if __name__ == '__main__':
 	#Encoding and instance as system argument
-	encoding1, encoding2, instance = reading(sys.argv[1],sys.argv[2], sys.argv[3])
+	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding1, encoding2))
+	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
 	p.start()
-	p.join(20)
+	p.join(600)
 	if p.is_alive():
 		p.terminate()
 		p.join()

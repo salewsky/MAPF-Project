@@ -47,8 +47,8 @@ def min_horizon(instance,programs,encoding):
 	return maxDist
 
 def new_robot(i, instance):
-	instance = instance.replace("%init(object(robot,{}".format(i), "init(object(robot,{}".format(i))
-	instance = instance.replace("%init(object(shelf,{}".format(i), "init(object(shelf,{}".format(i))
+	instance = instance.replace("%init(object(robot,{})".format(i), "init(object(robot,{})".format(i))
+	instance = instance.replace("%init(object(shelf,{})".format(i), "init(object(shelf,{})".format(i))
 	
 	return instance
 
