@@ -1,47 +1,65 @@
 import sys
 from matplotlib import pyplot as plt
+import os
 
-result_dir = sys.argv[1]
+def get_times(path):
+	times = []
 
-results = []
-for i in range(5):
-	cur_result = open(result_dir + "\preset_{}.txt".format(i+1), "r")
-	results.append(cur_result.read())
-	cur_result.close()
+	for filename in os.listdir(path):
+		with open(os.path.join(path, filename), 'r') as f:
+			times.append([])
+			results = f.read()
+			results = results.splitlines()
+			for i in results:
+				if("Solution time" in i):
+					times[len(times)-1].append(float(i[15:-1]))
+	print(times)
+	return times
+      
 
-
-times = []
-
-for i in range(6):
-	times.append([])
-
-for i in range(len(results)):
-	split = results[i].splitlines()
-	for j in split:
-		if("Solution time" in j):
-			times[i].append(float(j[15:-1]))
-
-robots = 0
-for i in times:
-	robots = max(robots,len(i))
+def get_avg(time_list):
+	averages = []
 	
-count = 0
-sum = 0
-for i in range(robots):
-	for j in times:
-		if(i<len(j)):
-			sum = sum + j[i]
-			count = count + 1
-	times[5].append(sum/count)
+	robots = 0
+	for i in time_list:
+		robots = max(robots,len(i))  #Max oder Min
+	
+	count = 0
+	time_sum = 0
+	for i in range(robots):
+		for j in time_list:
+			if(i<len(j)):
+				time_sum = time_sum + j[i]
+				count = count + 1
+		averages.append(time_sum/count)
+		
+	return averages
 
-print(times)
+def plot(title, averages, programs):
+	for i in averages:
+		plt.plot(range(1,len(i)+1), i) 
+		plt.title(title)
+	plt.xlabel("Robot count")
+	plt.ylabel("Average Solution Time in s")
+	plt.legend(programs)
+	plt.show()
 
-average = times[5]
 
 
-plt.plot(range(1,robots+1), average) 
-plt.title("Small open(16x16)")
-plt.xlabel("Robot count")
-plt.ylabel("Solution Time in s")
-plt.legend(["CNC"])
-plt.show()
+title = sys.argv[1]  #Instance Name
+path = sys.argv[2]	#Path to Results for the Instance
+programs = sys.argv[3:]  #Programs you want results for
+times = []
+averages = []
+
+for i in programs:
+	print("Results for {}: \n".format(i))
+	times.append(get_times(path + "\\" + i + "\\"))
+
+for i in times:
+	averages.append(get_avg(i))
+
+plot(title, averages, programs)
+
+
+
