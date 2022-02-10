@@ -263,4 +263,3 @@ init(object(node,253),value(at,(13,16))).
 init(object(node,254),value(at,(14,16))).
 init(object(node,255),value(at,(15,16))).
 init(object(node,256),value(at,(16,16))).
-
