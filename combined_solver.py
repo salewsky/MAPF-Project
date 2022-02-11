@@ -139,15 +139,15 @@ def solving(instance,encoding1, encoding2):
 
 if __name__ == '__main__':
 	#Encoding and instance as system argument
-	encoding1, encoding2, instance = reading(sys.argv[1],sys.argv[2], sys.argv[3])
+        encoding1, encoding2, instance = reading(sys.argv[1],sys.argv[2], sys.argv[3])
 	
-	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding1, encoding2))
-	p.start()
-	p.join(20)
-	if p.is_alive():
-		p.terminate()
-		p.join()
-		print("Timeout")
+        p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding1, encoding2))
+        p.start()
+        p.join(30)
+        if p.is_alive():
+                p.terminate()
+                p.join()
+                print("Timeout")
 	
 	
 	
