@@ -133,7 +133,7 @@ def solving(instance,encoding1, encoding2):
 		end = time.time()
 		solvtime = end - start
 		print("Solving time: " + str(solvtime) + "s")
-		print("Total Time: " + str(abstime + solvtime) + "s\n")
+		print("Solution time: " + str(abstime + solvtime) + "s\n")
 
 
 

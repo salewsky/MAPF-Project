@@ -13,7 +13,6 @@ def get_times(path):
 			for i in results:
 				if("Solution time" in i):
 					times[len(times)-1].append(float(i[15:-1]))
-	print(times)
 	return times
       
 
