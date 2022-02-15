@@ -117,7 +117,7 @@ if __name__ == '__main__':
 	encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
 	if(len(sys.argv) == 4):
-		seed = int(sys.argv[1])
+		seed = int(sys.argv[3])
 	else:
 		seed = random.randrange(sys.maxsize)
         
