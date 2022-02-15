@@ -1,5 +1,5 @@
 % Transforming Input ----------------------------
-#include "encoding/input.lp".
+#include "/home/salewsky/MAPF-Project/encoding/input.lp".
 
 % Calculating Moves -----------------------------
 #include "/home/salewsky/MAPF-Project/encoding/shortest-path/action.lp".
