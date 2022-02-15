@@ -1,12 +1,12 @@
 % Transforming Input ----------------------------
-#include "encoding/input.lp".
+#include "home/salewsky/MAPF-Project/encoding/input.lp".
 
 % Calculating Moves -----------------------------
-#include "encoding/shortest path/action.lp".
+#include "home/salewsky/MAPF-Project/encoding/shortest path/action.lp".
 
 % Goal Condition --------------------------------
-#include "encoding/shortest path/goal.lp".
+#include "home/salewsky/MAPF-Project/encoding/shortest path/goal.lp".
 
 % Transforming Output ---------------------------
-#include "encoding/shortest path/output.lp".
+#include "home/salewsky/MAPF-Project/encoding/shortest path/output.lp".
 
