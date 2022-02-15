@@ -131,8 +131,6 @@ if __name__ == '__main__':
 	p.start()
 	p.join(1)
 	if p.is_alive():
-		p.terminate()
-		p.join()
 		print("Timeout")
 	
 	

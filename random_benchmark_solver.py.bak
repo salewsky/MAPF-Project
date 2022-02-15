@@ -109,7 +109,8 @@ def solving(instance,encoding):
 					break
 			i = i + 1
 		end = time.time()
-		output = output + "Solution time: " + str(end - start) + "s\n"	
+		output = output + "Solution time: " + str(end - start) + "s\n"
+	print(output)
 
 
 
