@@ -76,62 +76,64 @@ def new_random(i, instance, robotrand, shelfrand, nodeslist):
 
 
 def solving(instance,encoding):
-	output = ""
-	nodes = node_list(instance)
-	j = 0
-	robotrand = []
-	shelfrand = []
+        nodes = node_list(instance)
+        j = 0
+        robotrand = []
+        shelfrand = []
 
-	while(j<len(nodes)):
-		j = j + 1
-		output = output + "Testing {} Robots\n".format(j)
-		instance, robotrand, shelfrand = new_random(j,instance,robotrand,shelfrand,nodes)
-		combined = encoding + instance
-		maxDist = min_horizon(instance, sys.argv[1], encoding)
-		i = maxDist
+        while(j<len(nodes)):
+            j = j + 1
+            print("Testing {} Robots".format(j))
+            sys.stdout.flush()
+            instance, robotrand, shelfrand = new_random(j,instance,robotrand,shelfrand,nodes)
+            combined = encoding + instance
+            maxDist = min_horizon(instance, sys.argv[1], encoding)
+            i = maxDist
 		
-		start = time.time()
-		solution = ""
-		while(not solution):
-			#print("Testing Horizon: " + str(i))
-			#ASP encoding
-			horizon = "#const horizon = {}.".format(i)
-			asp = horizon + "\n" + combined
-			#Starting clingo solving
-			ctl = clingo.Control()
-			ctl.add("base", [], asp)
-			ctl.ground([("base", [])])
-			with ctl.solve(yield_=True) as handle:
-				for m in handle:
-					solution = str(m)
-					solution = solution.replace(" ", ". ")
-					solution = solution + "."
-					break
-			i = i + 1
-		end = time.time()
-		output = output + "Solution time: " + str(end - start) + "s\n"
-	print(output)
+            start = time.time()
+            solution = ""
+            while(not solution):
+		#print("Testing Horizon: " + str(i))
+		#ASP encoding
+                horizon = "#const horizon = {}.".format(i)
+                asp = horizon + "\n" + combined
+		#Starting clingo solving
+                ctl = clingo.Control()
+                ctl.add("base", [], asp)
+                ctl.ground([("base", [])])
+                with ctl.solve(yield_=True) as handle:
+                    for m in handle:
+                        solution = str(m)
+                        solution = solution.replace(" ", ". ")
+                        solution = solution + "."
+                        break
+                i = i + 1
+            end = time.time()
+            print("Solution time: " + str(end - start) + "s\n")
+            sys.stdout.flush()
 
 
 
 if __name__ == '__main__':
 	#Encoding and instance as system argument
-	encoding,instance = reading(sys.argv[1],sys.argv[2])
+        encoding,instance = reading(sys.argv[1],sys.argv[2])
 	
-	if(len(sys.argv) == 4):
-		seed = int(sys.argv[3])
-	else:
-		seed = random.randrange(sys.maxsize)
+        if(len(sys.argv) == 4):
+            seed = int(sys.argv[3])
+        else:
+            seed = random.randrange(sys.maxsize)
         
-	random.seed(seed)
-	print("Seed: ", seed)
+        random.seed(seed)
+        print("Seed: ", seed)
 	
 	
-	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
-	p.start()
-	p.join(1)
-	if p.is_alive():
-		print("Timeout")
+        p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding,))
+        p.start()
+        p.join(1)
+        if p.is_alive():
+            p.terminate()
+            p.join()
+            print("Timeout")
 	
 	
 	
