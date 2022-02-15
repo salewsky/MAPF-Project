@@ -79,6 +79,7 @@ def solving(instance,encoding1, encoding2):
 	while(j<robots):
 		j = j + 1
 		print("Testing {} Robots".format(j))
+		sys.stdout.flush()
 		instance = new_robot(j,instance)
 		combined = encoding1 + instance
 		maxDist = min_horizon(instance, sys.argv[1], encoding1)
@@ -104,6 +105,7 @@ def solving(instance,encoding1, encoding2):
 		end = time.time()
 		abstime = end - start
 		print("Abstraction time: " + str(abstime) + "s")
+		sys.stdout.flush()
 	
 		new_instance = solution.replace("new_init", "init")
 		combined = encoding2 + new_instance
@@ -133,7 +135,9 @@ def solving(instance,encoding1, encoding2):
 		end = time.time()
 		solvtime = end - start
 		print("Solving time: " + str(solvtime) + "s")
+		sys.stdout.flush()
 		print("Solution time: " + str(abstime + solvtime) + "s\n")
+		sys.stdout.flush()
 
 
 
