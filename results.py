@@ -38,6 +38,9 @@ def plot(title, averages, programs):
 	for i in averages:
 		plt.plot(range(1,len(i)+1), i) 
 		plt.title(title)
+	ax = plt.gca()
+	ax.set_xlim(0)
+	ax.set_ylim(0)
 	plt.xlabel("Robot count")
 	plt.ylabel("Average Solution Time in s")
 	plt.legend(programs)
@@ -52,7 +55,7 @@ times = []
 averages = []
 
 for i in programs:
-	print("Results for {}: \n".format(i))
+	#print("Results for {}: \n".format(i))
 	times.append(get_times(path + "\\" + i + "\\"))
 
 for i in times:
