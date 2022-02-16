@@ -1,0 +1,8 @@
+running jobs@node5...
+
+jobs: results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run7/start.sh results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run8/start.sh results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run9/start.sh results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run10/start.sh
+
+running  results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run7/start.sh
+running  results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run8/start.sh
+running  results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run9/start.sh
+running  results/Random/empty-1-setting-1/Random/medium-rooms-32-32.lp/run10/start.sh

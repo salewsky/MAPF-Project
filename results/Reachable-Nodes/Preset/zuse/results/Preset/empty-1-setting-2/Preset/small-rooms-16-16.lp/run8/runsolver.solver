@@ -1,0 +1,58 @@
+Testing 1 Robots
+Solution time: 0.16611766815185547s
+
+Testing 2 Robots
+Solution time: 1.1249470710754395s
+
+Testing 3 Robots
+Solution time: 14.35276746749878s
+
+Testing 4 Robots
+Solution time: 14.200588941574097s
+
+Testing 5 Robots
+Solution time: 16.705920219421387s
+
+Testing 6 Robots
+Solution time: 16.753267526626587s
+
+Testing 7 Robots
+Solution time: 16.955833196640015s
+
+Testing 8 Robots
+Solution time: 20.45565390586853s
+
+Testing 9 Robots
+Solution time: 53.7423632144928s
+
+Testing 10 Robots
+Solution time: 54.93194031715393s
+
+Testing 11 Robots
+Solution time: 60.88089084625244s
+
+Testing 12 Robots
+Solution time: 71.26701855659485s
+
+Testing 13 Robots
+Solution time: 109.7762246131897s
+
+Testing 14 Robots
+Solution time: 81.86724090576172s
+
+Testing 15 Robots
+Process Solving:
+Traceback (most recent call last):
+  File "/home/salewsky/.conda/envs/Clingo2/lib/python3.9/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/home/salewsky/.conda/envs/Clingo2/lib/python3.9/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/salewsky/MAPF-Project/preset_benchmark_solver.py", line 94, in solving
+    with ctl.solve(yield_=True) as handle:
+  File "/home/salewsky/.conda/envs/Clingo2/lib/python3.9/site-packages/clingo/control.py", line 572, in solve
+    _c_call('clingo_solve_handle_t*', _lib.clingo_control_solve,
+  File "/home/salewsky/.conda/envs/Clingo2/lib/python3.9/site-packages/clingo/_internal.py", line 41, in _c_call
+    _handle_error(c_fun(*args, p_ret), handler)
+  File "/home/salewsky/.conda/envs/Clingo2/lib/python3.9/site-packages/clingo/_internal.py", line 64, in _handle_error
+    raise MemoryError(msg)
+MemoryError: bad_alloc

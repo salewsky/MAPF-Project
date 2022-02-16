@@ -1,0 +1,8 @@
+running jobs@node3...
+
+jobs: results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run7/start.sh results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run8/start.sh results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run9/start.sh results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run10/start.sh
+
+running  results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run7/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run8/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run9/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run10/start.sh
