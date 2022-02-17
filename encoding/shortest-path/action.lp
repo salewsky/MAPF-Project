@@ -22,7 +22,7 @@ position(R,C,T) :- not move(R,_,T), position(R,C,T-1), isRobot(robot(R)), time(T
 :- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R)), T2<T1.
 #minimize {1,(R,T): move(R,_,T)}.
 
-% Important Positions -------------------------------------------------------------------
+% Important Positions -----------------------------------------
 imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
 
 

@@ -24,10 +24,8 @@ position(R,C,T) :- not move(R,_,T), position(R,C,T-1), isRobot(robot(R)), time(T
 
 
 % Calculating Important Positions -------------------------------------------------------
+makespan(R,N) :- move(R,_,N).
 imp_pos(R,C,0) 	:- isRobot(robot(R)), position(R,C,_).
-%imp_pos(R,C,N)	:- isRobot(robot(R)), imp_pos(R,C',N-1), nextto(C',_,C), not imp_pos(R,C,N-2),
-					
-imp_pos(R,C,N) 	:- isRobot(robot(R)), imp_pos(R,C',N-1), init(object(node,N),value(at,_)), nextto(C',_,C).
-
+imp_pos(R,C,N) 	:- isRobot(robot(R)), imp_pos(R,C',N-1), makespan(R,N), nextto(C',_,C).
 imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN), MIN == #min{X: imp_pos(R,C,X)}.
 
