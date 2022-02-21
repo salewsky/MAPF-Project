@@ -1,20 +1,14 @@
 Testing 1 Robots
-Solution time: 6.374102592468262s
+Solution time: 39.722771644592285s
 
 Testing 2 Robots
-Solution time: 63.01584219932556s
+Solution time: 86.93100380897522s
 
 Testing 3 Robots
-Solution time: 43.68799543380737s
+Solution time: 104.26234316825867s
 
 Testing 4 Robots
-Solution time: 121.7781081199646s
+Solution time: 162.27830290794373s
 
 Testing 5 Robots
-Solution time: 117.19618773460388s
-
-Testing 6 Robots
-Solution time: 228.69672346115112s
-
-Testing 7 Robots
 Timeout

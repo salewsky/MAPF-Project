@@ -1,46 +1,6 @@
-Seed:  967241536944626767
+Seed:  3235010346291050413
 Testing 1 Robots
-Solution time: 5.05820107460022s
+Solution time: 10.62111210823059s
 
 Testing 2 Robots
-Solution time: 6.751408576965332s
-
-Testing 3 Robots
-Solution time: 27.051201343536377s
-
-Testing 4 Robots
-Solution time: 34.47267937660217s
-
-Testing 5 Robots
-Solution time: 31.288837671279907s
-
-Testing 6 Robots
-Solution time: 25.7799072265625s
-
-Testing 7 Robots
-Solution time: 12.72975754737854s
-
-Testing 8 Robots
-Solution time: 29.386195421218872s
-
-Testing 9 Robots
-Solution time: 32.841843128204346s
-
-Testing 10 Robots
-Solution time: 61.564534187316895s
-
-Testing 11 Robots
-Solution time: 39.475605487823486s
-
-Testing 12 Robots
-Solution time: 76.80794835090637s
-
-Testing 13 Robots
-Solution time: 73.87622380256653s
-
-Testing 14 Robots
-Solution time: 86.32615351676941s
-
-Testing 15 Robots
-Process Solving:
 Timeout

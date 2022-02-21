@@ -1,3 +1,9 @@
-Seed:  7728131848593224650
+Seed:  8493863381540125182
 Testing 1 Robots
+Solution time: 0.3624293804168701s
+
+Testing 2 Robots
+Solution time: 106.6374249458313s
+
+Testing 3 Robots
 Timeout
