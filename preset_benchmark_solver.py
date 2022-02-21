@@ -90,10 +90,7 @@ def solving(instance,encoding):
 			#Starting clingo solving
 			ctl = clingo.Control()
 			ctl.add("base", [], asp)
-			gs = time.time()
 			ctl.ground([("base", [])])
-			ge = time.time()
-			print("Grounding Zeit: " + str(ge - gs))
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
 					solution = str(m)
@@ -115,7 +112,7 @@ if __name__ == '__main__':
 	
 	p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding))
 	p.start()
-	p.join(180)
+	p.join(600)
 	if p.is_alive():
 		p.terminate()
 		p.join()
