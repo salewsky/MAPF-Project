@@ -1,0 +1,123 @@
+Testing 1 Robots
+Abstraction time: 0.04731035232543945s
+Solving time: 0.055382728576660156s
+Solution time: 0.10269308090209961s
+
+Testing 2 Robots
+Abstraction time: 0.04729175567626953s
+Solving time: 0.2555680274963379s
+Solution time: 0.3028597831726074s
+
+Testing 3 Robots
+Abstraction time: 0.20033955574035645s
+Solving time: 1.957667350769043s
+Solution time: 2.1580069065093994s
+
+Testing 4 Robots
+Abstraction time: 0.27684712409973145s
+Solving time: 2.9650161266326904s
+Solution time: 3.241863250732422s
+
+Testing 5 Robots
+Abstraction time: 0.3128633499145508s
+Solving time: 4.02731990814209s
+Solution time: 4.340183258056641s
+
+Testing 6 Robots
+Abstraction time: 0.19933748245239258s
+Solving time: 4.848688364028931s
+Solution time: 5.048025846481323s
+
+Testing 7 Robots
+Abstraction time: 0.22534608840942383s
+Solving time: 4.991478204727173s
+Solution time: 5.216824293136597s
+
+Testing 8 Robots
+Abstraction time: 0.261584997177124s
+Solving time: 5.695100545883179s
+Solution time: 5.956685543060303s
+
+Testing 9 Robots
+Abstraction time: 0.35718274116516113s
+Solving time: 12.729106426239014s
+Solution time: 13.086289167404175s
+
+Testing 10 Robots
+Abstraction time: 0.37407755851745605s
+Solving time: 14.44953441619873s
+Solution time: 14.823611974716187s
+
+Testing 11 Robots
+Abstraction time: 0.49363231658935547s
+Solving time: 16.419774770736694s
+Solution time: 16.91340708732605s
+
+Testing 12 Robots
+Abstraction time: 0.5196387767791748s
+Solving time: 17.904072284698486s
+Solution time: 18.42371106147766s
+
+Testing 13 Robots
+Abstraction time: 0.5285892486572266s
+Solving time: 19.888121366500854s
+Solution time: 20.41671061515808s
+
+Testing 14 Robots
+Abstraction time: 0.5948350429534912s
+Solving time: 19.637384176254272s
+Solution time: 20.232219219207764s
+
+Testing 15 Robots
+Abstraction time: 0.627068042755127s
+Solving time: 22.024187803268433s
+Solution time: 22.65125584602356s
+
+Testing 16 Robots
+Abstraction time: 0.7205934524536133s
+Solving time: 27.0258948802948s
+Solution time: 27.746488332748413s
+
+Testing 17 Robots
+Abstraction time: 0.761005163192749s
+Solving time: 30.999311685562134s
+Solution time: 31.760316848754883s
+
+Testing 18 Robots
+Abstraction time: 0.8319087028503418s
+Solving time: 33.77539587020874s
+Solution time: 34.60730457305908s
+
+Testing 19 Robots
+Abstraction time: 1.5172665119171143s
+Solving time: 44.403937101364136s
+Solution time: 45.92120361328125s
+
+Testing 20 Robots
+Abstraction time: 1.7201902866363525s
+Solving time: 48.56856179237366s
+Solution time: 50.28875207901001s
+
+Testing 21 Robots
+Abstraction time: 1.8199539184570312s
+Solving time: 49.84245729446411s
+Solution time: 51.66241121292114s
+
+Testing 22 Robots
+Abstraction time: 1.8237402439117432s
+Solving time: 55.44068956375122s
+Solution time: 57.264429807662964s
+
+Testing 23 Robots
+Abstraction time: 2.056833267211914s
+Solving time: 63.650766372680664s
+Solution time: 65.70759963989258s
+
+Testing 24 Robots
+Abstraction time: 1.3665616512298584s
+Solving time: 62.73721528053284s
+Solution time: 64.1037769317627s
+
+Testing 25 Robots
+Abstraction time: 1.6598596572875977s
+Timeout

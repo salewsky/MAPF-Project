@@ -1,0 +1,11 @@
+running jobs@node28...
+
+jobs: results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run5/start.sh results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run6/start.sh results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run7/start.sh results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run8/start.sh results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run9/start.sh results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run10/start.sh results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run1/start.sh
+
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run5/start.sh
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run6/start.sh
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run7/start.sh
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run8/start.sh
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run9/start.sh
+running  results/Preset/empty-1-setting-2/Preset/small-rooms-16-16.lp/run10/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-rooms-32-32.lp/run1/start.sh

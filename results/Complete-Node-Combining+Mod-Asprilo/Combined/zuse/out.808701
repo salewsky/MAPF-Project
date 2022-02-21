@@ -1,0 +1,8 @@
+running jobs@node29...
+
+jobs: results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run7/start.sh results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run8/start.sh results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run9/start.sh results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run10/start.sh
+
+running  results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run7/start.sh
+running  results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run8/start.sh
+running  results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run9/start.sh
+running  results/Combined/empty-1-setting-1/Preset/large-open-128-128.lp/run10/start.sh

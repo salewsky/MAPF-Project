@@ -147,7 +147,7 @@ if __name__ == '__main__':
 	
         p = multiprocessing.Process(target=solving, name="Solving", args=(instance,encoding1, encoding2))
         p.start()
-        p.join(20)
+        p.join(600)
         if p.is_alive():
                 p.terminate()
                 p.join()
