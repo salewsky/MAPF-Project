@@ -90,7 +90,10 @@ def solving(instance,encoding):
 			#Starting clingo solving
 			ctl = clingo.Control()
 			ctl.add("base", [], asp)
+			gs = time.time()
 			ctl.ground([("base", [])])
+			ge = time.time()
+			print("Grounding Zeit: " + str(ge - gs))
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
 					solution = str(m)
