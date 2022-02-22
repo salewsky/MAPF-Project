@@ -3,6 +3,7 @@ import sys
 import time
 import re
 import multiprocessing
+from json import dumps
 
 def reading(programs, instances):
 	#Reading content of encoding
@@ -88,7 +89,7 @@ def solving(instance,encoding):
 			horizon = "#const horizon = {}.".format(i)
 			asp = horizon + "\n" + combined
 			#Starting clingo solving
-			ctl = clingo.Control()
+			ctl = clingo.Control(['--stats'])
 			ctl.add("base", [], asp)
 			ctl.ground([("base", [])])
 			with ctl.solve(yield_=True) as handle:
@@ -100,6 +101,7 @@ def solving(instance,encoding):
 			i = i + 1
 		
 		end = time.time()
+		print(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))
 		print("Solution time: " + str(end - start) + "s\n")
 		sys.stdout.flush()		
 
