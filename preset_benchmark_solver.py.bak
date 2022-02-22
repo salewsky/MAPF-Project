@@ -94,10 +94,12 @@ def solving(instance,encoding):
 			ctl.add("base", [], asp)
 			ade = time.time()
 			print("Adding time: " + str(ade - ads) + "s")
+			sys.stdout.flush()
 			gs = time.time()
 			ctl.ground([("base", [])])
 			ge = time.time()
-			print("Grounding time: " + str(ge - ss) + "s")
+			print("Grounding time: " + str(ge - gs) + "s")
+			sys.stdout.flush()
 			sst = time.time()
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
@@ -107,12 +109,14 @@ def solving(instance,encoding):
 					break
 			se = time.time()
 			print("Solving time: " + str(sst - se) + "s")
+			sys.stdout.flush()
 			i = i + 1
 		
 		end = time.time()
 		print("Solution time: " + str(end - start) + "s\n")
+		sys.stdout.flush()
 		print("Clingo Grounding: {}s".format(float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))-float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))))
-		print("Clingo Total: {}s".format(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': '))))
+		print("Clingo Total: {}s\n".format(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': '))))
 		sys.stdout.flush()		
 
 
