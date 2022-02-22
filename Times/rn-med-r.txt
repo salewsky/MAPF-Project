@@ -1,0 +1,22 @@
+Testing 1 Robots
+Grounding time: 10.922343015670776
+Clingo Grounding: 16.449873208999634
+Solution time: 32.88478660583496s
+Clingo Solve: 16.42561388015747
+Testing 2 Robots
+Grounding time: 22.697606086730957
+Clingo Grounding: 34.51640510559082
+Solution time: 70.71938848495483s
+Clingo Solve: 36.19531297683716
+Testing 3 Robots
+Grounding time: 35.01791262626648
+Clingo Grounding: 53.76839804649353
+Solution time: 84.7449140548706s
+Clingo Solve: 30.968896865844727
+Testing 4 Robots
+Grounding time: 48.38978934288025
+Clingo Grounding: 74.97556233406067
+Solution time: 131.6968114376068s
+Clingo Solve: 56.713573932647705
+Testing 5 Robots
+Timeout
