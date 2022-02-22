@@ -112,7 +112,7 @@ def solving(instance,encoding):
 		end = time.time()
 		print("Solution time: " + str(end - start) + "s\n")
 		print("Clingo Grounding: {}s".format(float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))-float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))))
-		print("Clingo Total: {}s\n".format(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': '))))
+		print("Clingo Total: {}s".format(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': '))))
 		sys.stdout.flush()		
 
 
