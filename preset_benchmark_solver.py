@@ -83,6 +83,7 @@ def solving(instance,encoding):
 		maxDist = min_horizon(instance, sys.argv[1], encoding)
 		i = maxDist
 	
+		grounding = 0.0
 		start = time.time()
 		solution = ""
 		while(not solution):
@@ -90,34 +91,23 @@ def solving(instance,encoding):
 			asp = horizon + "\n" + combined
 			#Starting clingo solving
 			ctl = clingo.Control(['--stats'])
-			ads = time.time()
 			ctl.add("base", [], asp)
-			ade = time.time()
-			print("Adding time: " + str(round(float(ade - ads),2)) + "s")
-			sys.stdout.flush()
 			gs = time.time()
 			ctl.ground([("base", [])])
 			ge = time.time()
-			print("Grounding time: " + str(round(float(ge - gs),2)) + "s")
-			sys.stdout.flush()
-			sst = time.time()
+			grounding = grounding + (ge - gs)
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
 					solution = str(m)
 					solution = solution.replace(" ", ". ")
 					solution = solution + "."
 					break
-			se = time.time()
-			print("Solving time: " + str(round(float(se - sst),2)) + "s")
-			sys.stdout.flush()
 			i = i + 1
 		
 		end = time.time()
-		print("Solution time: " + str(round(float(end - start),2)) + "s\n")
-		sys.stdout.flush()
-		print("Clingo Grounding: {}s".format(round(float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))-float(dumps(ctl.statistics['summary']['times']['solve'], sort_keys=True, indent=4, separators=(',', ': ')))),2))
-		sys.stdout.flush()
-		print("Clingo Total: {}s\n".format(round(float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': ')))),2))
+		print("Grounding time: " + str(grounding))
+		sys.stdout.flush()		
+		print("Solution time: " + str(end-start) + "s\n")
 		sys.stdout.flush()		
 
 
