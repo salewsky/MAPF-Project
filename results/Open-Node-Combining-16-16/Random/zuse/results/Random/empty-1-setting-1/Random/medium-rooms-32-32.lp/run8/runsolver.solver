@@ -1,0 +1,864 @@
+Seed:  218302931590526345
+Testing 1 Robots
+Solution time: 0.07068514823913574s
+
+Testing 2 Robots
+Solution time: 0.05687379837036133s
+
+Testing 3 Robots
+Solution time: 0.06556391716003418s
+
+Testing 4 Robots
+Solution time: 0.08569097518920898s
+
+Testing 5 Robots
+Solution time: 0.07620859146118164s
+
+Testing 6 Robots
+Solution time: 0.08613109588623047s
+
+Testing 7 Robots
+Solution time: 0.08998417854309082s
+
+Testing 8 Robots
+Solution time: 0.09675288200378418s
+
+Testing 9 Robots
+Solution time: 0.10763907432556152s
+
+Testing 10 Robots
+Solution time: 0.12431192398071289s
+
+Testing 11 Robots
+Solution time: 0.13869762420654297s
+
+Testing 12 Robots
+Solution time: 0.17801666259765625s
+
+Testing 13 Robots
+Solution time: 0.15126299858093262s
+
+Testing 14 Robots
+Solution time: 0.1634836196899414s
+
+Testing 15 Robots
+Solution time: 0.1691577434539795s
+
+Testing 16 Robots
+Solution time: 0.17869305610656738s
+
+Testing 17 Robots
+Solution time: 0.2205517292022705s
+
+Testing 18 Robots
+Solution time: 0.22124409675598145s
+
+Testing 19 Robots
+Solution time: 0.21479582786560059s
+
+Testing 20 Robots
+Solution time: 0.22092700004577637s
+
+Testing 21 Robots
+Solution time: 0.2246556282043457s
+
+Testing 22 Robots
+Solution time: 0.2587013244628906s
+
+Testing 23 Robots
+Solution time: 0.2779114246368408s
+
+Testing 24 Robots
+Solution time: 0.2585258483886719s
+
+Testing 25 Robots
+Solution time: 0.28574371337890625s
+
+Testing 26 Robots
+Solution time: 0.2805635929107666s
+
+Testing 27 Robots
+Solution time: 0.31549930572509766s
+
+Testing 28 Robots
+Solution time: 0.30945420265197754s
+
+Testing 29 Robots
+Solution time: 0.3292810916900635s
+
+Testing 30 Robots
+Solution time: 0.393218994140625s
+
+Testing 31 Robots
+Solution time: 0.33567023277282715s
+
+Testing 32 Robots
+Solution time: 0.3382453918457031s
+
+Testing 33 Robots
+Solution time: 0.3994452953338623s
+
+Testing 34 Robots
+Solution time: 0.40190601348876953s
+
+Testing 35 Robots
+Solution time: 0.3849153518676758s
+
+Testing 36 Robots
+Solution time: 0.4318673610687256s
+
+Testing 37 Robots
+Solution time: 0.4074082374572754s
+
+Testing 38 Robots
+Solution time: 0.4879801273345947s
+
+Testing 39 Robots
+Solution time: 0.421968936920166s
+
+Testing 40 Robots
+Solution time: 0.4353182315826416s
+
+Testing 41 Robots
+Solution time: 0.7515749931335449s
+
+Testing 42 Robots
+Solution time: 0.9113054275512695s
+
+Testing 43 Robots
+Solution time: 1.1972792148590088s
+
+Testing 44 Robots
+Solution time: 0.5644114017486572s
+
+Testing 45 Robots
+Solution time: 0.5864131450653076s
+
+Testing 46 Robots
+Solution time: 0.5446875095367432s
+
+Testing 47 Robots
+Solution time: 0.582796573638916s
+
+Testing 48 Robots
+Solution time: 0.6327250003814697s
+
+Testing 49 Robots
+Solution time: 0.5616955757141113s
+
+Testing 50 Robots
+Solution time: 0.6314146518707275s
+
+Testing 51 Robots
+Solution time: 0.5703961849212646s
+
+Testing 52 Robots
+Solution time: 0.6197757720947266s
+
+Testing 53 Robots
+Solution time: 0.6318271160125732s
+
+Testing 54 Robots
+Solution time: 0.6273796558380127s
+
+Testing 55 Robots
+Solution time: 0.6599881649017334s
+
+Testing 56 Robots
+Solution time: 0.645453691482544s
+
+Testing 57 Robots
+Solution time: 0.6705400943756104s
+
+Testing 58 Robots
+Solution time: 0.681983232498169s
+
+Testing 59 Robots
+Solution time: 0.672626256942749s
+
+Testing 60 Robots
+Solution time: 0.7461273670196533s
+
+Testing 61 Robots
+Solution time: 0.6926558017730713s
+
+Testing 62 Robots
+Solution time: 0.7354674339294434s
+
+Testing 63 Robots
+Solution time: 0.7553770542144775s
+
+Testing 64 Robots
+Solution time: 0.7177565097808838s
+
+Testing 65 Robots
+Solution time: 0.792057991027832s
+
+Testing 66 Robots
+Solution time: 0.815190315246582s
+
+Testing 67 Robots
+Solution time: 0.7592513561248779s
+
+Testing 68 Robots
+Solution time: 0.8394668102264404s
+
+Testing 69 Robots
+Solution time: 0.8105769157409668s
+
+Testing 70 Robots
+Solution time: 0.838315486907959s
+
+Testing 71 Robots
+Solution time: 0.8297204971313477s
+
+Testing 72 Robots
+Solution time: 0.8450894355773926s
+
+Testing 73 Robots
+Solution time: 0.8797423839569092s
+
+Testing 74 Robots
+Solution time: 0.8527655601501465s
+
+Testing 75 Robots
+Solution time: 0.9253149032592773s
+
+Testing 76 Robots
+Solution time: 0.9166929721832275s
+
+Testing 77 Robots
+Solution time: 0.9130547046661377s
+
+Testing 78 Robots
+Solution time: 0.9441578388214111s
+
+Testing 79 Robots
+Solution time: 0.9208157062530518s
+
+Testing 80 Robots
+Solution time: 1.0238399505615234s
+
+Testing 81 Robots
+Solution time: 1.0126733779907227s
+
+Testing 82 Robots
+Solution time: 0.9794187545776367s
+
+Testing 83 Robots
+Solution time: 1.0258102416992188s
+
+Testing 84 Robots
+Solution time: 1.0269827842712402s
+
+Testing 85 Robots
+Solution time: 1.1139485836029053s
+
+Testing 86 Robots
+Solution time: 1.0672430992126465s
+
+Testing 87 Robots
+Solution time: 1.0369393825531006s
+
+Testing 88 Robots
+Solution time: 1.0997753143310547s
+
+Testing 89 Robots
+Solution time: 1.1595346927642822s
+
+Testing 90 Robots
+Solution time: 1.2804021835327148s
+
+Testing 91 Robots
+Solution time: 1.2173738479614258s
+
+Testing 92 Robots
+Solution time: 1.2359468936920166s
+
+Testing 93 Robots
+Solution time: 1.2719953060150146s
+
+Testing 94 Robots
+Solution time: 1.2306501865386963s
+
+Testing 95 Robots
+Solution time: 1.3493762016296387s
+
+Testing 96 Robots
+Solution time: 1.2819509506225586s
+
+Testing 97 Robots
+Solution time: 1.3397066593170166s
+
+Testing 98 Robots
+Solution time: 1.3470470905303955s
+
+Testing 99 Robots
+Solution time: 1.3575093746185303s
+
+Testing 100 Robots
+Solution time: 1.4031569957733154s
+
+Testing 101 Robots
+Solution time: 1.3195891380310059s
+
+Testing 102 Robots
+Solution time: 1.4116334915161133s
+
+Testing 103 Robots
+Solution time: 1.4172587394714355s
+
+Testing 104 Robots
+Solution time: 1.4722487926483154s
+
+Testing 105 Robots
+Solution time: 1.4889814853668213s
+
+Testing 106 Robots
+Solution time: 1.4597477912902832s
+
+Testing 107 Robots
+Solution time: 1.5139961242675781s
+
+Testing 108 Robots
+Solution time: 1.4565985202789307s
+
+Testing 109 Robots
+Solution time: 1.5769212245941162s
+
+Testing 110 Robots
+Solution time: 1.4972834587097168s
+
+Testing 111 Robots
+Solution time: 1.5324158668518066s
+
+Testing 112 Robots
+Solution time: 1.58292555809021s
+
+Testing 113 Robots
+Solution time: 1.5280916690826416s
+
+Testing 114 Robots
+Solution time: 1.6290333271026611s
+
+Testing 115 Robots
+Solution time: 1.5796034336090088s
+
+Testing 116 Robots
+Solution time: 1.6034114360809326s
+
+Testing 117 Robots
+Solution time: 1.621311902999878s
+
+Testing 118 Robots
+Solution time: 1.6239094734191895s
+
+Testing 119 Robots
+Solution time: 1.6588313579559326s
+
+Testing 120 Robots
+Solution time: 1.618804931640625s
+
+Testing 121 Robots
+Solution time: 1.7051799297332764s
+
+Testing 122 Robots
+Solution time: 1.6719589233398438s
+
+Testing 123 Robots
+Solution time: 1.7469096183776855s
+
+Testing 124 Robots
+Solution time: 1.6863195896148682s
+
+Testing 125 Robots
+Solution time: 1.7869369983673096s
+
+Testing 126 Robots
+Solution time: 1.711223840713501s
+
+Testing 127 Robots
+Solution time: 1.818861722946167s
+
+Testing 128 Robots
+Solution time: 1.7527871131896973s
+
+Testing 129 Robots
+Solution time: 1.8624215126037598s
+
+Testing 130 Robots
+Solution time: 1.792654275894165s
+
+Testing 131 Robots
+Solution time: 1.8218777179718018s
+
+Testing 132 Robots
+Solution time: 1.8676023483276367s
+
+Testing 133 Robots
+Solution time: 1.8697798252105713s
+
+Testing 134 Robots
+Solution time: 1.9214792251586914s
+
+Testing 135 Robots
+Solution time: 1.8720829486846924s
+
+Testing 136 Robots
+Solution time: 1.979842185974121s
+
+Testing 137 Robots
+Solution time: 1.8607630729675293s
+
+Testing 138 Robots
+Solution time: 1.9790067672729492s
+
+Testing 139 Robots
+Solution time: 1.9951024055480957s
+
+Testing 140 Robots
+Solution time: 2.067450523376465s
+
+Testing 141 Robots
+Solution time: 1.9526848793029785s
+
+Testing 142 Robots
+Solution time: 2.018342971801758s
+
+Testing 143 Robots
+Solution time: 1.9785540103912354s
+
+Testing 144 Robots
+Solution time: 2.026132583618164s
+
+Testing 145 Robots
+Solution time: 2.078000545501709s
+
+Testing 146 Robots
+Solution time: 2.025987386703491s
+
+Testing 147 Robots
+Solution time: 2.1142072677612305s
+
+Testing 148 Robots
+Solution time: 2.0996181964874268s
+
+Testing 149 Robots
+Solution time: 2.1436405181884766s
+
+Testing 150 Robots
+Solution time: 2.0546042919158936s
+
+Testing 151 Robots
+Solution time: 2.2036092281341553s
+
+Testing 152 Robots
+Solution time: 2.1058104038238525s
+
+Testing 153 Robots
+Solution time: 2.2747693061828613s
+
+Testing 154 Robots
+Solution time: 2.153887987136841s
+
+Testing 155 Robots
+Solution time: 2.2089743614196777s
+
+Testing 156 Robots
+Solution time: 2.189765453338623s
+
+Testing 157 Robots
+Solution time: 2.200360059738159s
+
+Testing 158 Robots
+Solution time: 2.256113052368164s
+
+Testing 159 Robots
+Solution time: 2.267794370651245s
+
+Testing 160 Robots
+Solution time: 2.2874560356140137s
+
+Testing 161 Robots
+Solution time: 2.234910726547241s
+
+Testing 162 Robots
+Solution time: 2.3670907020568848s
+
+Testing 163 Robots
+Solution time: 2.2521255016326904s
+
+Testing 164 Robots
+Solution time: 2.384751081466675s
+
+Testing 165 Robots
+Solution time: 2.3416035175323486s
+
+Testing 166 Robots
+Solution time: 2.3696625232696533s
+
+Testing 167 Robots
+Solution time: 2.3663253784179688s
+
+Testing 168 Robots
+Solution time: 2.411630392074585s
+
+Testing 169 Robots
+Solution time: 2.4532687664031982s
+
+Testing 170 Robots
+Solution time: 2.469749927520752s
+
+Testing 171 Robots
+Solution time: 2.5514612197875977s
+
+Testing 172 Robots
+Solution time: 2.492326498031616s
+
+Testing 173 Robots
+Solution time: 2.5859339237213135s
+
+Testing 174 Robots
+Solution time: 2.4876019954681396s
+
+Testing 175 Robots
+Solution time: 2.665222406387329s
+
+Testing 176 Robots
+Solution time: 2.5117948055267334s
+
+Testing 177 Robots
+Solution time: 2.649787425994873s
+
+Testing 178 Robots
+Solution time: 2.5683608055114746s
+
+Testing 179 Robots
+Solution time: 2.650332450866699s
+
+Testing 180 Robots
+Solution time: 2.705981731414795s
+
+Testing 181 Robots
+Solution time: 2.673757314682007s
+
+Testing 182 Robots
+Solution time: 2.759248971939087s
+
+Testing 183 Robots
+Solution time: 2.6427817344665527s
+
+Testing 184 Robots
+Solution time: 2.8043596744537354s
+
+Testing 185 Robots
+Solution time: 2.6571433544158936s
+
+Testing 186 Robots
+Solution time: 2.837707996368408s
+
+Testing 187 Robots
+Solution time: 2.688068151473999s
+
+Testing 188 Robots
+Solution time: 2.839916944503784s
+
+Testing 189 Robots
+Solution time: 2.7742762565612793s
+
+Testing 190 Robots
+Solution time: 2.8368420600891113s
+
+Testing 191 Robots
+Solution time: 2.851792573928833s
+
+Testing 192 Robots
+Solution time: 2.8228423595428467s
+
+Testing 193 Robots
+Solution time: 2.8838000297546387s
+
+Testing 194 Robots
+Solution time: 2.838289737701416s
+
+Testing 195 Robots
+Solution time: 2.976809024810791s
+
+Testing 196 Robots
+Solution time: 2.8214480876922607s
+
+Testing 197 Robots
+Solution time: 2.983297348022461s
+
+Testing 198 Robots
+Solution time: 2.924842357635498s
+
+Testing 199 Robots
+Solution time: 2.966097354888916s
+
+Testing 200 Robots
+Solution time: 2.920346736907959s
+
+Testing 201 Robots
+Solution time: 2.9683117866516113s
+
+Testing 202 Robots
+Solution time: 2.9652209281921387s
+
+Testing 203 Robots
+Solution time: 2.985307455062866s
+
+Testing 204 Robots
+Solution time: 3.097506523132324s
+
+Testing 205 Robots
+Solution time: 2.9688351154327393s
+
+Testing 206 Robots
+Solution time: 3.0663602352142334s
+
+Testing 207 Robots
+Solution time: 3.0197319984436035s
+
+Testing 208 Robots
+Solution time: 3.100804567337036s
+
+Testing 209 Robots
+Solution time: 3.0890326499938965s
+
+Testing 210 Robots
+Solution time: 3.09513783454895s
+
+Testing 211 Robots
+Solution time: 3.116400718688965s
+
+Testing 212 Robots
+Solution time: 3.0827791690826416s
+
+Testing 213 Robots
+Solution time: 3.1953341960906982s
+
+Testing 214 Robots
+Solution time: 3.092054605484009s
+
+Testing 215 Robots
+Solution time: 3.227139711380005s
+
+Testing 216 Robots
+Solution time: 3.1376941204071045s
+
+Testing 217 Robots
+Solution time: 3.2590603828430176s
+
+Testing 218 Robots
+Solution time: 3.2156624794006348s
+
+Testing 219 Robots
+Solution time: 3.2349889278411865s
+
+Testing 220 Robots
+Solution time: 3.362260103225708s
+
+Testing 221 Robots
+Solution time: 3.2446398735046387s
+
+Testing 222 Robots
+Solution time: 3.3259966373443604s
+
+Testing 223 Robots
+Solution time: 3.2223551273345947s
+
+Testing 224 Robots
+Solution time: 3.3673956394195557s
+
+Testing 225 Robots
+Solution time: 3.2438628673553467s
+
+Testing 226 Robots
+Solution time: 3.319915533065796s
+
+Testing 227 Robots
+Solution time: 3.3147826194763184s
+
+Testing 228 Robots
+Solution time: 3.3204596042633057s
+
+Testing 229 Robots
+Solution time: 3.4613540172576904s
+
+Testing 230 Robots
+Solution time: 3.3492047786712646s
+
+Testing 231 Robots
+Solution time: 3.507465362548828s
+
+Testing 232 Robots
+Solution time: 3.3441779613494873s
+
+Testing 233 Robots
+Solution time: 3.512831926345825s
+
+Testing 234 Robots
+Solution time: 3.400653600692749s
+
+Testing 235 Robots
+Solution time: 3.4913861751556396s
+
+Testing 236 Robots
+Solution time: 3.5524954795837402s
+
+Testing 237 Robots
+Solution time: 3.478637456893921s
+
+Testing 238 Robots
+Solution time: 3.60315203666687s
+
+Testing 239 Robots
+Solution time: 3.4834628105163574s
+
+Testing 240 Robots
+Solution time: 3.6138765811920166s
+
+Testing 241 Robots
+Solution time: 3.4922878742218018s
+
+Testing 242 Robots
+Solution time: 3.6577534675598145s
+
+Testing 243 Robots
+Solution time: 3.527676820755005s
+
+Testing 244 Robots
+Solution time: 3.6060073375701904s
+
+Testing 245 Robots
+Solution time: 3.6602249145507812s
+
+Testing 246 Robots
+Solution time: 3.571253776550293s
+
+Testing 247 Robots
+Solution time: 3.7515268325805664s
+
+Testing 248 Robots
+Solution time: 3.5910847187042236s
+
+Testing 249 Robots
+Solution time: 3.7697315216064453s
+
+Testing 250 Robots
+Solution time: 3.670802354812622s
+
+Testing 251 Robots
+Solution time: 3.7584197521209717s
+
+Testing 252 Robots
+Solution time: 3.7470526695251465s
+
+Testing 253 Robots
+Solution time: 3.736182451248169s
+
+Testing 254 Robots
+Solution time: 3.82700514793396s
+
+Testing 255 Robots
+Solution time: 3.6818838119506836s
+
+Testing 256 Robots
+Solution time: 3.865788459777832s
+
+Testing 257 Robots
+Solution time: 3.786905527114868s
+
+Testing 258 Robots
+Solution time: 3.8077094554901123s
+
+Testing 259 Robots
+Solution time: 3.927110433578491s
+
+Testing 260 Robots
+Solution time: 3.8867244720458984s
+
+Testing 261 Robots
+Solution time: 4.0010106563568115s
+
+Testing 262 Robots
+Solution time: 3.8966867923736572s
+
+Testing 263 Robots
+Solution time: 3.9848077297210693s
+
+Testing 264 Robots
+Solution time: 4.034065008163452s
+
+Testing 265 Robots
+Solution time: 3.9408457279205322s
+
+Testing 266 Robots
+Solution time: 4.099169969558716s
+
+Testing 267 Robots
+Solution time: 3.944463014602661s
+
+Testing 268 Robots
+Solution time: 4.045934438705444s
+
+Testing 269 Robots
+Solution time: 4.116556882858276s
+
+Testing 270 Robots
+Solution time: 4.004828691482544s
+
+Testing 271 Robots
+Solution time: 4.1792893409729s
+
+Testing 272 Robots
+Solution time: 4.007389307022095s
+
+Testing 273 Robots
+Solution time: 4.170870542526245s
+
+Testing 274 Robots
+Solution time: 4.140488862991333s
+
+Testing 275 Robots
+Solution time: 4.078813791275024s
+
+Testing 276 Robots
+Solution time: 4.296436309814453s
+
+Testing 277 Robots
+Solution time: 4.050687313079834s
+
+Testing 278 Robots
+Solution time: 4.29158878326416s
+
+Testing 279 Robots
+Solution time: 4.258593320846558s
+
+Testing 280 Robots
+Solution time: 4.159095287322998s
+
+Testing 281 Robots
+Solution time: 4.331316232681274s
+
+Testing 282 Robots
+Solution time: 4.136952638626099s
+
+Testing 283 Robots
+Solution time: 4.388948917388916s
+
+Testing 284 Robots
+Solution time: 4.27035117149353s
+
+Testing 285 Robots
+Solution time: 4.20589280128479s
+
+Testing 286 Robots
+Solution time: 4.4429028034210205s
+
+Testing 287 Robots
+Solution time: 4.265259742736816s
+
+Testing 288 Robots
+Timeout

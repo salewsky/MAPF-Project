@@ -1,0 +1,18 @@
+Testing 1 Robots
+Abstraction time: 1.5030136108398438s
+Solving time: 35.65849018096924s
+Solution time: 37.16150379180908s
+
+Testing 2 Robots
+Abstraction time: 4.3028998374938965s
+Solving time: 112.29485321044922s
+Solution time: 116.59775304794312s
+
+Testing 3 Robots
+Abstraction time: 8.938644409179688s
+Solving time: 208.37270975112915s
+Solution time: 217.31135416030884s
+
+Testing 4 Robots
+Abstraction time: 16.76228141784668s
+Timeout

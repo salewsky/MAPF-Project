@@ -1,0 +1,11 @@
+running jobs@node1...
+
+jobs: results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run1/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run2/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run3/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run4/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run5/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run6/start.sh results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run7/start.sh
+
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run1/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run2/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run3/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run4/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run5/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run6/start.sh
+running  results/Preset/empty-1-setting-2/Preset/medium-open-64-64.lp/run7/start.sh
