@@ -3,7 +3,6 @@ import sys
 import time
 import re
 import multiprocessing
-from json import dumps
 
 def reading(programs, instances):
 	#Reading content of encoding
@@ -82,22 +81,15 @@ def solving(instance,encoding):
 		combined = encoding + instance
 		maxDist = min_horizon(instance, sys.argv[1], encoding)
 		i = maxDist
-	
-		grounding = 0.0
-		ground = 0.0
-		solve = 0.0
 		start = time.time()
 		solution = ""
 		while(not solution):
 			horizon = "#const horizon = {}.".format(i)
 			asp = horizon + "\n" + combined
 			#Starting clingo solving
-			ctl = clingo.Control(['--stats'])
+			ctl = clingo.Control()
 			ctl.add("base", [], asp)
-			gs = time.time()
 			ctl.ground([("base", [])])
-			ge = time.time()
-			grounding = grounding + (ge - gs)
 			with ctl.solve(yield_=True) as handle:
 				for m in handle:
 					solution = str(m)
@@ -105,17 +97,9 @@ def solving(instance,encoding):
 					solution = solution + "."
 					break
 			i = i + 1
-			ground = ground + float(dumps(ctl.statistics['summary']['times']['total'], sort_keys=True, indent=4, separators=(',', ': '))) - float(dumps(ctl.statistics['summary']['times']['solve'], sort_keys=True, indent=4, separators=(',', ': ')))
-			solve = solve + float(dumps(ctl.statistics['summary']['times']['solve'], sort_keys=True, indent=4, separators=(',', ': ')))
-		end = time.time()
-		print("Grounding time: " + str(grounding))
-		sys.stdout.flush()		
-		print("Clingo Grounding: " + str(ground))
-		sys.stdout.flush()		
+		end = time.time()		
 		print("Solution time: " + str(end-start) + "s")
 		sys.stdout.flush()	
-		print("Clingo Solve: " + str(solve))
-		sys.stdout.flush()
 
 
 

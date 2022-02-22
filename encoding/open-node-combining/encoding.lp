@@ -1,5 +1,5 @@
-#const size_x = 8.
-#const size_y = 8.
+#const size_x = 16.
+#const size_y = 16.
 
 % Transforming Input ----------------------------
 #include "/home/salewsky/MAPF-Project/encoding/input.lp".
