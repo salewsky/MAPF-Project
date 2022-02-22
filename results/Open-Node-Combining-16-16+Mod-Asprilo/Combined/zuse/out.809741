@@ -1,8 +1,0 @@
-running jobs@node3...
-
-jobs: results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run7/start.sh results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run8/start.sh results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run9/start.sh results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run10/start.sh
-
-running  results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run7/start.sh
-running  results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run8/start.sh
-running  results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run9/start.sh
-running  results/Combined/empty-1-setting-1/Preset/small-open-16-16.lp/run10/start.sh
