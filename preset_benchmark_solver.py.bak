@@ -115,7 +115,7 @@ def solving(instance,encoding):
 		print("Solution time: " + str(end-start) + "s")
 		sys.stdout.flush()	
 		print("Clingo Solve: " + str(solve))
-		sys.stdout.flush()
+		float(dumps(ctl.statistics['summary']['times']['solve'], sort_keys=True, indent=4, separators=(',', ': ')))
 
 
 
