@@ -2,14 +2,17 @@
 #const size_y = 2.
 
 % Transforming Input ----------------------------
-#include "/home/salewsky/MAPF-Project/encoding/input.lp".
+%#include "/home/salewsky/MAPF-Project/encoding/input.lp".
+#include "./encoding/input.lp".
 
 % Calculating Moves -----------------------------
-#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/action.lp".
+%#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/action.lp".
+#include "./encoding/complete-node-combining/action.lp".
 
 % Goal Condition --------------------------------
-#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/goal.lp".
+%#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/goal.lp".
+#include "./encoding/complete-node-combining/goal.lp".
 
 % Transforming Output ---------------------------
-#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/output.lp".
-
+%#include "/home/salewsky/MAPF-Project/encoding/complete-node-combining/output.lp".
+#include "./encoding/complete-node-combining/output.lp".
