@@ -40,6 +40,20 @@ Arvid Becker
 % changes in goal condition to compare
 
 \section{Abstraction Methods}
+I have developed several abstraction methods. All of them use some of the asprilo encoding as a base. Since the input instances look the same, I use a reduced version of the $input.lp$ file to transform it into predicates, that are easier to understand.
+It is a reduced version because I do not care about orders, products or packing stations. The only relevant things are robots, shelves and nodes. \\
+The goal condition is the same as in the modified asprilo encoding. \\
+The output predicates are $new\_init$ and $imp\_position$. The $new\_init$ predicates describe the new instance with a reduced node count. The form of $new\_init$ resembles that of the $init$ predicate in the input instance. There are $new\_init$ predicates for robots, shelves and nodes. The ones
+for robots and shelves are the same as in the input instance (with of course a ``new'' being added) since the start and goal conditions are not changed during the abstraction. The predicates for the nodes contain only the nodes that still exist after the abstraction. The $imp\_position(R,C)$ predicate states that robot $R$ is on cell $C$ at some point while building the abstraction. This can be used as extra information when solving the instance with the use of this abstraction. The output is the same for every method except for the ``Reachable Nodes'' method. In that method the output is slightly different which I will explain in the respective subsection. \\
+The first part of the abstraction building is always solving the instance without caring for conflicts. Therefore the encoding takes parts of the original asprilo encoding again. The difference is that the constraint rules which prohibit conflicts are ignored.
+Furthermore there are two lines extra:
+\begin{verbatim}
+:- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R)), T2<T1.
+#minimize {1,(R,T): move(R,_,T)}.
+\end{verbatim}
+The first line states that a robot must always move until he is finished moving completely. This makes it so that a robot does not randomly wait instead of directly going to his goal. \\
+The second line is used to minimize the amount of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
+In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
 \subsection{Node Combining}
 \subsection{Reachable Nodes}
