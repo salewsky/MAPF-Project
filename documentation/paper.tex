@@ -55,6 +55,16 @@ The first line states that a robot must always move until he is finished moving 
 The second line is used to minimize the amount of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
+The first method is to look for the shortest path for each robot to its respective goal without considering possible conflicts as was explained in the section above. Each position the robot visits is then used to create the $imp\_position$ predicates. 
+\begin{verbatim}
+imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
+\end{verbatim}
+In this method, it is also possible to add the time step at which the robot visits the position as an argument to the $imp\_position$ predicate. However, this would mean that a solver that uses the abstraction to solve the instance would need to specifically
+be designed for the ``Shortest Path'' method. Always using the same structure for each method means that one solver can be created to work for all methods. It is also not possible to look at how many arguments the predicate has because the 
+``Reachable Nodes'' method needs a third argument for something different, which I will explain in the respective subsection. If it is not of interest to have a solver that solves by using the different abstractions the same way, the line shown above can 
+easily be modified to contain the information about the time step. The output would then have to be modified as well. \\
+Of the methods explained in this paper, this is the one that results in the smallest abstraction. It could also be viewed as a special case of the other methods. If there is a shortest path in an instance, this method will find it so it can be used for all solvable
+MAPF problems.
 \subsection{Node Combining}
 \subsection{Reachable Nodes}
 
