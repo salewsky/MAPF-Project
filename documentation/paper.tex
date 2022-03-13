@@ -21,18 +21,60 @@ Arvid Becker
 
 
 \begin{abstract}
-% Abstrakt auf deutsch
-% MAPF-Probleme
-% Ziel: Abstraktion
-% warum abstrahieren
-% warum ASP
+Multi-Agent Pathfinding stellt ein wichtiges Problem in der Informatik dar. Folglich wird versucht, die Geschwindigkeit von Lösungsalgorithmen ständig zu verbessern.
+In dieser Arbeit stelle ich meine Methode zur Kartenabstraktion für solche Probleme dar und zeige auf, wie diese genutzt werden können, um entsprechende Probleme
+schneller zu lösen. Es wurde die Programmiersprache Answer Set Programming genutzt, um die Abstraktion zu bilden. Weiterhin wurde Python verwendet, um verschiedene Hilfsprogramme zu erstellen.
+Als Vergleichswert für die Lösungszeit wurde das Framework ``asprilo'' genutzt, das ebenfalls die Sprache Answer Set Programming nutzt. Die Arbeit wurde in englischer Sprache verfasst. 		
 \end{abstract}
 \end{titlepage}
 
 
 \section{Introduction}
-% abstract 
-% ???
+Multi-Agent Pathfinding (MAPF) is an important problem in computer science. Therefore, it is important to look for ways to improve the solving time of such problems. One way to do that, is to abstract the instance that has to be solved to reduce the size of
+possible plans. In this paper, I will show how I built such abstractions in the programming language Answer Set Programming (ASP). In the next two sections, I will explain what MAPF problems are and how the language ASP works. After that, I will introduce the ``asprilo'' framework which is used as base for the enoding and also serves as comparison for the solving time. Then, I will explain how my abstraction methods work and how the results of these abstractions look. Following that, I will show the benchmarking results of the methods. I will end the paper with a conclusion of my work. \\
+All the used programs and instances can be found in my github repository \cite{my-git}. This paper was written as final thesis for a Bachelor's degree in the course Computational Science at the university of Potsdam. This project was done in cooperation with Tarek Ramadan who worked on using the abstractions to solve a problem as a project for his final thesis for a Bachelor's degree in the same course and university. His work can be found on his own github repository \cite{tarek-git}.
+
+\section{Multi-Agent Pathfinding}
+In Multi-Agent Pathfinding problems you have a set of nodes, agents (e.g. robots), start and goal positions as well as possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper only orthogonal moves are considered. The goal is to let each robot find a way from its start to its goal position. It is possible to not have predetermined goal positions for each specific robot and instead let the solver assign the goal positions to the robots that can have the best way to that position. In this project, I only dealt with having a predetermined goal position for each robot. The result of the solving process is a plan with a set of moves for each robot. When executing the plan there must not be any collisions, i.e. two robots going through each other or two robots moving to the same node (INSERT PICTURE). The last time step of the plan is called horizon or makespan INSERT SOURCE FOR MAPF. 
+
+\section{Answer Set Programming}
+Answer Set Programming is a declarative programming language. It contains a set of rules and atoms. The result is a stable model that is built upon these rules and atoms. An atom has the form: 
+\begin{verbatim}
+a.
+\end{verbatim}
+This means that the $a$ is treated as a fact and always has to be true. Rules have the form:
+\begin{verbatim}
+b :- a.
+\end{verbatim}
+which means that if $a$ is true then $b$ also has to be true. There are also negations:
+\begin{verbatim}
+b :- not a.
+\end{verbatim}
+This means that $b$ can only be inferred if $a$ is never true in the model. There are also choice rules:
+\begin{verbatim}
+x {b,c,d} y :- a.
+\end{verbatim}
+The atom $a$ is used to infer the choice rule. The solver can then decide which of the atoms $b$, $c$ and $d$ he wants to infer. He can also decide to not choose no atom at all. You can set bounds for the amount of atoms chosen. In this case it means that the solver has to at least choose $x$ atoms and cannot choose more than $y$ atoms. You can also influence the chosen atoms by using constraint rules of the form:
+\begin{verbatim}
+:- a, b.
+\end{verbatim}
+This means that $a$ and $b$ cannot be true at the same time. Combining this constraint rule with the choice rule above means that the solver will not choose to infer $b$. Atoms can also have attributes:
+\begin{verbatim}
+a(1). a(2).
+\end{verbatim}
+This means that there is an atom $a$ with the attribute $1$ and an atom $a$ with the attribute $2$. In rules you can exchange the attributes with variables:
+\begin{verbatim}
+b(X) : a(X).
+\end{verbatim}
+This means that the solver looks for every atom $a$ with exactly one attribute and infers the atom $b$ with the same attribute.
+The last form of rule to talk about are aggregates. I will explain two aggregates that have also been used in the abstraction encoding. The first one is $min$:
+\begin{verbatim}
+a(MIN) :- MIN == #min{X: b(X)}.
+\end{verbatim}
+The solver looks for the attribute of the atom $b$ with the lowest value and assigns  $MIN$ this lowest value. It then infers the atom $a$ with the attribute $MIN$.
+SOURCE FOR ASP, CLINGO
+TALK ABOUT CLINGO
+WRITE ABOUT ADVANTAGE OF ASP
 
 \section{Asprilo}
 % what is asprilo
@@ -74,7 +116,22 @@ MAPF problems.
 
 \newpage
 
-\begin{thebibliography} {0}
+\begin{thebibliography} {2}
+\bibitem{my-git}
+My Github repository
+\begin{verbatim}
+https://github.com/salewsky/MAPF-Project
+\end{verbatim}
+
+\bibitem{tarek-git}
+Github repository of Tarek Ramadan
+\begin{verbatim}
+https://github.com/tramadan-up/mapf-ba
+\end{verbatim}
+
+%\bibitem{mapf}
+%Mapf Paper
+
 
 \end{thebibliography}
 
