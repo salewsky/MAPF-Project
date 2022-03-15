@@ -78,15 +78,70 @@ The solver looks for the attribute of the atom $b$ with the lowest value and ass
 #minimize {X : a(X)}.
 \end{verbatim}
 This means that the solver looks at every atom $a$ with one attribute and builds the sum of these attributes. It then looks for the model with the lowest sum. \\
-There are also other aggregates which I have not explained but since I do not use them in my encoding, I will not explain them. \\
+There are also other aggregates which I have not explained but since I do not use them in my encoding, I will not explain them. An ASP program has the file ending $.lp$.\\
 To ground and solve the programs in this paper, clingo-5.4.0 was used. INSERT SOURCE CLINGO
 
 
 
 \section{Asprilo}
-% what is asprilo
-% M-domain
-% changes in goal condition to compare
+The asprilo framework is an ASP-based framework that is used to create plans for robots in a warehouse situation. It was created by Potassco. There are multiple domains in the framework. The domain that is important for this paper is the M-domain where only simple robot movement is important which turns the problem into a MAPF-problem. In the M-domain there are robots and shelves. Both have predetermined starting positions. The robots are able to move orthogonally. The goal is that each shelf is occupied by a robot when the time horizon is reached. Other domains also consider having the robots move the shelves around or having a robot battery but this is not important when dealing with simple MAPF-problems. The asprilo encoding serves as a base for my own encoding which is why I will explain the different parts of the encoding that are relevant for my programs in the following subsections. The encoding and a complete guide can be found on the website by Potassco \cite{asprilo}.
+\subsection{Instances}
+The first thing to talk about is how the input instances look. Since the M-domain only needs nodes, robots and shelves, these only these are initiated:
+\begin{verbatim}
+init(object(node,N),value(at,(X,Y))).
+init(object(robot,R),value(at,(X,Y))).
+init(object(shelf,S),value(at,(X,Y))).
+\end{verbatim}
+The first line is used to initiate a node with the ID $N$ at the position $X,Y$. $X$ and $Y$ are the coordinates for a 2-dimensional grid. The second and third line are used to initiate a robot with the ID $R$ and a shelf with the ID $S$ respectively. The IDs are usually integers so the first robot, shelf or node would usually get the ID 1, the second gets the ID 2 and so on. \\
+That is all that needs to be initiated for the M-domain. If a node between two other nodes is not initiated, it is treated as a wall.
+\subsection{Input}
+The program $input.lp$ is used to turn the $init$-atoms into others that are easier to work with:
+\begin{verbatim}
+robot(R) 			:- init(object(robot,R),_).
+isRobot(robot(R)) 		:- robot(R).
+position((X,Y))   		:- init(object(node,_),value(at,(X,Y))).
+position(R,(X,Y),0) 		:- init(object(robot,R),value(at,(X,Y))).
+position(shelf(S),(X,Y),0)	:- init(object(shelf,S),value(at,(X,Y))).
+\end{verbatim}
+The first line creates the $robot$-atom with simply states that the robot with ID $R$ exists. This is then used to create the atom $isRobot$ which can be used to check if an object is a robot. These two lines also exist for shelves. \\
+The next three lines create the $position$-atoms. The first one takes just the information about the coordinates from the node initiation. The second one says that robot $R$ is on the position it is initiated on, i.e. his starting position, at time step 0 which is the first time step. The third one states that the shelf with ID $S$ is on its starting position, which then serves as a goal position, at time step 0. The shelves are not moved in the M-domain which is why the shelf position could have also been initiated without the time step but this way it is easier to change it to a higher domain. It is also important to note that instead of having just the ID as first argument, it has $shelf(S)$. This makes it easier to distinguish between shelves and robots when using $position$.
+\subsection{Action}
+The program $action.lp$ is the one where moves are created. It is the biggest subprogram. First off, the time array is created:
+\begin{verbatim}
+time(1..horizon).
+\end{verbatim}
+This line creates a $time$-atom with the arguments being rising integers starting from one until the constant $horizon$ is reached. This constant has to be given externally to the program.  \\
+Then the possible directions are created:
+\begin{verbatim}
+direction((X,Y)) :- X=-1..1, Y=-1..1, |X+Y|=1.
+nextto((X,Y),(DX,DY),(X',Y')) :- direction((DX,DY)), position((X,Y)), position((X',Y')),
+                                 (X,Y)=(X'-DX,Y'-DY), (X',Y')=(X+DX,Y+DY).
+\end{verbatim}
+The first rule initiates the four orthogonal movements as possible directions. The second rule states that a node is next to another one if it can be reached by going in one of the possible directions. \\
+The next rule creates the actual $move$-atoms:
+\begin{verbatim}
+{ move(R,D,T) : direction(D) } 1 :- isRobot(robot(R)), time(T).
+\end{verbatim}
+This rule states that for each robot at each time step up to one move is created into one possible direction. It is also possible to not create a move at certain time step. Not moving is an action equivalent to waiting. These moves have to change the positions of robots accordingly:
+\begin{verbatim}
+position(R,C,T) :- move(R,D,T), position(R,C',T-1),     nextto(C',D,C).
+                :- move(R,D,T), position(R,C ,T-1), not nextto(C ,D,_).
+position(R,C,T) :- position(R,C,T-1), not move(R,_,T), isRobot(robot(R)), time(T).
+\end{verbatim}
+The first rule changes the position of the robot according to the move taken. The second rule states that a robot cannot move to a position that does not exist. The third rule states that if a robot has not moved at a certain time step, its position does not change at that step. \\
+There are more rules that prohibit vertex and edge conflicts. These rules are not important for my own encoding which is why I will not explain them further. 
+\subsection{Goal}
+The goal condition of the normal M-domain states that at the last possible time step, i.e. horizon, each shelf must be occupied by a robot. For this project the goal condition was slightly altered:
+\begin{verbatim}
+goal(R,C) :- isRobot(robot(R)), position(shelf(S),C,0), R=S.
+:- isRobot(robot(R)), position(R,C,horizon), goal(R,C'), C!=C'.
+\end{verbatim}
+The first rule creates the $goal$-atom. It says that the goal of robot $R$ is the cell $C$ (cell is synonymous with node). The goal cell is the cell where the shelf with the same ID as the robot is initiated on. This means that the solver cannot decide which robot should go to which shelf but it is predetermined. The second rule states that a robot cannot be on a cell that is not its goal at the last time step.
+\subsection{Output and Encoding}
+The file $output.lp$ determines how the output of the program looks. I will not show the encoding since the output of my encoding is a different one. It is enough to know that the output of the asprilo encoding is a plan, i.e. atoms that state how each robot moves at each time step. \\
+The last file $encoding.lp$ includes the other files important for solving (it does not include the input instance). This means it contains the complete solving program. My own encoding follows the same file structure which I will show in the next section.
+\subsection{Visualizer}
+The visualizer is an extra component provided by asprilo. It can be used to visualize instances and the movement of robots. All images in this paper showing instances and robots have been created with this visualizer.
 
 \section{Abstraction Methods}
 I have developed several abstraction methods. All of them use some of the asprilo encoding as a base. Since the input instances look the same, I use a reduced version of the $input.lp$ file to transform it into predicates, that are easier to understand.
@@ -118,6 +173,19 @@ MAPF problems.
 \subsection{Reachable Nodes}
 
 \section{Auxiliary Programs}
+Apart from the ASP encoding, I have created several python programs which helped with different parts of the project. I will only briefly explain them because they are not as relevant to the project as the ASP part.
+\subsection{Map Generator}
+The map generator is used to create instances. The program can generate a map with a specified size in x- and y-direction. It also creates a specified amount of robots on random starting positions and the same amount of shelves which also have random starting positions. It can only create open maps which means that walls have to be edited in by hand. Specifying starting positions for robots or shelves is also impossible. The resulting file has a head in comment form which shows the chosen parameters, i.e. amount of nodes, robots and so on. After that, all the nodes are initiated. Following that, each robot is initiated together with its shelf:
+\begin{verbatim}
+% Robot N
+init(object(robot,N),value(at,(X1,Y1))).
+init(object(shelf,N),value(at,(X2,Y2))).
+\end{verbatim}
+This way, controlling starting and goal position of a specific robot is easier when editing that is required. The result file is then called $instance.lp$.
+\subsection{Solvers}
+There are multiple solver programs. The simplest one is called $hor_inc.py$. It can be used to solve a normal instance. It takes the solving ASP program and an input instance as input arguments. It then looks for the highest Manhattan distance between a robot and its goal position. This value is then taken as the constant $horizon$ for the ASP program. The program tries to solve the instance with this input. If the instance can be solved, it prints the solution and is finished. If the instance is considered unsatisfiable by clingo, it increases the $horizon$ by one at tries to solves it again. This is repeated until a solution is found or the horizon gets bigger than the amount of nodes in the instance. The second case would mean that the instance is not solvable at all for an abstraction because the robot could get to any position on the map it can reach. Another possibility for the program to end is if it takes longer than a specified time threshold. If it takes too long to solve and the threshold is reached, the python program stops the solving and ``Timeout'' is printed. This solver was used to see if the instances used for testing the functionality of the abstraction methods. The other solvers were used for benchmarking the different methods. They are mostly the same as $hor_inc.py$ with some extras. The exact usage will be discussed in the benchmarking section.
+\subsection{Result Plotters}
+There are two more python programs which I have created. Both are used to plot the benchmarking results. The first program, $lineg_results.py$, takes the results for different methods for a specific instance, builds the average of these results and plots a line graph for each method. To compare it to asprilo , the results for the asprilo benchmarking also needs to be input as a method. The problem with this method is that the results can be very varying which makes the resulting average very strange at times. This is why the second program, $scatter_results.py$, will be used to graphically show the results of the benchmarking. This program takes the different abstraction methods and directly compares it to the asprilo encoding. It creates a scatter plot which means that it is not necessary to calculate the average. This makes the analysis of the graphic much easier. How exactly the resulting graphic looks and how it is supposed to be interpreted will be discussed in the benchmarking section as well.
 
 \section{Benchmarking}
 
@@ -138,6 +206,11 @@ Github repository of Tarek Ramadan
 https://github.com/tramadan-up/mapf-ba
 \end{verbatim}
 
+\bibitem{asprilo}
+Asprilo website
+\begin{verbatim}
+https://potassco.org/asprilo/
+\end{verbatim}
 %\bibitem{mapf}
 %Mapf Paper
 
