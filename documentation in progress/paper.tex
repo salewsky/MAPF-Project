@@ -144,11 +144,9 @@ The last file $encoding.lp$ includes the other files important for solving (it d
 The visualizer is an extra component provided by asprilo. It can be used to visualize instances and the movement of robots. All images in this paper showing instances and robots have been created with this visualizer.
 
 \section{Abstraction Methods}
-I have developed several abstraction methods. All of them use some of the asprilo encoding as a base. Since the input instances look the same, I use a reduced version of the $input.lp$ file to transform it into predicates, that are easier to understand.
-It is a reduced version because I do not care about orders, products or packing stations. The only relevant things are robots, shelves and nodes. \\
-The goal condition is the same as in the modified asprilo encoding. \\
-The output predicates are $new\_init$ and $imp\_position$. The $new\_init$ predicates describe the new instance with a reduced node count. The form of $new\_init$ resembles that of the $init$ predicate in the input instance. There are $new\_init$ predicates for robots, shelves and nodes. The ones
-for robots and shelves are the same as in the input instance (with of course a ``new'' being added) since the start and goal conditions are not changed during the abstraction. The predicates for the nodes contain only the nodes that still exist after the abstraction. The $imp\_position(R,C)$ predicate states that robot $R$ is on cell $C$ at some point while building the abstraction. This can be used as extra information when solving the instance with the use of this abstraction. The output is the same for every method except for the ``Reachable Nodes'' method. In that method the output is slightly different which I will explain in the respective subsection. \\
+I have developed several abstraction methods. All of them use some of the asprilo encoding as a base. The files $input.lp$ and $goal.lp$ are the same as in the modified asprilo encoding. \\
+The output atoms are $new\_init$ and $imp\_position$. The $new\_init$ atoms describe the new instance with a reduced node count. The form of $new\_init$ resembles that of the $init$ atoms in the input instance. There are $new\_init$ atoms for robots, shelves and nodes. The ones
+for robots and shelves are the same as in the input instance (with of course a ``new'' being added) since the start and goal conditions are not changed during the abstraction. The atoms for the nodes contain only the nodes that still exist after the abstraction. The $imp\_position(R,C)$ atom states that robot $R$ is on cell $C$ at some point while building the abstraction. This can be used as extra information when solving the instance with the use of this abstraction. The output is the same for every method except for the ``Reachable Nodes'' method. In that method the output is slightly different which I will explain in the respective subsection. \\
 The first part of the abstraction building is always solving the instance without caring for conflicts. Therefore the encoding takes parts of the original asprilo encoding again. The difference is that the constraint rules which prohibit conflicts are ignored.
 Furthermore there are two lines extra:
 \begin{verbatim}
@@ -159,18 +157,60 @@ The first line states that a robot must always move until he is finished moving 
 The second line is used to minimize the amount of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
-The first method is to look for the shortest path for each robot to its respective goal without considering possible conflicts as was explained in the section above. Each position the robot visits is then used to create the $imp\_position$ predicates. 
+The first method is to look for the shortest path for each robot to its respective goal without considering possible conflicts as was explained in the section above. Each position the robot visits is then used to create the $imp\_position$ atoms. 
 \begin{verbatim}
 imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
 \end{verbatim}
-In this method, it is also possible to add the time step at which the robot visits the position as an argument to the $imp\_position$ predicate. However, this would mean that a solver that uses the abstraction to solve the instance would need to specifically
-be designed for the ``Shortest Path'' method. Always using the same structure for each method means that one solver can be created to work for all methods. It is also not possible to look at how many arguments the predicate has because the 
+In this method, it is also possible to add the time step at which the robot visits the position as an argument to the $imp\_position$ atom. However, this would mean that a solver that uses the abstraction to solve the instance would need to specifically
+be designed for the ``Shortest Path'' method. Always using the same structure for each method means that one solver can be created to work for all methods. It is also not possible to look at how many arguments the atom has because the 
 ``Reachable Nodes'' method needs a third argument for something different, which I will explain in the respective subsection. If it is not of interest to have a solver that solves by using the different abstractions the same way, the line shown above can 
 easily be modified to contain the information about the time step. The output would then have to be modified as well. \\
 Of the methods explained in this paper, this is the one that results in the smallest abstraction. It could also be viewed as a special case of the other methods. If there is a shortest path in an instance, this method will find it so it can be used for all solvable
-MAPF problems.
+MAPF problems. \\
+IMAGE OF INSTANCE BEFORE AND AFTER ABSTRACTION
 \subsection{Node Combining}
+The idea for the node combining was taken from two other papers looking for abstractions (CITE PAPERS).The approach had to be slightly altered because my goal is to only build an abstraction and not solve the instance completely. The idea is two combine several nodes together into one node. Afterwards, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (SHOW IMAGES TO EXPLAIN). The combining of nodes looks like this:
+\begin{verbatim}
+comb_position((X,Y),(X',Y'))   :- position((X,Y)),
+          X' = (X+(size_x-1))/size_x, Y' = (Y+(size_y-1))/size_y.
+comb_position(C)               :- comb_position(_,C).
+comb_position(R,C',0)          :- position(R,C,0), comb_position(C,C').
+comb_position(shelf(S),C',0)   :- position(shelf(S),C,0), comb_position(C,C').
+\end{verbatim}
+The first rule calculates the coordinates that a node has after the combining. The constants $size\_x$ and $size\_y$ say how many nodes in x- and y-direction are combined together. The second rule is used so that it is not necessary to always care about the precombining nodes. Rule 3 and 4 change the positions of robots and shelves to their new coordinates. The rest of the encoding is only changed so that the atoms $comb\_position$ instead of $position$ is used. The output atom $imp\_position$ is then easily inferred by looking at the positions visited by robots:
+\begin{verbatim}
+imp_position(R,C) :- isRobot(robot(R)), comb_position(R,C',_), comb_position(C,C').
+\end{verbatim}
+It takes the positions visited by robots, looks at the nodes that were combined into that position and then infers the respective atoms. \\
+Simply using this approach has the problem that walls are completely ignored while building the combined instance. This means that the encoding introduced so far can only be used for open instances, i.e. instances that do not have any walls except for the outer walls. This is why I call this approach ``Open Node Combining''. The advantage of this method is that the combining size can be freely chosen, as long as positive integers are used. \\
+To also use the node combining approach in instances with walls, I created the approach ``Complete Node Combining''. This approach mostly works the same but it can only be used when combining 2x2 squares together. The difference is that a $wall$-atom is introduced so that walls are considered after the combining:
+\begin{verbatim}
+wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), y_arr(Y1),
+    not position((X1,Y1)), not position((X1+1,Y1)),
+    X1' = (X1+(size_x-1))/size_x, Y1' = (Y1+(size_y-1))/size_y,
+    X1'-1 = X1/size_x, Y1'-1 = Y1/size_y,
+    comb_position((X2',Y2')), X1'=X2', Y1'-1=Y2'.
+\end{verbatim}
+This is one of four rules inferring a $wall$-atom. The idea is that in a 2x2 square there are four possible walls: two nodes missing to the top, bottom, left or right. Each rule inferring a $wall$-atom is used for one of the possible walls. The rule takes a combined node and checks if there are exactly two uncombined nodes missing that would be in that combined node if they existed. The $nextto$-atom is then extended to also check if a wall is between two combined nodes before inferring the respective atom:
+\begin{verbatim}
+nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)),
+   comb_position((X,Y)), comb_position((X',Y')),
+   (X,Y)=(X'-DX,Y'-DY), (X',Y')=(X+DX,Y+DY),
+   not wall((X,Y),(X',Y')), not wall((X',Y'),(X,Y)).
+\end{verbatim}
+As mentioned before, this way of introducing walls leads to only being able to combine 2x2 squares. I did not find a way to combine bigger sizes because looking at walls in these cases gets much more complicated. \\
+ADD SOME IMAGES
+
 \subsection{Reachable Nodes}
+The last abstraction method was also inspired by a research paper (CITE PAPER). Again, a slight alteration was done because the goal is to only find an abstraction and not a complete solution. The idea is to find the shortest path for each robot as always. Then, the solver looks at how many steps each node close to the path of the robots is deviating from that path. The path itself is deviating by zero steps. Each node next to the path is deviating by one step, the nodes right next to them by 2  steps and so on (USE IMAGE FROM PAPER). The maximum amount of steps looked at is the amount of steps the robot needed in total to reach its goal. 
+\begin{verbatim}
+makespan(R,N) :- move(R,_,N).
+imp_pos(R,C,0) 	:- isRobot(robot(R)), position(R,C,_).
+imp_pos(R,C,N) 	:- isRobot(robot(R)), imp_pos(R,C',N-1), makespan(R,N), nextto(C',_,C).
+imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN), MIN == #min{X: imp_pos(R,C,X)}.
+\end{verbatim}
+The first line looks at how many steps each robot takes. It is important to note that makespan refers to an individual robot where as horizon refers to all robots. This means that the highest makespan is equal to horizon. Another point to note is that the $makespan$-atom not only has the highest time step for an individual robot but each step it takes infers a $makespan$-atom. The second line initializes the path of the robot itself as deviating by zero steps. The third line then infers the next set of positions and the respective deviation until the makespan of the robot is reached. This way of inferring these atoms leads to having multiple $imp\_pos$-atoms for a single node. The last line makes sure that only the smallest deviation gets taken for the $imp\_position$-atoms. This time the $imp\_position$-atoms as well as the $new\_init$-atoms have three attributes because the amount of deviating steps is important to output. The abstraction this time does not simply consist of a set of nodes but instead multiple sets of nodes with a different distance to the shortest path. A solver using this abstraction could then decide how big the distance should be and only take a subset of the nodes provided to solve an instance. \\
+There was also a slightly different approach which did not look at all the nodes up to the complete makespan of a robot. Instead, it only looked at how many steps were still left to reach the goal and calculated the deviation up to these remaining steps. This method provides less information but the hope was that it would find the solution faster. During the functionality testing it already became clear that the solving time with this different approach was slower than the original approach. This is why this different approach was discarded during the creation process.
 
 \section{Auxiliary Programs}
 Apart from the ASP encoding, I have created several python programs which helped with different parts of the project. I will only briefly explain them because they are not as relevant to the project as the ASP part.
@@ -193,7 +233,7 @@ There are two more python programs which I have created. Both are used to plot t
 
 \newpage
 
-\begin{thebibliography} {2}
+\begin{thebibliography} {3}
 \bibitem{my-git}
 My Github repository
 \begin{verbatim}
