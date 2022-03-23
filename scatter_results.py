@@ -23,12 +23,12 @@ def plot(title, ma, methods, programs):
 	plt.title(title)
 	plt.gca().set_aspect('equal')
 	ax = plt.gca()
-	ax.plot([0, 1], [0, 1], transform=ax.transAxes)
 	ax.set_xlim(0,max(max(ma_robots),max(max(method_robots)))+10)
 	ax.set_ylim(0,max(max(ma_robots),max(max(method_robots)))+10)
 	plt.xlabel("Maximum Robots in Asprilo")
 	plt.ylabel("Maximum Robots in Solving Method")
 	plt.legend(programs)
+	ax.plot([0, 1], [0, 1], transform=ax.transAxes)
 	plt.show()
 
 

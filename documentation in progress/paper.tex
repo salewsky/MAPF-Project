@@ -1,5 +1,6 @@
 \documentclass[runningheads]{llncs}
 \usepackage{graphicx}
+\usepackage{float}
 \begin{document}
 \begin{titlepage}
 \centering
@@ -19,7 +20,6 @@ Arvid Becker
 \vfill
 {01.04.2022 \par}
 
-
 \begin{abstract}
 Multi-Agent Pathfinding stellt ein wichtiges Problem in der Informatik dar. Folglich wird versucht, die Geschwindigkeit von Lösungs- \\
 algorithmen ständig zu verbessern.
@@ -32,11 +32,17 @@ Als Vergleichswert für die Lösungszeit wurde das Framework ``asprilo'' genutzt
 
 \section{Introduction}
 Multi-Agent Pathfinding (MAPF) is an important problem in computer science. Therefore, it is important to look for ways to improve the solving time of such problems. One way to do that is to abstract the instance that has to be solved to reduce the size of
-possible plans. In this paper, I will show how I built such abstractions in the programming language Answer Set Programming (ASP). In the next two sections, I will explain what MAPF problems are and how the language ASP works. After that, I will introduce the ``asprilo'' framework used as a base for the enoding and serving as a comparison for the solving time. Then, I will explain how my abstraction methods work and how the results of these abstractions look. I will also briefly skim over some additional programs that provided support for the solving. Following that, I will show the benchmarking results of the methods. I will end the paper with a conclusion of my work. \\
+possible plans. This paper will show how I built such abstractions in the programming language ``Answer Set Programming'' (ASP). In the next two sections, I will explain what MAPF problems are, and how the language ASP works. After that, I will introduce the ``asprilo'' framework used as a base for the enoding. It also serves as a comparison for the solving time. Then, I will explain how my abstraction methods work, and how the results of these abstractions look. I will also briefly skim over some additional programs that provided support for the solving. Following that, I will show the benchmarking results of the methods. I will end the paper with a conclusion of my work. \\
 All the used programs and instances can be found in my GitHub repository \cite{my-git}. This paper was written as the final thesis for a Bachelor's degree in the course Computational Science at the University of Potsdam. This project was done in cooperation with Tarek Ramadan who worked on using the abstractions to solve a problem as a project for his final thesis for a Bachelor's degree in the same course and university. His work can be found on his GitHub repository \cite{tarek-git}.
 
 \section{Multi-Agent Pathfinding}
-In Multi-Agent Pathfinding problems you have a set of nodes, agents (e.g. robots), start and goal positions as well as possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper, only orthogonal moves are considered. The goal is to let each robot find a way from its start to its goal position. It is possible to not have predetermined goal positions for each specific robot and instead let the solver assign the goal positions to the robots that can have the best way to that position. I only dealt with having a predetermined goal position for each robot in this project. The result of the solving process is a plan with a set of moves for each robot. When executing the plan there must not be any collisions, i.e. two robots going through each other or two robots moving to the same node (INSERT PICTURE). The last time step of the plan is called horizon or makespan INSERT SOURCE FOR MAPF. 
+In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robots), start and goal positions, and possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper, only orthogonal moves are considered. The goal is to let each robot find a way from its start to its goal position. It is possible to not have predetermined goal positions for each specific robot and instead let the solver assign the goal positions to the robots that can have the best way to that position. I only dealt with having a predetermined goal position for each robot in this project. The result of the solving process is a plan with a set of moves for each robot. When executing the plan there must not be any collisions, i.e. two robots going through each other or two robots moving to the same node (see figure \ref{fig:mapf}). The last time step of the plan is called horizon or makespan INSERT SOURCE FOR MAPF. 
+
+\begin{figure}[h]
+\centering{\includegraphics[scale=.4]{Images/MAPF-Problem}}
+\caption{Robot 1 (the square on the left) has to reach shelf 1 (the circle on the right). Robot 2 has to reach shelf 2 The shortest path is to go right/down 4 steps. In the middle, a conflict would occur which could be avoided by letting one robot wait for one time step.}
+\label{fig:mapf}
+\end{figure}
 
 \section{Answer Set Programming}
 Answer Set Programming is a declarative programming language that is especially useful when using it for NP-hard problems. For a complete introduction refer to INSERT ASP SOURCE. In this section, I will only briefly explain the main parts relevant to my encoding. \\
@@ -56,20 +62,20 @@ This means that $b$ can only be inferred if $a$ is never true in the model. Ther
 \begin{verbatim}
 x {b,c,d} y :- a.
 \end{verbatim}
-The atom $a$ is used to infer the choice rule. The solver can then decide which of the atoms $b$, $c$ and $d$ he wants to infer. He can also decide to not choose no atom at all. You can set bounds for the number of atoms chosen. In this case, it means that the solver has to at least choose $x$ atoms and cannot choose more than $y$ atoms. You can also influence the chosen atoms by using constraint rules of the form:
+The atom $a$ is used to infer the choice rule. The solver can then decide which of the atoms $b$, $c$, and $d$ he wants to infer. He can also decide to not choose any atoms at all. You can set bounds for the number of atoms chosen. In this case, it means that the solver has to at least choose $x$ atoms, and cannot choose more than $y$ atoms. You can also influence the chosen atoms by using constraint rules of the form:
 \begin{verbatim}
 :- a, b.
 \end{verbatim}
-This means that $a$ and $b$ cannot be true at the same time. Combining this constraint rule with the choice rule above means that the solver will not choose to infer $b$. Atoms can also have attributes:
+This means that $a$, and $b$ cannot be true at the same time. Combining this constraint rule with the choice rule above means that the solver will not choose to infer $b$. Atoms can also have attributes:
 \begin{verbatim}
 a(1). a(2).
 \end{verbatim}
-This means that there is an atom $a$ with the attribute $1$ and an atom $a$ with the attribute $2$. In rules you can exchange the attributes with variables:
+This means that there is an atom $a$ with the attribute $1$, and an atom $a$ with the attribute $2$. In rules you can exchange the attributes with variables:
 \begin{verbatim}
 b(X) : a(X).
 \end{verbatim}
 This means that the solver looks for every atom $a$ with exactly one attribute and infers the atom $b$ with the same attribute. Before the solver looks for stable models, the program is $grounded$. During this process, the variables in the program are exchanged with the actual values. \\
-The last form of rule to talk about is aggregates. I will explain two aggregates that have also been used in the abstraction encoding. The first one is $min$:
+The last form of rule to talk about is called aggregates. I will explain two aggregates that have also been used in the abstraction encoding. The first one is $min$:
 \begin{verbatim}
 a(MIN) :- MIN == #min{X: b(X)}.
 \end{verbatim}
@@ -92,7 +98,7 @@ init(object(node,N),value(at,(X,Y))).
 init(object(robot,R),value(at,(X,Y))).
 init(object(shelf,S),value(at,(X,Y))).
 \end{verbatim}
-The first line is used to initiate a node with the ID $N$ at the position $X, Y$. $X$ and $Y$ are the coordinates for a 2-dimensional grid. The second and third lines are used to initiate a robot with the ID $R$ and a shelf with the ID $S$ respectively. The IDs are usually integers so the first robot, shelf or node would usually get the ID 1, the second gets the ID 2 and so on. \\
+The first line is used to initiate a node with the ID $N$ at the position $X, Y$. $X$ and $Y$ are the coordinates for a 2-dimensional grid. The second and third lines are used to initiate a robot with the ID $R$ and a shelf with the ID $S$ respectively. The IDs are usually integers so the first robot, shelf, or node would usually get the ID 1, the second gets the ID 2, and so on. \\
 That is all that needs to be initiated for the M-domain. If a node between two other nodes is not initiated, it is treated as a wall.
 \subsection{Input}
 The program $input.lp$ is used to turn the $init$-atoms into others that are easier to work with:
@@ -129,7 +135,7 @@ position(R,C,T) :- move(R,D,T), position(R,C',T-1),     nextto(C',D,C).
 position(R,C,T) :- position(R,C,T-1), not move(R,_,T), isRobot(robot(R)), time(T).
 \end{verbatim}
 The first rule changes the position of the robot according to the move taken. The second rule states that a robot cannot move to a position that does not exist. The third rule states that if a robot has not moved at a certain time step, its position does not change at that step. \\
-There are more rules that prohibit vertex and edge conflicts. These rules are not important for my encoding which is why I will not explain them further. 
+There are more rules not shown here, that prohibit vertex and edge conflicts. These rules are not important for my encoding which is why I will not explain them further. 
 \subsection{Goal}
 The goal condition of the normal M-domain states that at the last possible time step, i.e. horizon, each shelf must be occupied by a robot. For this project the goal condition was slightly altered:
 \begin{verbatim}
@@ -157,7 +163,7 @@ The first line states that a robot must always move until it is finished moving 
 The second line is used to minimize the number of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
-The first method is to look for the shortest path for each robot to its respective goal without considering possible conflicts as was explained in the section above. Each position the robot visits is then used to create the $imp\_position$ atoms. 
+The first method is to look for the shortest path for each robot to its respective goal without considering possible conflicts as was explained in the section above. Each position the robot visits is then used to create the $imp\_position$ atoms. An example instance can be seen in figure \ref{fig:inst-bef-a}. The corresponding abstraction can be seen in figure \ref{fig:inst-aft-a}.
 \begin{verbatim}
 imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
 \end{verbatim}
@@ -166,10 +172,25 @@ be designed for the ``Shortest Path'' method. Always using the same structure fo
 ``Reachable Nodes'' method needs the third argument for something different, which I will explain in the respective subsection. If it is not of interest to have a solver that solves by using the different abstractions the same way, the line shown above can 
 easily be modified to contain the information about the time step. The output would then have to be modified as well. \\
 Of the methods explained in this paper, this is the one that results in the smallest abstraction. It could also be viewed as a special case of the other methods. If there is a shortest path in an instance, this method will find it so it can be used for all solvable
-MAPF problems. \\
-IMAGE OF INSTANCE BEFORE AND AFTER ABSTRACTION
+MAPF problems. 
+
+\begin{figure}[h]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/MAPF-Problem}}
+\caption{Input instance before abstraction}
+\label{fig:inst-bef-a}
+\end{minipage}
+\hspace{.1\linewidth}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/SP-Example}}
+\caption{Input instance after abstraction. Only the nodes that lie on the shortest path are considered}
+\label{fig:inst-aft-a}
+\end{minipage}
+\end{figure} 
+
+
 \subsection{Node Combining}
-The idea for the node combining was taken from two other papers looking for abstractions (CITE PAPERS). The approach had to be slightly altered because my goal is to only build an abstraction and not solve the instance completely. The idea is two combine several nodes together into one node. Afterward, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (SHOW IMAGES TO EXPLAIN). The combining of nodes looks like this:
+The idea for the node combining was taken from two other papers looking for abstractions (CITE PAPERS). The approach had to be slightly altered because my goal is to only build an abstraction and not solve the instance completely. The idea is two combine several nodes together into one node (see figure \ref{post-com} for illustration). Afterward, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (see figure \ref{fig:onc-result}. The combining of nodes looks like this:
 \begin{verbatim}
 comb_position((X,Y),(X',Y'))   :- position((X,Y)),
           X' = (X+(size_x-1))/size_x, Y' = (Y+(size_y-1))/size_y.
@@ -199,10 +220,24 @@ nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)),
    not wall((X,Y),(X',Y')), not wall((X',Y'),(X,Y)).
 \end{verbatim}
 As mentioned before, this way of introducing walls leads to only being able to combine 2x2 squares. I did not find a way to combine bigger sizes because looking at walls in these cases gets much more complicated. \\
-ADD SOME IMAGES
+
+\begin{figure}[h]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Post-Combining-Example}}
+\caption{The input instance can be seen in figure \ref{fig:inst-bef-a}. This image shows how the combined instance would look like if the combining size is set to 2x2.} 
+\label{fig:post-com}
+\end{minipage}
+\hspace{.1\linewidth}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/ONC-2-2-Example}}
+\caption{This image shows the resulting instance. Nodes that were not visited in combined form get deleted.}
+\label{fig:onc-result}
+\end{minipage}
+\end{figure} 
+
 
 \subsection{Reachable Nodes}
-The last abstraction method was also inspired by a research paper (CITE PAPER). Again, a slight alteration was done because the goal is to only find an abstraction and not a complete solution. The idea is to find the shortest path for each robot as always. Then, the solver looks at how many steps each node close to the path of the robots is deviating from that path. The path itself is deviating by zero steps. Each node next to the path is deviating by one step, the nodes right next to them by 2  steps, and so on (USE IMAGE FROM PAPER). The maximum amount of steps looked at is the number of steps the robot needed in total to reach its goal. 
+The last abstraction method was also inspired by a research paper (CITE PAPER). Again, a slight alteration was done because the goal is to only find an abstraction and not a complete solution. The idea is to find the shortest path for each robot as always. Then, the solver looks at how many steps each node close to the path of the robots is deviating from that path. The path itself is deviating by zero steps. Each node next to the path is deviating by one step, the nodes right next to them by 2  steps, and so on (see figure \ref{fig:rn}). The maximum amount of steps looked at is the number of steps the robot needed in total to reach its goal. 
 \begin{verbatim}
 makespan(R,N) :- move(R,_,N).
 imp_pos(R,C,0) 	:- isRobot(robot(R)), position(R,C,_).
@@ -211,6 +246,12 @@ imp_position(R,C,MIN) 		:- imp_pos(R,C,MIN), MIN == #min{X: imp_pos(R,C,X)}.
 \end{verbatim}
 The first line looks at how many steps each robot takes. It is important to note that makespan refers to an individual robot whereas horizon refers to all robots. This means that the highest makespan is equal to the horizon. Another point to note is that the $makespan$-atom not only has the highest time step for an individual robot but each step it takes infers a $makespan$-atom. The second line initializes the path of the robot itself as deviating by zero steps. The third line then infers the next set of positions and the respective deviation until the makespan of the robot is reached. This way of inferring these atoms leads to having multiple $imp\_pos$-atoms for a single node. The last line makes sure that only the smallest deviation gets taken for the $imp\_position$-atoms. This time the $imp\_position$-atoms, as well as the $new\_init$-atoms, have three attributes because the amount of deviating steps is important to output. The abstraction this time does not simply consist of a set of nodes but instead multiple sets of nodes with a different distance to the shortest path. A solver using this abstraction could then decide how big the distance should be and only take a subset of the nodes provided to solve an instance. \\
 There was also a slightly different approach that did not look at all the nodes up to the complete makespan of a robot. Instead, it only looked at how many steps were still left to reach the goal and calculated the deviation up to these remaining steps. This method provides less information but the hope was that it would find the solution faster. During the functionality testing, it already became clear that the solving time with this different approach was slower than the original approach. This is why this different approach was discarded during the creation process.
+
+\begin{figure}[h]
+\centering{\includegraphics[scale=.4]{Images/RN-Explanation}}
+\caption{The figure shows the number of deviating steps $k$ for each node. The node with $k=3$ would not be considered for the output because the robot only needs two steps to reach its goal. The image was taken from (CITE PAPER).}
+\label{fig:rn}
+\end{figure}
 
 \section{Auxiliary Programs}
 Apart from the ASP encoding, I have created several python programs which helped with different parts of the project. I will only briefly explain them because they are not as relevant to the project as the ASP part.
@@ -225,20 +266,20 @@ This way, controlling starting and goal position of a specific robot is easier w
 \subsection{Solvers}
 There are multiple solver programs. The simplest one is called $hor_inc.py$. It can be used to solve a normal instance. It takes the solving ASP program and an input instance as input arguments. It then looks for the highest Manhattan distance between a robot and its goal position. This value is then taken as the constant $horizon$ for the ASP program. The program tries to solve the instance with this input. If the instance can be solved, it prints the solution and is finished. If the instance is considered unsatisfiable by clingo, it increases the $horizon$ by one at tries to solves it again. This is repeated until a solution is found or the horizon gets bigger than the number of nodes in the instance. The second case would mean that the instance is not solvable at all for an abstraction because the robot could get to any position on the map it can reach. Another possibility for the program to end is if it takes longer than a specified time threshold. If it takes too long to solve and the threshold is reached, the python program stops the solving, and ``Timeout'' is printed. This solver was used to test the functionality of the abstraction methods. The other solvers were used for benchmarking the different methods. They are mostly the same as $hor_inc.py$ with some extras. The exact usage will be discussed in the benchmarking section.
 \subsection{Result Plotters}
-There are two more python programs that I have created. Both are used to plot the benchmarking results. The first program, $lineg_results.py$, takes the results for different methods for a specific instance, builds the average of these results, and plots a line graph for each method. To compare it to asprilo, the results for the asprilo benchmarking also need to be input as a method. The problem with this method is that the results can be very varying which makes the resulting average very strange at times. This is why the second program, $scatter_results.py$, will be used to graphically show the results of the benchmarking. This program takes the different abstraction methods and directly compares them to the asprilo encoding. It creates a scatter plot which means that it is not necessary to calculate the average. This makes the analysis of the graphic much easier. How exactly the resulting graphic looks and how it is supposed to be interpreted will be discussed in the benchmarking section as well.
+There are two more python programs that I have created. Both are used to plot the benchmarking results. The first program, $lineg_results.py$, takes the results for different methods for a specific instance, builds the average of these results, and plots a line graph for each method. To compare it to asprilo, the results for the asprilo benchmarking also need to be input as a method. The problem with this method is that the results can be very varying which makes the resulting average very strange at times. This is why the second program, $scatter_results.py$, will be used to graphically show most of the results of the benchmarking. This program takes the different abstraction methods and directly compares them to the asprilo encoding. It creates a scatter plot which means that it is not necessary to calculate the average. This makes the analysis of the graphic much easier. How exactly the resulting graphic looks and how it is supposed to be interpreted will be discussed in the benchmarking section as well.
 
 \section{Benchmarking}
 The idea for the benchmarking is to have maps of different sizes. On each map, the solver adds a robot, the ASP program tries to solve the instance and when it is done a new robot is added to the same map. This is done until a time limit is reached. The time limit chosen for this project is 10 minutes. This means that the benchmarking tests how many robots can be added in a time frame of 10 minutes. There are two different forms of adding robots. This is what the aforementioned python solvers are used for. The program $random\_benchmark\_solver.py$ uses an input instance that only has nodes and no robots or shelves at all. At the start and each time the solver finds a solution, the program randomly chooses a starting position for a robot and a shelf. This leads to a completely random instance. It is also possible to give the solver an argument that tells it which ``random seed'' it should use. In that case, the resulting instance is predetermined. The second benchmark solver is $preset\_benchmark\_solver.py$. This solver takes an instance where the robots and shelves are commented out at the start of the solving. It then incrementally adds these robots and shelves to the instance. This means that the instance is completely predetermined. The third solver is $combined\_solver.py$. This solver takes two programs and an instance as input. Since my programs only build an abstraction, they cannot be directly compared to a solving method. This is why this third solver first builds the abstraction and then uses the modified asprilo encoding, which was shown in a previous section, to solve this abstraction. The input instance looks the same as for the preset solver. This is done to ensure the satisfiability of the instance. This is necessary because the asprilo encoding is not made to use abstractions. That could lead to an abstraction being unsolvable. The following subsections will show the used map layouts and the results for each method. \\
-The benchmarking was done on the Turing-Cluster of the university of Potsdam (LINK TO HPC SITE). A single run was calculated in sequential form. Each node of the cluster has 2 CPUs of the type Intel Xeon E5-2650v4, 64 GB of RAM, and an FDR Infiniband Adapter. 
+The benchmarking was done on the Turing-Cluster of the university of Potsdam (LINK TO HPC SITE). A single run was calculated in sequential form. Each node of the cluster has 2 CPUs of the type Intel Xeon E5-2650v4, 64 GB of RAM, and an FDR Infiniband Adapter. All results can be found in the appendix.
 \subsection{Map Layouts}
-There are six map layouts used for the benchmarking. Each method was tested 10 times with preset starting coordinates and 10 times with random starting coordinates on each map. Some of the layouts were inspired by another paper (CITE BENCHMARKING PAPER). Three layouts are just an open map, which means that they have no inner walls. They have the sizes 16x16 nodes, 64x64 nodes, and 128x128 nodes (SHOW IMAGE FOR 16x16). The preset coordinates for this type of map were chosen in a way that leads to at least one robot having the maximum amount of distance possible to its goal. The robots are added from left to right and top to bottom while the shelves are added the other way round (SHOW EXAMPLE FOR 1 AND 2 ROBOTS). \\
-The other map layout chosen is called ``rooms''. The sizes used for this type of map were 16x16 nodes, 32x32 nodes, and 64x64 rooms (SHOW IMAGES). The two bigger sizes were taken from the aforementioned paper. This includes the preset coordinates. The small size was created by myself. The starting coordinates of the robots and their goals were chosen in a way that had a preferably large discrepancy between the Manhattan distance and the number of steps needed to reach the goal. 
+There are six map layouts used for the benchmarking. Each method was tested 10 times with preset starting coordinates and 10 times with random starting coordinates on each map. Some of the layouts were inspired by another paper (CITE BENCHMARKING PAPER). Three layouts are just an open map, which means that they have no inner walls. They have the sizes 16x16 nodes, 64x64 nodes, and 128x128 nodes. The preset coordinates for this type of map were chosen in a way that leads to at least one robot having the maximum amount of distance possible to its goal. The robots are added from left to right and top to bottom while the shelves are added the other way round. \\
+The other map layout chosen is called ``rooms''. The sizes used for this type of map were 16x16 nodes, 32x32 nodes, and 64x64 rooms. The two bigger sizes were taken from the aforementioned paper. This includes the preset coordinates. The small size was created by myself. The starting coordinates of the robots and their goals were chosen in a way that had a preferably large discrepancy between the Manhattan distance and the number of steps needed to reach the goal. Images for all map layouts can be found in the appendix.
 \subsection{Shortest Path}
-This method was worse than the modified asprilo encoding in all instances (SHOW SOME IMAGES). It could solve neither the preset instances of the medium- and large-sized open maps nor the preset instance of the large-sized rooms map. There were some random instances in those sizes that it could solve but the robot count was very low. The difference between the encoding for this method and the modified asprilo encoding mostly lies in the fact that this abstraction encoding does not have constraint rules for conflicts. The constraints likely help the solver to find the right plan faster. A look at the grounding times also seems to enforce this theory. In the medium-sized rooms map, this method could solve up to six robots. For the sixth robot, the solver needed about 175 seconds to find a solution. About 164 seconds of those were used to find a solution, while only 11 seconds were used for grounding. This shows that the grounding time is negligible compared to the solving time. Since the abstraction already takes longer than the complete solving, it was not necessary to test the abstraction together with the asprilo encoding. 
+This method was worse than the modified asprilo encoding in all instances. It could solve neither the preset instances of the medium- and large-sized open maps nor the preset instance of the large-sized rooms map. There were some random instances in those sizes that it could solve but the robot count was very low. The difference between the encoding for this method and the modified asprilo encoding mostly lies in the fact that this abstraction encoding does not have constraint rules for conflicts. The constraints likely help the solver to find the right plan faster. A look at the grounding times also seems to enforce this theory. In the medium-sized rooms map, this method could solve up to six robots. For the sixth robot, the solver needed about 175 seconds to find a solution. About 164 seconds of those were used to find a solution, while only 11 seconds were used for grounding. This shows that the grounding time is negligible compared to the solving time. Since the abstraction already takes longer than the complete solving, it was not necessary to test the abstraction together with the asprilo encoding. 
 \subsection{Node Combining}
 The Open Node Combining (ONC) method was only used for the open maps, while the Complete Node Combining (CNC) method was used for all maps. Using size 2x2 for combining in the ONC method shows that both methods have similar results on the open maps. Just looking at the abstraction time itself, both methods outperform the asprilo encoding by a large margin on small maps. Combining the abstraction with the solving shows that in the small-sized rooms map, CNC still yields better results than asprilo with a small number of robots. It makes sense that more robots mean a higher solving time increase for the combined solving instead of just using asprilo because a lot of robots mean there is only a small amount of nodes or no nodes at all get deleted. In bigger instances, using the combined solving is slower than asprilo. In the biggest instances, asprilo outperforms the abstraction time itself. However, using a bigger combining size for the ONC method shows that even in the largest open map, asprilo can be beaten. This means that the node combining method has a lot of potential and finding a way to optimize the combining size could be helpful. 
 \subsection{Reachable Nodes}
-The Reachable Nodes method has the worst results of the abstraction methods. It gets outperformed on every map. Similar to the Shortest Path method it cannot solve the preset instances of the maps with a size of 64x64 nodes and above. The times in the smaller maps are worse than the Shortest Path method. Taking a look at the grounding times in the medium-sized rooms map shows that the grounding times are at least as big as the solving time. The largest problem for this abstraction method is calculating the number of steps a node deviates from the shortest path. Since the method currently chooses the same node multiple times and looks for the minimum at the end, a lot of useless calculation is done. Finding a way around that should help with the solution time. Similar to the Shortest Path method, no combined solving was tested because the abstraction itself already took too long.
+The Reachable Nodes method has the worst results of the abstraction methods. It gets outperformed on every map. Similar to the Shortest Path method it cannot solve the preset instances of the maps with a size of 64x64 nodes and above. The times in the smaller maps are worse than the Shortest Path method. Taking a look at the grounding times in the medium-sized rooms map shows that the grounding times are at least as big as the solving time. The largest problem for this abstraction method is calculating the number of steps a node deviates from the shortest path. Since the method currently chooses the same node multiple times and looks for the minimum at the end, a lot of useless calculation is done. Finding a way around that should help with the solution time. Another way to improve the solution time could be finding a different upper limit for the number of deviating steps. Similar to the Shortest Path method, no combined solving was tested because the abstraction itself already took too long.
 
 \section{Conclusion}
 This paper showed my approach to finding a map abstraction for MAPF problems with ASP. I developed three different abstraction methods, with one method having two alternative versions. The Shortest Path and Reachable Nodes methods had worse solution times than the modified asprilo encoding, which means that these methods, at least in the form I used them, are not very useful for building abstractions. The Node Combining method shows much promise, especially if a way is found to optimize the size used for the combining. This means that map abstraction can have a positive influence on solving MAPF problems. However, it is likely only useful for instances where there are only a small amount of robots on a big map. If there are too many robots in an instance, the abstraction is not very useful because not many nodes can be ignored in that case. 
@@ -275,6 +316,121 @@ https://potassco.org/asprilo/
 
 \newpage
 \appendix
+
+\section{Map Layouts}
+
+\subsection{Open Maps}
+Since the only difference between the maps is the size, only images for the small open map is shown.
+\begin{figure}[H]
+\centering{\includegraphics[scale=.4]{Images/Small-Open}}
+\caption{The map layout for the open 16x16 map}
+\end{figure}
+\begin{figure}[H]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.2]{Images/Small-Open-1R}}
+\caption{The small open map with 1 robot activated}
+\end{minipage}
+\hspace{2cm}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.2]{Images/Small-Open-2R}}
+\caption{The small open map with 2 robots activated}
+\end{minipage}
+\end{figure} 
+
+\subsection{Room Maps}
+\begin{figure}[H]
+\centering{\includegraphics[scale=.4]{Images/Small-Rooms}}
+\caption{The map layout for the 16x16 rooms map}
+\end{figure}
+\begin{figure}[H]
+\centering{\includegraphics[scale=.4]{Images/Medium-Rooms}}
+\caption{The map layout for the 32x32 rooms map}
+\end{figure}
+\begin{figure}[H]
+\centering{\includegraphics[scale=.4]{Images/Large-Rooms}}
+\caption{The map layout for the 64x64 rooms map}
+\end{figure}
+
+\newpage
+
+\section{Benchmark Results}
+\subsection{Small Rooms}
+\begin{figure}[H]
+\centering{\includegraphics[scale=0.35]{Images/Results-Small-Rooms-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.35]{Images/Results-Small-Rooms-2}
+\caption{Results for Complete Node Combining together with asprilo}
+\end{figure}
+
+\subsection{Small Open}
+\begin{figure}[H]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Small-Open-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{minipage}
+\hspace{1.5cm}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Small-Open-2}}
+\caption{Results for Open Node Combining sizes 2x2 and 8x8}
+\end{minipage}
+\end{figure} 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{Images/Results-Small-Open-3}
+\caption{Results for Complete Node Combining and Open Node Combining together with asprilo}
+\end{figure}
+
+\subsection{Medium Rooms}
+\begin{figure}[H]
+\centering{\includegraphics[scale=0.4]{Images/Results-Medium-Rooms-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.4]{Images/Results-Medium-Rooms-2}
+\caption{Results for Complete Node Combining together with asprilo}
+\end{figure}
+
+
+\subsection{Medium Open}
+\begin{figure}[H]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Medium-Open-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{minipage}
+\hspace{1.5cm}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Medium-Open-2}}
+\caption{Results for Open Node Combining sizes 2x2, 8x8, and 16x16}
+\end{minipage}
+\end{figure} 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{Images/Results-Medium-Open-3}
+\caption{Results for Open Node Combining together with asprilo}
+\end{figure}
+
+\subsection{Large Rooms}
+\begin{figure}[H]
+\centering{\includegraphics[scale=0.4]{Images/Results-Large-Rooms-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{figure}
+
+\subsection{Large Open}
+\begin{figure}[H]
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Large-Open-1}}
+\caption{Results for Complete Node Combining, Shortest Path, and Reachable Nodes}
+\end{minipage}
+\hspace{1.5cm}
+\begin{minipage}{.4\linewidth} 
+\centering{\includegraphics[scale=.4]{Images/Results-Large-Open-2}}
+\caption{Results for Open Node Combining sizes 2x2, 8x8, and 16x16}
+\end{minipage}
+\end{figure} 
+\begin{figure}[H]
+\includegraphics[scale=0.4]{Images/Results-Large-Open-3}
+\caption{Results for Open Node Combining together with asprilo}
+\end{figure}
 \newpage
 \section{Affidavit}
 I hereby affirm that this Bachelor's Thesis represents my written work and that I have used no source and aids other than those indicated.
@@ -287,7 +443,6 @@ All passages quoted from publications or paraphrased from these sources are prop
 \noindent\begin{tabular}{lll}
 \makebox[5cm]{\hrulefill} & \hspace{2cm} & \makebox[5cm]{\hrulefill}\\
 Date, Place &  & Signature 
-
 \end{tabular}
 
 \end{document}

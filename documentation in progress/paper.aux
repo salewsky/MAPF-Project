@@ -4,30 +4,72 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2}Multi-Agent Pathfinding}{2}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}Answer Set Programming}{2}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Robot 1 (the square on the left) has to reach shelf 1 (the circle on the right). Robot 2 has to reach shelf 2 The shortest path is to go right/down 4 steps. In the middle, a conflict would occur which could be avoided by letting one robot wait for one time step.}}{3}{}\protected@file@percent }
+\newlabel{fig:mapf}{{1}{3}}
 \citation{asprilo}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Asprilo}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Instances}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Input}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Instances}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Input}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Action}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Goal}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Output and Encoding}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Visualizer}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Output and Encoding}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Visualizer}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Abstraction Methods}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Shortest Path}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Shortest Path}{8}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Node Combining}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Reachable Nodes}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Auxiliary Programs}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Map Generator}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Solvers}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Result Plotters}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Benchmarking}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Map Layouts}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Shortest Path}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Node Combining}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Reachable Nodes}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{14}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Input instance before abstraction}}{9}{}\protected@file@percent }
+\newlabel{fig:inst-bef-a}{{2}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Input instance after abstraction. Only the nodes that lie on the shortest path are considered}}{9}{}\protected@file@percent }
+\newlabel{fig:inst-aft-a}{{3}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The input instance can be seen in figure 2\hbox {}. This image shows how the combined instance would look like if the combining size is set to 2x2.}}{10}{}\protected@file@percent }
+\newlabel{fig:post-com}{{4}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces This image shows the resulting instance. Nodes that were not visited in combined form get deleted.}}{10}{}\protected@file@percent }
+\newlabel{fig:onc-result}{{5}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Reachable Nodes}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Auxiliary Programs}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Map Generator}{11}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The figure shows the number of deviating steps $k$ for each node. The node with $k=3$ would not be considered for the output because the robot only needs two steps to reach its goal. The image was taken from (CITE PAPER).}}{12}{}\protected@file@percent }
+\newlabel{fig:rn}{{6}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Solvers}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Result Plotters}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Benchmarking}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Map Layouts}{14}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Shortest Path}{14}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Node Combining}{15}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Reachable Nodes}{15}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{15}{}\protected@file@percent }
 \bibcite{my-git}{1}
 \bibcite{tarek-git}{2}
 \bibcite{asprilo}{3}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Affidavit}{16}{}\protected@file@percent }
-\gdef \@abspage@last{16}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Map Layouts}{17}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Open Maps}{17}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The map layout for the open 16x16 map}}{17}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The small open map with 1 robot activated}}{17}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The small open map with 2 robots activated}}{17}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Room Maps}{18}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces The map layout for the 16x16 rooms map}}{18}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The map layout for the 32x32 rooms map}}{18}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The map layout for the 64x64 rooms map}}{19}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Benchmark Results}{20}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Small Rooms}{20}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{20}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Results for Complete Node Combining together with asprilo}}{21}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Small Open}{21}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{21}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Results for Open Node Combining sizes 2x2 and 8x8}}{21}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Results for Complete Node Combining and Open Node Combining together with asprilo}}{22}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Medium Rooms}{23}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{23}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Results for Complete Node Combining together with asprilo}}{23}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}Medium Open}{24}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{24}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Results for Open Node Combining sizes 2x2, 8x8, and 16x16}}{24}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Results for Open Node Combining together with asprilo}}{24}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5}Large Rooms}{25}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{25}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6}Large Open}{25}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Results for Complete Node Combining, Shortest Path, and Reachable Nodes}}{25}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces Results for Open Node Combining sizes 2x2, 8x8, and 16x16}}{25}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces Results for Open Node Combining together with asprilo}}{26}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Affidavit}{27}{}\protected@file@percent }
+\gdef \@abspage@last{27}
