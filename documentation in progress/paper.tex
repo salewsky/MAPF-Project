@@ -36,7 +36,7 @@ possible plans. This paper will show how I built such abstractions in the progra
 All the used programs and instances can be found in my GitHub repository \cite{my-git}. This paper was written as the final thesis for a Bachelor's degree in the course Computational Science at the University of Potsdam. This project was done in cooperation with Tarek Ramadan who worked on using the abstractions to solve a problem as a project for his final thesis for a Bachelor's degree in the same course and university. His work can be found on his GitHub repository \cite{tarek-git}.
 
 \section{Multi-Agent Pathfinding}
-In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robots), start and goal positions, and possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper, only orthogonal moves are considered. The goal is to let each robot find a way from its start to its goal position. It is possible to not have predetermined goal positions for each specific robot and instead let the solver assign the goal positions to the robots that can have the best way to that position. I only dealt with having a predetermined goal position for each robot in this project. The result of the solving process is a plan with a set of moves for each robot. When executing the plan there must not be any collisions, i.e. two robots going through each other or two robots moving to the same node (see figure \ref{fig:mapf}). The last time step of the plan is called horizon or makespan INSERT SOURCE FOR MAPF. 
+In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robots), start and goal positions, and possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper, only orthogonal moves are considered. The goal is to let each robot find a way from its start to its goal position. It is possible to not have predetermined goal positions for each specific robot and instead let the solver assign the goal positions to the robots that can have the best way to that position. I only dealt with having a predetermined goal position for each robot in this project. The result of the solving process is a plan with a set of moves for each robot. When executing the plan there must not be any collisions, i.e. two robots going through each other or two robots moving to the same node (see figure \ref{fig:mapf}). The last time step of the plan is called horizon or makespan \cite{mapf}. 
 
 \begin{figure}[h]
 \centering{\includegraphics[scale=.4]{Images/MAPF-Problem}}
@@ -45,7 +45,7 @@ In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robot
 \end{figure}
 
 \section{Answer Set Programming}
-Answer Set Programming is a declarative programming language that is especially useful when using it for NP-hard problems. For a complete introduction refer to INSERT ASP SOURCE. In this section, I will only briefly explain the main parts relevant to my encoding. \\
+Answer Set Programming is a declarative programming language that is especially useful when using it for NP-hard problems. For a complete introduction refer to \cite{asp}. In this section, I will only briefly explain the main parts relevant to my encoding. \\
 An ASP program contains a set of rules and atoms. The result is a stable model that is built upon these rules and atoms. An atom has the form: 
 \begin{verbatim}
 a.
@@ -85,7 +85,7 @@ The solver looks for the attribute of the atom $b$ with the lowest value and ass
 \end{verbatim}
 This means that the solver looks at every atom $a$ with one attribute and builds the sum of these attributes. It then looks for the model with the lowest sum. \\
 There are also other aggregates that I have not explained but since I do not use them in my encoding, I will not explain them. An ASP program has the file ending $.lp$.\\
-To ground and solve the programs in this paper, clingo-5.4.0 was used. INSERT SOURCE CLINGO
+To ground and solve the programs in this paper, clingo-5.4.0 was used \cite{clingo}. 
 
 
 
@@ -190,7 +190,7 @@ MAPF problems.
 
 
 \subsection{Node Combining}
-The idea for the node combining was taken from two other papers looking for abstractions (CITE PAPERS). The approach had to be slightly altered because my goal is to only build an abstraction and not solve the instance completely. The idea is two combine several nodes together into one node (see figure \ref{post-com} for illustration). Afterward, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (see figure \ref{fig:onc-result}. The combining of nodes looks like this:
+The idea for the node combining was taken from two other papers looking for abstractions \cite{nc1} \cite{nc2}. The approach had to be slightly altered because my goal is to only build an abstraction and not solve the instance completely. The idea is two combine several nodes together into one node (see figure \ref{post-com} for illustration). Afterward, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (see figure \ref{fig:onc-result}. The combining of nodes looks like this:
 \begin{verbatim}
 comb_position((X,Y),(X',Y'))   :- position((X,Y)),
           X' = (X+(size_x-1))/size_x, Y' = (Y+(size_y-1))/size_y.
@@ -237,7 +237,7 @@ As mentioned before, this way of introducing walls leads to only being able to c
 
 
 \subsection{Reachable Nodes}
-The last abstraction method was also inspired by a research paper (CITE PAPER). Again, a slight alteration was done because the goal is to only find an abstraction and not a complete solution. The idea is to find the shortest path for each robot as always. Then, the solver looks at how many steps each node close to the path of the robots is deviating from that path. The path itself is deviating by zero steps. Each node next to the path is deviating by one step, the nodes right next to them by 2  steps, and so on (see figure \ref{fig:rn}). The maximum amount of steps looked at is the number of steps the robot needed in total to reach its goal. 
+The last abstraction method was also inspired by a research paper \cite{rn}. Again, a slight alteration was done because the goal is to only find an abstraction and not a complete solution. The idea is to find the shortest path for each robot as always. Then, the solver looks at how many steps each node close to the path of the robots is deviating from that path. The path itself is deviating by zero steps. Each node next to the path is deviating by one step, the nodes right next to them by 2  steps, and so on (see figure \ref{fig:rn}). The maximum amount of steps looked at is the number of steps the robot needed in total to reach its goal. 
 \begin{verbatim}
 makespan(R,N) :- move(R,_,N).
 imp_pos(R,C,0) 	:- isRobot(robot(R)), position(R,C,_).
@@ -270,9 +270,9 @@ There are two more python programs that I have created. Both are used to plot th
 
 \section{Benchmarking}
 The idea for the benchmarking is to have maps of different sizes. On each map, the solver adds a robot, the ASP program tries to solve the instance and when it is done a new robot is added to the same map. This is done until a time limit is reached. The time limit chosen for this project is 10 minutes. This means that the benchmarking tests how many robots can be added in a time frame of 10 minutes. There are two different forms of adding robots. This is what the aforementioned python solvers are used for. The program $random\_benchmark\_solver.py$ uses an input instance that only has nodes and no robots or shelves at all. At the start and each time the solver finds a solution, the program randomly chooses a starting position for a robot and a shelf. This leads to a completely random instance. It is also possible to give the solver an argument that tells it which ``random seed'' it should use. In that case, the resulting instance is predetermined. The second benchmark solver is $preset\_benchmark\_solver.py$. This solver takes an instance where the robots and shelves are commented out at the start of the solving. It then incrementally adds these robots and shelves to the instance. This means that the instance is completely predetermined. The third solver is $combined\_solver.py$. This solver takes two programs and an instance as input. Since my programs only build an abstraction, they cannot be directly compared to a solving method. This is why this third solver first builds the abstraction and then uses the modified asprilo encoding, which was shown in a previous section, to solve this abstraction. The input instance looks the same as for the preset solver. This is done to ensure the satisfiability of the instance. This is necessary because the asprilo encoding is not made to use abstractions. That could lead to an abstraction being unsolvable. The following subsections will show the used map layouts and the results for each method. \\
-The benchmarking was done on the Turing-Cluster of the university of Potsdam (LINK TO HPC SITE). A single run was calculated in sequential form. Each node of the cluster has 2 CPUs of the type Intel Xeon E5-2650v4, 64 GB of RAM, and an FDR Infiniband Adapter. All results can be found in the appendix.
+The benchmarking was done on the Turing-Cluster of the university of Potsdam \cite{hpc}. A single run was calculated in sequential form. Each node of the cluster has 2 CPUs of the type Intel Xeon E5-2650v4, 64 GB of RAM, and an FDR Infiniband Adapter. All results can be found in the appendix.
 \subsection{Map Layouts}
-There are six map layouts used for the benchmarking. Each method was tested 10 times with preset starting coordinates and 10 times with random starting coordinates on each map. Some of the layouts were inspired by another paper (CITE BENCHMARKING PAPER). Three layouts are just an open map, which means that they have no inner walls. They have the sizes 16x16 nodes, 64x64 nodes, and 128x128 nodes. The preset coordinates for this type of map were chosen in a way that leads to at least one robot having the maximum amount of distance possible to its goal. The robots are added from left to right and top to bottom while the shelves are added the other way round. \\
+There are six map layouts used for the benchmarking. Each method was tested 10 times with preset starting coordinates and 10 times with random starting coordinates on each map. Some of the layouts were inspired by another paper \cite{mapf}. Three layouts are just an open map, which means that they have no inner walls. They have the sizes 16x16 nodes, 64x64 nodes, and 128x128 nodes. The preset coordinates for this type of map were chosen in a way that leads to at least one robot having the maximum amount of distance possible to its goal. The robots are added from left to right and top to bottom while the shelves are added the other way round. \\
 The other map layout chosen is called ``rooms''. The sizes used for this type of map were 16x16 nodes, 32x32 nodes, and 64x64 rooms. The two bigger sizes were taken from the aforementioned paper. This includes the preset coordinates. The small size was created by myself. The starting coordinates of the robots and their goals were chosen in a way that had a preferably large discrepancy between the Manhattan distance and the number of steps needed to reach the goal. Images for all map layouts can be found in the appendix.
 \subsection{Shortest Path}
 This method was worse than the modified asprilo encoding in all instances. It could solve neither the preset instances of the medium- and large-sized open maps nor the preset instance of the large-sized rooms map. There were some random instances in those sizes that it could solve but the robot count was very low. The difference between the encoding for this method and the modified asprilo encoding mostly lies in the fact that this abstraction encoding does not have constraint rules for conflicts. The constraints likely help the solver to find the right plan faster. A look at the grounding times also seems to enforce this theory. In the medium-sized rooms map, this method could solve up to six robots. For the sixth robot, the solver needed about 175 seconds to find a solution. About 164 seconds of those were used to find a solution, while only 11 seconds were used for grounding. This shows that the grounding time is negligible compared to the solving time. Since the abstraction already takes longer than the complete solving, it was not necessary to test the abstraction together with the asprilo encoding. 
@@ -287,30 +287,42 @@ This paper showed my approach to finding a map abstraction for MAPF problems wit
 
 \begin{thebibliography} {3}
 \bibitem{my-git}
-My Github repository
 \begin{verbatim}
 https://github.com/salewsky/MAPF-Project
 \end{verbatim}
 
 \bibitem{tarek-git}
-Github repository of Tarek Ramadan
 \begin{verbatim}
 https://github.com/tramadan-up/mapf-ba
 \end{verbatim}
 
 \bibitem{asprilo}
-Asprilo website
 \begin{verbatim}
 https://potassco.org/asprilo/
 \end{verbatim}
 
-%@article{stern2019mapf,
-  %title={Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks},
-  %author={Roni Stern and Nathan R. Sturtevant and Ariel Felner and Sven Koenig and Hang Ma and Thayne T. Walker and Jiaoyang Li and Dor Atzmon and Liron Cohen and T. K. Satish Kumar and Eli Boyarski and Roman Bartak},
- % journal={Symposium on Combinatorial Search (SoCS)},
- % year={2019},
- % pages={151--158}
-%}
+\bibitem{mapf}
+Stern et al. (2019). Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks. Symposium on Combinatorial Search (SoCS), 151-158.
+
+\bibitem{asp}
+Janhunen, T., and Niemelä, I. (2016). The Answer Set Programming Paradigm. AI Magazine, 13-24.
+
+\bibitem{clingo}
+Gebser et al. (2010). A User's Guide to gringo, clasp, clingo, and iclingo. 
+
+\bibitem{nc1}
+Sturtevant, N., and Buro, M. (2005). Partial Pathfinding Using Map Abstraction and Refinement. Proceedings of AAAI, 47-52.
+
+\bibitem{nc2}
+Sturtevant, Nathan and Buro, Michael. (2021). Improving Collaborative Pathfinding Using Map Abstraction. Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment, 2(1), 80-85.
+
+\bibitem{rn}
+Anonymous Author(s). Reduction-based Solving of Multi-agent Pathfinding on Large Maps Using Graph Pruning.
+
+\bibitem{hpc}
+\begin{verbatim}
+https://www.cs.uni-potsdam.de/bs/research/labs.html#turing
+\end{verbatim}
 
 \end{thebibliography}
 
