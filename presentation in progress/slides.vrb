@@ -1,0 +1,10 @@
+\frametitle{Thermo Sudoku}
+\begin{itemize}
+\item<1-> $thermo(T,C,X)$ : cell C is on thermometer T \\
+at position X
+\end{itemize}
+\bigskip
+\begin{verbatim}
+:- fill(C1,N1), fill(C2,N2), thermo(T,C1,X1),
+    thermo(T,C2,X2), X2>X1, N1>=N2.
+\end{verbatim}
