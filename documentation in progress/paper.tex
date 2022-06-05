@@ -155,13 +155,13 @@ The visualizer is an extra component provided by asprilo. It can be used to visu
 I have developed four abstraction methods. All of them use some of the asprilo encoding as a base. The files $input.lp$ and $goal.lp$ are the same as in the modified asprilo encoding. \\
 The output atoms are $new\_init$ and $imp\_position$. The $new\_init$ atoms describe the resulting abstracted instance. The form of $new\_init$ resembles that of the $init$ atoms in the input instance. There are $new\_init$ atoms for robots, shelves, and nodes. The ones
 for robots and shelves are the same as in the input instance (with of course a ``new'' being added) since the start and goal conditions are not changed during the abstraction. The atoms for the nodes contain only the nodes that still exist after the abstraction. The $imp\_position(R, C)$ atom states that robot $R$ is on cell $C$ at some point while building the abstraction. This can be used as extra information when solving the instance with the use of this abstraction, e.g. a solver could look at this information to know a possible path for each robot. The output is the same for every method except for the ``Reachable Nodes'' method. In that method, the output is slightly different which I will explain in the respective subsection. \\
-The first part of the abstraction building is always solving the instance without caring for conflicts. Therefore the encoding entails parts of the original asprilo encoding. The difference is that the constraint rules which prohibit conflicts are ignored.
+The first part of the abstraction building is always solving the instance without caring for conflicts. Therefore the encoding entails parts of the $action.lp$ asprilo encoding. The difference is that the constraint rules which prohibit conflicts are ignored.
 Furthermore there are two extra lines:
 \begin{verbatim}
 :- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R)), T2<T1.
 #minimize {1,(R,T): move(R,_,T)}.
 \end{verbatim}
-The first line states that a robot must always move until it has finished moving completely. This makes it so that a robot does not randomly wait instead of directly going to his goal. \\
+The first line states that a robot must always move until it has finished moving completely. This ensures that a robot does not wait instead of going to its goal. \\
 The second line is used to minimize the number of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
@@ -192,7 +192,7 @@ MAPF problems.
 
 
 \subsection{Node Combining}
-The idea for the node combining was taken from two other abstraction-related papers \cite{nc1} \cite{nc2}. The approach had to be slightly altered because my focus is to only build an abstraction and not solve the instance completely. The idea is to combine several nodes into one node (see figure \ref{post-com} for illustration). Afterwards, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (see figure \ref{fig:onc-result}). The respective encoding looks like this:
+The idea for the node combining was taken from two other abstraction-related papers \cite{nc1} \cite{nc2}. The approach had to be slightly altered because my focus is to only build an abstraction and not solve the instance completely. The idea is to combine several nodes into one node (see figure \ref{fig:post-com} for illustration). Afterwards, the solver looks for the shortest path in the combined instance. The solver then outputs all the nodes that have been visited in the combined form (see figure \ref{fig:onc-result}). The respective encoding looks like this:
 \begin{verbatim}
 comb_position((X,Y),(X',Y'))   :- position((X,Y)),
           X' = (X+(size_x-1))/size_x, Y' = (Y+(size_y-1))/size_y.
@@ -256,7 +256,7 @@ There was also a slightly different approach that did not look at all the nodes 
 \end{figure}
 
 \section{Auxiliary Programs}
-Apart from the ASP encoding, I have created several python programs which helped with different parts of the project.
+Apart from the ASP encoding, I have created several python programs which served different purposes during the project.
 \subsection{Map Generator}
 The map generator is used to create instances. The program can generate a map with a specified size in x- and y-direction. It also creates a specified amount of robots on random starting positions and the same amount of shelves that also have random starting positions. It can only create open maps which means that walls have to be edited in by hand. Specifying starting positions for robots or shelves is also impossible. The resulting file has a head in comment form which shows the chosen parameters, i.e. amount of nodes, robots, and so on. After that, all the nodes are initiated. Following that, each robot is initiated together with its shelf:
 \begin{verbatim}
