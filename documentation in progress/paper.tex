@@ -1,6 +1,11 @@
 \documentclass[runningheads]{llncs}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily,
+	mathescape
+}
 \begin{document}
 \begin{titlepage}
 \centering
@@ -45,7 +50,32 @@ In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robot
 \end{figure}
 
 \section{Answer Set Programming}
-Answer Set Programming is a declarative programming paradigm that is especially useful when using it for NP-hard search problems. For a complete introduction refer to \cite{asp}. In this section, I will only briefly explain the main parts relevant to my encoding. \\
+Answer Set Programming is a declarative programming paradigm that is especially useful when using it for NP-hard search problems. For a complete introduction refer to \cite{asp} or \cite{asp2}. In this section, I will only briefly explain the main parts relevant to my encoding. \\
+Normal rules have the form:
+\begin{lstlisting}
+$a_0$ :- $a_1$,...,$a_m$,not $a_{m+1}$,...,not $a_n$         
+with $0 \leq m \leq n$
+\end{lstlisting}
+Each $a$ is a ground atom. A literal is an atom $a$ or its negation (indicated by the  $not$). $a_0$ is the head of the rule while the body consists of all the other literals. The head of a rule is true if all the literals in the body are true. If the body of a rule is empty, the head is true by default and it is called a fact. It is also possible to have an empty head. In this case, it is called a constraint rule which states that at least one of the literals in the body has to be false so the program can have a non-empty solution. \\
+Another type of rule is the choice rule:
+\begin{lstlisting}
+x {$a_1,...,a_m$} y :- $a_{m+1}$,...,$a_n$,not $a_{n+1}$,...,not $a_o$ 
+with $0 \leq m \leq n \leq o$
+\end{lstlisting}
+This rule states that if the body is true, then literals from the head can be chosen to be inferred. The number of atoms chosen can be controlled by the $x$ and $y$ with $0 \leq x \leq y \leq$ number of atoms. At least $x$ atoms have to be chosen and a maximum of $y$ atoms can be chosen. \\
+It is also possible to look for minimums:
+\begin{verbatim}
+a(MIN) :- MIN == #min{X: b(X)}.
+\end{verbatim}
+The solver looks for the attribute of the atom $b$ with the lowest value and assigns  $MIN$ this lowest value. It then infers the atom $a$ with the attribute $MIN$. \\
+The last type of rule to look at is $minimize$:
+\begin{verbatim}
+#minimize {X : a(X)}.
+\end{verbatim}
+This means that the solver looks at every atom $a$ with one attribute and builds the sum of these attributes. It then looks for the model with the lowest sum. \\
+Before the solver looks for stable models, the program is $grounded$. During this process, the variables in the program are exchanged with the possible values for that variable.
+To ground and solve the programs in this paper, clingo-5.4.0 was used \cite{clingo}.  \\
+HIER IST DER ALTE TEXT!!! \\
 An ASP program contains a set of rules and atoms. The result is a stable model that is built upon these rules and atoms. An atom has the form: 
 \begin{verbatim}
 a.
@@ -165,10 +195,11 @@ The first line states that a robot must always move until it has finished moving
 The second line is used to minimize the number of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that method respectively. 
 \subsection{Shortest Path}
-The first method is to look for the shortest path for each robot to its respective goal. Each position the robot visits is then used to create the $imp\_position$ atoms. An example instance can be seen in figure \ref{fig:inst-bef-a}. The corresponding abstraction can be seen in figure \ref{fig:inst-aft-a}.
+The first method is to look for the shortest path for each robot to its respective goal. Each position the robot visits is then used to create the $imp\_position$ atoms. 
 \begin{verbatim}
 imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
 \end{verbatim}
+An example instance can be seen in figure \ref{fig:inst-bef-a}. The corresponding abstraction can be seen in figure \ref{fig:inst-aft-a}.
 In this method, it is also possible to add the time step at which the robot visits the position as an argument to the $imp\_position$ atom. However, this would mean that a solver that uses the abstraction to solve the instance would need to specifically
 be designed for the ``Shortest Path'' method. Always using the same structure for each method means that one solver can be created to work for all methods. It is also not possible to check how many arguments the atom has because the 
 ``Reachable Nodes'' method needs the third argument for something different, which I will explain in the respective subsection. If it is not of interest to have a solver that solves by using the different abstractions the same way, the line shown above can 
@@ -308,6 +339,9 @@ Stern et al. (2019). Multi-Agent Pathfinding: Definitions, Variants, and Benchma
 
 \bibitem{asp}
 Janhunen, T., and Niemelä, I. (2016). The Answer Set Programming Paradigm. AI Magazine, 13-24.
+
+\bibitem{asp2}
+Gebser et al. Answer Set Solving in Practice (2012). Chapter 2. Synthesis Lectures on Artificial Intelligence and Machine Learning. 
 
 \bibitem{clingo}
 Gebser et al. (2010). A User's Guide to gringo, clasp, clingo, and iclingo. 
