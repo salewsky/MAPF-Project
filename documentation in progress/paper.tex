@@ -23,14 +23,14 @@ Prof Torsten Schaub \\
 \vspace{\baselineskip}
 Arvid Becker
 \vfill
-{01.04.2022 \par}
+{29.07.2022 \par}
 
 \begin{abstract}
 Multi-Agent Pathfinding stellt ein wichtiges Problem in der Informatik dar. Folglich wird versucht, die Geschwindigkeit von entsprechenden Lösungs- \\
 algorithmen ständig zu verbessern.
-In dieser Arbeit stelle ich meine Methode zur Kartenabstraktion für solche Probleme dar und zeige auf, wie diese genutzt werden können, um entsprechende Probleme
+In dieser Arbeit stelle ich meine Methoden zur Kartenabstraktion für solche Probleme dar und zeige auf, wie diese genutzt werden können, um entsprechende Probleme
 schneller zu lösen. Es wurde das deklarative Programmierparadigma Answer Set Programming genutzt, um die Abstraktion zu bilden. Weiterhin wurde Python verwendet, um verschiedene Hilfsprogramme zu erstellen.
-Als Vergleichswert für die Lösungszeit wurde das Framework ``asprilo'' genutzt, das ebenfalls die Sprache Answer Set Programming nutzt. Die Arbeit wurde in englischer Sprache verfasst. 		
+Als Vergleichswert für die Lösungszeit wurde das Framework ``asprilo'' genutzt, das ebenfalls Answer Set Programming nutzt. Die Arbeit wurde in englischer Sprache verfasst. 		
 \end{abstract}
 \end{titlepage}
 
@@ -38,14 +38,14 @@ Als Vergleichswert für die Lösungszeit wurde das Framework ``asprilo'' genutzt
 \section{Introduction}
 Multi-Agent Pathfinding (MAPF) is an important problem in computer science. Therefore, it is important to look for ways to improve the solving time of such problems. One way to achieve this is to abstract the instance that has to be solved to reduce the size of
 possible plans. This paper will show how I built such abstractions in the declarative programming paradigm ``Answer Set Programming'' (ASP). In the next two sections, I will explain MAPF problems and how ASP works. After that, I will introduce the ``asprilo'' framework used as a base for the enoding. It also serves as a comparison for the solving time. Then, I will explain how my abstraction methods work, and show the results of these abstractions. I will also briefly explain some additional programs that provided support for the solving. Afterwards, I will show the benchmarking results of the methods. I will finish the paper with a conclusion of my work. \\
-All the used programs and instances can be found in my GitHub repository \cite{my-git}. This paper was written as the final thesis for a Bachelor's degree in the course Computational Science at the University of Potsdam. This project was done in cooperation with Tarek Ramadan who worked on using the abstractions to solve a problem as a project for his final thesis for a Bachelor's degree in the same course and university. His work can be found on his GitHub repository \cite{tarek-git}.
+All the used programs and instances can be found in my GitHub repository \cite{my-git}. This paper was written as the final thesis for a Bachelor's degree in the course Computational Science at the University of Potsdam. This project was done in cooperation with Tarek Ramadan who worked on using abstractions to solve MAPF problems as the project for his final thesis for a Bachelor's degree in the same course and university. His work can be found on his GitHub repository \cite{tarek-git}.
 
 \section{Multi-Agent Pathfinding}
 In Multi-Agent Pathfinding problems, you have a set of nodes, agents (e.g. robots), start and goal positions, and possible moves. The set of nodes declares the possible positions where robots can be and move to. The robots can move from one node to accessible neighboring nodes in discrete time steps. In this paper, only vertical and horizontal moves are considered. The goal is to find a collision-free path for each robot from its start to its goal position. Possible collisions are edge collisions (robots moving through each other) and vertex collisions (robots moving to the same node) (see figure \ref{fig:mapf}). MAPF problems can be either anonymous or non-anonymous. Anonymous means that it is not important which robot moves to which goal position. Non-anonymous means that the goal position for each robot is predetermined.  I only dealt with non-anonymous problems in this project. The result of the solving process is a plan with a set of moves for each robot. The last time step of the plan is called horizon or makespan. There are two ways to optimize plans. The first is to minimize the total amount of moves, called sum-of-costs, and the second is to minimize the horizon of the plan \cite{mapf}. The second approach is the one used by Tarek in his project.
 
 \begin{figure}[h]
 \centering{\includegraphics[scale=.4]{Images/MAPF-Problem}}
-\caption{Robot 1 (the square on the left) has to reach shelf 1 (the circle on the right). Robot 2 has to reach shelf 2 The shortest path is to go right/down 4 steps. In the middle, a conflict would occur which could be avoided by letting one robot wait for one time step.}
+\caption{Robot 1 (the square on the left) has to reach shelf 1 (the circle on the right). Robot 2 has to reach shelf 2. The shortest path is to go right/down 4 steps. In the middle, a conflict would occur which could be avoided by letting one robot wait for one time step.}
 \label{fig:mapf}
 \end{figure}
 
@@ -56,13 +56,14 @@ Normal rules have the form:
 $a_0$ :- $a_1$,...,$a_m$,not $a_{m+1}$,...,not $a_n$         
 with $0 \leq m \leq n$
 \end{lstlisting}
-Each $a$ is a ground atom. A literal is an atom $a$ or its negation (indicated by the  $not$). $a_0$ is the head of the rule while the body consists of all the other literals. The head of a rule is true if all the literals in the body are true. If the body of a rule is empty, the head is true by default and it is called a fact. It is also possible to have an empty head. In this case, it is called a constraint rule which states that at least one of the literals in the body has to be false so the program can have a non-empty solution. \\
+Each $a$ is a ground atom. A literal is an atom $a$ or its negation (indicated by the  $not$). $a_0$ is the head of the rule while the body consists of all the other literals. The head of a rule is true if all the literals in the body are true. If the body of a rule is empty, the head is true by default and it is called a fact. It is also possible to have an empty head. In this case, it is called a constraint rule which states that at least one of the literals in the body has to be false. Otherwise the solution of the program would be empty. \\
 Another type of rule is the choice rule:
 \begin{lstlisting}
 x {$a_1,...,a_m$} y :- $a_{m+1}$,...,$a_n$,not $a_{n+1}$,...,not $a_o$ 
 with $0 \leq m \leq n \leq o$
+and $0 \leq x \leq y \leq m$
 \end{lstlisting}
-This rule states that if the body is true, then literals from the head can be chosen to be inferred. The number of atoms chosen can be controlled by the $x$ and $y$ with $0 \leq x \leq y \leq$ number of atoms. At least $x$ atoms have to be chosen and a maximum of $y$ atoms can be chosen. \\
+This rule states that if the body is true, then literals from the head can be chosen to be inferred. The number of atoms chosen can be controlled by the $x$ and $y$. At least $x$ atoms have to be chosen and a maximum of $y$ atoms can be chosen. \\
 It is also possible to look for minimums:
 \begin{verbatim}
 a(MIN) :- MIN == #min{X: b(X)}.
@@ -87,7 +88,6 @@ init(object(shelf,S),value(at,(X,Y))).
 \end{verbatim}
 The first line is used to initiate a node with the ID $N$ at the position $X, Y$. $X$ and $Y$ are the coordinates for a 2-dimensional grid. The second and third lines are used to initiate a robot with the ID $R$ and a shelf with the ID $S$ respectively. The IDs are usually integers so the first robot, shelf, or node would usually get the ID 1, the second gets the ID 2, and so on. \\
 Robots cannot move to nodes that are not initiated. These spots can be treated as walls.
-%If a node between two other nodes is not initiated, it is treated as a wall.
 \subsection{Input}
 The program $input.lp$ is used to turn the $init$-atoms into others that are easier to work with:
 \begin{verbatim}
@@ -98,7 +98,7 @@ position(R,(X,Y),0)        :- init(object(robot,R),value(at,(X,Y))).
 position(shelf(S),(X,Y),0) :- init(object(shelf,S),value(at,(X,Y))).
 \end{verbatim}
 The first line creates the $robot$-atom which simply states that the robot with ID $R$ exists. This is then used to create the atom $isRobot$ which can be used to check if an object is a robot. These two lines also exist for shelves. \\
-The next three lines create the $position$-atoms. The first one takes just the information about the coordinates from the node initiation. The second one says that robot $R$ is on the position it is initiated on, i.e. his starting position, at time step 0 which is the first time step. The third one states that the shelf with ID $S$ is on its starting position at time step 0. Because the shelves are not moved in the M-domain their positions could have also been initiated without the time step but this way it is easier to change it to a domain in which the moving of shelves is allowed. It is also important to note that instead of having just the ID as the first argument, it has $shelf(S)$. This makes it easier to distinguish between shelves and robots when using $position$.
+The next three lines create the $position$-atoms. The first one takes just the information about the coordinates from the node initiation. The second one says that robot $R$ is on the position it is initiated on, i.e. his starting position, at time step 0 which is the first time step. The third one states that the shelf with ID $S$ is on its starting position at time step 0. Because the shelves are not moved in the M-domain, their positions could have also been initiated without the time step but this way it is easier to change it to a domain in which the moving of shelves is allowed. It is also important to note that instead of having just the ID as the first argument, it has $shelf(S)$. This makes it easier to distinguish between shelves and robots when using $position$.
 \subsection{Action}
 The program $action.lp$ is the one where moves are created. First off, the time array is created:
 \begin{verbatim}
@@ -118,7 +118,7 @@ The next rule creates the actual $move$-atoms:
 \begin{verbatim}
 { move(R,D,T) : direction(D) } 1 :- isRobot(robot(R)), time(T).
 \end{verbatim}
-This rule states that for each robot at each time step up to one move is created into one possible direction. It is also possible to not create a move at certain time step. Not moving is an action equivalent to waiting. These moves have to change the positions of robots accordingly:
+This rule states that for each robot at each time step up to one move is created into one possible direction. It is also possible to not create a move at a certain time step. Not moving is an action equivalent to waiting. These moves have to change the positions of robots accordingly:
 \begin{verbatim}
 position(R,C,T) :- move(R,D,T), position(R,C',T-1), nextto(C',D,C).
                 :- move(R,D,T), position(R,C ,T-1), 
@@ -134,18 +134,18 @@ The goal condition of the normal M-domain states that at the last possible time 
 goal(R,C) :- isRobot(robot(R)), position(shelf(S),C,0), R=S.
 :- isRobot(robot(R)), position(R,C,horizon), goal(R,C'), C!=C'.
 \end{verbatim}
-The first rule creates the $goal$-atom. It says that the goal of robot $R$ is the cell $C$ (cell is synonymous with node). The goal cell is the cell on which the shelf with the same ID as the robot is initiated. This means that the solver cannot decide which robot should go to which shelf but it is predetermined. The second rule states that a robot cannot be on a cell that is not its goal at the last time step.
+The first rule creates the $goal$-atom. It says that the goal of robot $R$ is the cell $C$ (cell is synonymous with node). The goal cell is the cell on which the shelf with the same ID as the robot is initiated. This turns the program into a solver for non-anonymous MAPF problems. The second rule states that a robot cannot be on a cell that is not its goal at the last time step.
 \subsection{Output and Encoding}
 The file $output.lp$ determines how the output of the program is represented. I will not show the encoding since the output of my encoding is different. It is enough to know that the output of the asprilo encoding is a plan, i.e. atoms representing the moves of each robot at each time step. \\
-The last file $encoding.lp$ includes the other files important for solving (it does not include the input instance). This means it contains the complete solving program. My encoding follows the same file structure which I will show in the next section.
+The last file $encoding.lp$ includes the other files important for solving (it does not include the input instance). This means it contains the complete solving program. My encoding follows the same file structure.
 \subsection{Visualizer}
 The visualizer is an extra component provided by asprilo. It can be used to visualize instances and the movement of robots. All images in this paper showing instances and robots have been created with this visualizer.
 
 \section{Abstraction Methods}
-I have developed four abstraction methods. All of them use some of the asprilo encoding as a base. The files $input.lp$ and $goal.lp$ are the same as in the modified asprilo encoding. \\
+I have developed three abstraction methods. All of them use some of the asprilo encoding as a base. The files $input.lp$ and $goal.lp$ are the same as in the modified asprilo encoding. \\
 The output atoms are $new\_init$ and $imp\_position$. The $new\_init$ atoms describe the resulting abstracted instance. The form of $new\_init$ resembles that of the $init$ atoms in the input instance. There are $new\_init$ atoms for robots, shelves, and nodes. The ones
 for robots and shelves are the same as in the input instance (with a ``new'' being added) since the start and goal conditions are not changed during the abstraction. The atoms for the nodes contain only the nodes that still exist after the abstraction. The $imp\_position(R, C)$ atom states that robot $R$ is on cell $C$ at some point while building the abstraction. This can be used as extra information when solving the instance, e.g. a solver can use this information to narrow the search for possible paths for the robots. The output is the same for every method except for the ``Reachable Nodes'' method. In that method, the output is slightly different which I will explain in the respective subsection. \\
-The first part of building the abstraction is always solving the instance without considering conflicts. Therefore the encoding entails parts of the $action.lp$ asprilo encoding. The difference is that the constraint rules which prohibit conflicts are ignored.
+One of the main parts of building the abstraction in each method is solving the instance without considering conflicts. Therefore the encoding entails parts of the $action.lp$ asprilo encoding. The difference is that there are no constraint rules which prohibit conflicts.
 Furthermore there are two extra lines:
 \begin{verbatim}
 :- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R)), T2<T1.
@@ -155,7 +155,7 @@ The first line states that a robot must always move until it has finished moving
 The second line is used to minimize the number of moves each robot does. This is used to ensure that the solver looks for the shortest paths of the robots. \\
 In the following subsections, I will explain the idea behind each abstraction method and show the encoding that is only used in that respective method. 
 \subsection{Shortest Path}
-The first method is to look for the shortest path for each robot to its respective goal. Each position the robot visits is then used to create the $imp\_position$ atoms. 
+The first method looks for the shortest path for each robot to its respective goal. Each position the robot visits is then used to create the $imp\_position$ atoms. 
 \begin{verbatim}
 imp_position(R,C) :- position(R,C,_), isRobot(robot(R)).
 \end{verbatim}
@@ -176,7 +176,7 @@ MAPF problems.
 \hspace{.1\linewidth}
 \begin{minipage}{.4\linewidth} 
 \centering{\includegraphics[scale=.4]{Images/SP-Example}}
-\caption{Input instance after abstraction. Only the nodes that lie on the shortest path are considered}
+\caption{Input instance after abstraction. Only the nodes that lie on the shortest path are considered.}
 \label{fig:inst-aft-a}
 \end{minipage}
 \end{figure} 
@@ -201,7 +201,7 @@ imp_position(R,C) :- isRobot(robot(R)), comb_position(R,C',_),
 \end{verbatim}
 It takes the positions visited by robots, looks at the nodes that were combined into that position, and then infers the respective atoms. \\
 Simply using this approach has the problem that walls are completely ignored while building the combined instance. This means that the encoding introduced so far can only be used for open instances, i.e. instances that do not have any inner walls. This is why I call this approach ``Open Node Combining''. The advantage of this method is that the combining size can be freely chosen, as long as positive integers are used. \\
-To also use the node combining approach in instances with walls, I created the approach ``Complete Node Combining''. This approach mostly works the same but it can only be used when combining 2x2 squares together. The difference is that a $wall$-atom is introduced so that walls are considered after the combining:
+To also use the node combining approach in instances with walls, I created the approach ``Complete Node Combining''. This approach mostly works the same but it can only be used when combining 2x2 squares. The difference is that a $wall$-atom is introduced so that walls are considered after the combining:
 \begin{verbatim}
 wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1), 
                              y_arr(Y1), not position((X1,Y1)), 
@@ -212,7 +212,7 @@ wall((X1',Y1'),(X2',Y2')) :- comb_position((X1',Y1')), x_arr(X1),
                              comb_position((X2',Y2')), X1'=X2', 
                              Y1'-1=Y2'.
 \end{verbatim}
-This is one of four rules inferring a $wall$-atom. The idea is that in a 2x2 square there are four possible walls: two nodes missing to the top, bottom, left, or right. Each rule inferring a $wall$-atom is used for one of the possible walls. The rule takes a combined node and checks if there are exactly two uncombined nodes missing that would be in that combined node if they existed. The $nextto$-atom is then extended to also check if a wall is between two combined nodes before inferring the respective atom:
+This is one of four rules inferring a $wall$-atom. The idea is that in a 2x2 square there are four possible walls: two nodes missing at the top, bottom, left, or right. Each rule inferring a $wall$-atom is used for one of the possible walls. The rule takes a combined node and checks if there are exactly two uncombined nodes missing that would be in that combined node if they existed. The $nextto$-atom is then extended to also check if a wall is between two combined nodes before inferring the respective atom:
 \begin{verbatim}
 nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)), comb_position((X,Y)), 
                                  comb_position((X',Y')),
@@ -221,7 +221,7 @@ nextto((X,Y),(DX,DY),(X',Y')) :- dir((DX,DY)), comb_position((X,Y)),
                                  not wall((X,Y),(X',Y')), 
                                  not wall((X',Y'),(X,Y)).
 \end{verbatim}
-As mentioned before, this way of introducing walls leads to only being able to combine 2x2 squares. I did not find a way to combine bigger sizes because looking at walls in these cases gets much more complicated. \\
+As mentioned before, this way of introducing walls leads to only being able to combine 2x2 squares. I did not find a way to combine bigger sizes because considering walls in these cases gets much more complicated. \\
 
 \begin{figure}[h]
 \begin{minipage}{.4\linewidth} 
@@ -248,7 +248,7 @@ imp_pos(R,C,N)        :- isRobot(robot(R)), imp_pos(R,C',N-1),
 imp_position(R,C,MIN) :- imp_pos(R,C,MIN), 
                          MIN == #min{X: imp_pos(R,C,X)}.
 \end{verbatim}
-The first line looks at how many steps each robot takes. It is important to note that makespan refers to an individual robot whereas horizon refers to all robots. This means that the highest makespan is equal to the horizon. Another point to note is that the $makespan$-atom not only has the highest time step for an individual robot but each step it takes infers a $makespan$-atom. The second line initializes the path of the robot itself as deviating by zero steps. The third line then infers the next set of positions and the respective deviation until the makespan of the robot is reached. This way of inferring these atoms leads to having multiple $imp\_pos$-atoms for a single node. The last line makes sure that only the smallest deviation gets taken for the $imp\_position$-atoms. This time the $imp\_position$-atoms, as well as the $new\_init$-atoms, have three attributes because the amount of deviating steps is important to output. The abstraction this time does not simply consist of a set of nodes but instead multiple sets of nodes with a different distance to the shortest path. A solver using this abstraction could then decide how big the distance should be and only take a subset of the nodes provided to solve an instance. \\
+The first line looks at how many steps each robot takes. It is important to note that makespan refers to an individual robot whereas horizon refers to all robots. This means that the highest makespan is equal to the horizon. Another point to note is that the $makespan$-atom not only has the highest time step for an individual robot but each step the robot takes infers a $makespan$-atom for that robot. The second line initializes the path of the robot itself as deviating by zero steps. The third line then infers the next set of positions and the respective deviation until the makespan of the robot is reached. This way of inferring these atoms leads to having multiple $imp\_pos$-atoms for a single node. The last line makes sure that only the smallest deviation gets taken for the $imp\_position$-atoms. This time the $imp\_position$-atoms, as well as the $new\_init$-atoms, have three attributes because the amount of deviating steps is important to output. The abstraction this time does not simply consist of a set of nodes but instead multiple sets of nodes with a different distance to the shortest path. A solver using this abstraction could then decide how big the distance should be and only take a subset of the nodes provided to solve an instance. \\
 There was also a slightly different approach that did not look at all the nodes up to the complete makespan of a robot. Instead, it only looked at how many steps were still left to reach the goal and calculated the deviation up to these remaining steps. This method provides less information in exchange for ideally lower solving time. During the functionality testing, it already became clear that the solving time with this different approach was slower than the original approach. This is why this different approach was discarded during the creation process.
 
 \begin{figure}[h]
@@ -273,7 +273,7 @@ There are multiple solver programs. The simplest one is called $hor\_inc.py$. It
 There are two more python programs that I have created. Both are used to plot the benchmarking results. The first program, $lineg\_results.py$, takes the results for different methods for a specific instance, builds the average of these results, and plots a line graph for each method. To compare it to asprilo, the results for the asprilo benchmarking also need to be input as a method. The problem with this method is that the results can be strongly varying because there is a random element to the benchmarking. This is why the second program, $scatter\_results.py$, will be used to graphically show most of the results of the benchmarking. This program takes the different abstraction methods and directly compares them to the asprilo encoding. It creates a scatter plot which means that it is not necessary to calculate the average. This makes the analysis of the graphic much easier.  
 
 \section{Benchmarking}
-The idea for the benchmarking is to have maps of different sizes. On each map, the solver adds a robot, the ASP program tries to solve the instance and when it is done a new robot is added to the same map. This is done until a time limit is reached. The time limit chosen for this project is 10 minutes. This means that the benchmarking tests how many robots can be added in a time frame of 10 minutes. There are two different forms of adding robots. This is what the aforementioned python solvers are used for. The program $random\_benchmark\_solver.py$ uses an input instance that only has nodes and no robots or shelves at all. At the start and each time the solver finds a solution, the program randomly chooses a starting position for a robot and a shelf. This leads to a completely random instance. It is also possible to give the solver an argument that tells it which ``random seed'' it should use. In that case, the resulting instance is predetermined. The second benchmark solver is $preset\_benchmark\_solver.py$. This solver takes an instance where the robots and shelves are commented out at the start of the solving. It then incrementally adds these robots and shelves to the instance. This means that the instance is completely predetermined. The third solver is $combined\_solver.py$. This solver takes two programs and an instance as input. Since my programs only build an abstraction, they cannot be directly compared to a solving method. This is why this third solver first builds the abstraction and then uses the modified asprilo encoding, which was shown in a previous section, to solve this abstraction. The input instance looks the same as for the preset solver. This is done to ensure the satisfiability of the instance. This is necessary because the asprilo encoding is not made to use abstractions. That could lead to an abstraction being unsolvable. The following subsections will show the used map layouts and the results for each method. \\
+The idea for the benchmarking is to have maps of different sizes. On each map, the solver adds a robot, the ASP program tries to solve the instance and when it is done a new robot is added to the same map. This is done until a time limit is reached. The time limit chosen for this project is 10 minutes. This means that the benchmarking tests how many robots can be added in a time frame of 10 minutes. There are two different forms of adding robots. This is what the aforementioned python solvers are used for. The program $random\_benchmark\_solver.py$ uses an input instance that only has nodes and no robots or shelves at all. At the start and each time the solver finds a solution, the program randomly chooses a starting position for a robot and a shelf. This leads to a completely random instance. It is also possible to give the solver an argument that tells it which ``random seed'' it should use to control the randomness of the program. The second benchmark solver is $preset\_benchmark\_solver.py$. This solver takes an instance where the robots and shelves are commented out at the start of the solving. It then incrementally adds these robots and shelves to the instance. This means that the instance is completely predetermined. The third solver is $combined\_solver.py$. This solver takes two programs and an instance as input. Since my programs only build an abstraction, they cannot be directly compared to a solving method. This is why this third solver first builds the abstraction and then uses the modified asprilo encoding, which was shown in a previous section, to solve this abstraction. The input instance looks the same as for the preset solver. This is done to ensure the satisfiability of the instance. This is necessary because the asprilo encoding is not made to use abstractions. That could lead to an abstraction being unsolvable. The following subsections will show the used map layouts and the results for each method. \\
 The benchmarking was done on the HPC Turing of the university of Potsdam \cite{hpc}. A single run was calculated in sequential form. Each node of the cluster has 2 CPUs of the type Intel Xeon E5-2650v4, 64 GB of RAM, and an FDR Infiniband Adapter. All results can be found in the appendix.
 \subsection{Map Layouts}
 There are six map layouts used for the benchmarking. Each method was tested 10 times with preset starting coordinates and 10 times with random starting coordinates on each map. Some of the layouts were inspired by another paper \cite{mapf}. Three layouts are just an open map, which means that they have no inner walls. They have the sizes 16x16 nodes, 64x64 nodes, and 128x128 nodes. The preset coordinates for this type of map were chosen in a way that leads to at least one robot having the maximum amount of distance possible to its goal. The robots are added from left to right and top to bottom while the shelves are added the other way round. \\
