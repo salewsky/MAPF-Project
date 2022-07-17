@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2020.12.30)  5 JUL 2022 14:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2020.12.30)  17 JUL 2022 13:20
 entering extended mode
 **./paper.tex
 (paper.tex
@@ -261,70 +261,64 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 )
 \c@lstlisting=\count297
 
-Overfull \hbox (12.41943pt too wide) in paragraph at lines 29--29
+Overfull \hbox (12.41943pt too wide) in paragraph at lines 29--33
 \OT1/cmr/m/n/9 In-for-matik dar. Fol-glich wird ver-sucht, die Geschwindigkeit 
 von entsprechen-
- []
-
-
-Overfull \hbox (6.46458pt too wide) in paragraph at lines 30--34
-\OT1/cmr/m/n/9 Ver-gle-ich-swert fur die Losungszeit wurde das Frame-work ``a
-s-prilo'' genutzt,
  []
 
 [1
 
 {C:/Users/Adrian/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 38.
+(Font)              <7> on input line 37.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 38.
+(Font)              <5> on input line 37.
 <Images/MAPF-Problem.png, id=11, 390.70969pt x 390.70969pt>
 File: Images/MAPF-Problem.png Graphic file (type png)
 <use Images/MAPF-Problem.png>
-Package pdftex.def Info: Images/MAPF-Problem.png  used on input line 47.
+Package pdftex.def Info: Images/MAPF-Problem.png  used on input line 46.
 (pdftex.def)             Requested size: 156.2811pt x 156.2811pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 76--79
+[2] [3 <./Images/MAPF-Problem.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 75--78
 
  []
 
-[3 <./Images/MAPF-Problem.png>] [4]
-Overfull \hbox (4.6234pt too wide) in paragraph at lines 99--99
+[4]
+Overfull \hbox (4.6234pt too wide) in paragraph at lines 98--98
 []\OT1/cmtt/m/n/10 position((X,Y))            :- init(object(node,_),value(at,(
 X,Y))).[] 
  []
 
 
-Overfull \hbox (9.87335pt too wide) in paragraph at lines 99--99
+Overfull \hbox (9.87335pt too wide) in paragraph at lines 98--98
 []\OT1/cmtt/m/n/10 position(R,(X,Y),0)        :- init(object(robot,R),value(at,
 (X,Y))).[] 
  []
 
 
-Overfull \hbox (9.87335pt too wide) in paragraph at lines 99--99
+Overfull \hbox (9.87335pt too wide) in paragraph at lines 98--98
 []\OT1/cmtt/m/n/10 position(shelf(S),(X,Y),0) :- init(object(shelf,S),value(at,
 (X,Y))).[] 
  []
 
 
-Overfull \hbox (9.87335pt too wide) in paragraph at lines 115--115
+Overfull \hbox (9.87335pt too wide) in paragraph at lines 114--114
 []                                 \OT1/cmtt/m/n/10 position((X,Y)), position((
 X',Y')),[] 
  []
 
-[5]
-Overfull \hbox (4.6234pt too wide) in paragraph at lines 128--128
+
+Overfull \hbox (4.6234pt too wide) in paragraph at lines 127--127
 []\OT1/cmtt/m/n/10 position(R,C,T) :- move(R,D,T), position(R,C',T-1), nextto(C
 ',D,C).[] 
  []
 
-[6]
-Overfull \hbox (20.37326pt too wide) in paragraph at lines 153--153
+[5] [6]
+Overfull \hbox (20.37326pt too wide) in paragraph at lines 152--152
 []\OT1/cmtt/m/n/10 :- move(R,_,T1), not move(R,_,T2), time(T2), isRobot(robot(R
 )), T2<T1.[] 
  []
@@ -332,24 +326,24 @@ Overfull \hbox (20.37326pt too wide) in paragraph at lines 153--153
 [7]
 File: Images/MAPF-Problem.png Graphic file (type png)
 <use Images/MAPF-Problem.png>
-Package pdftex.def Info: Images/MAPF-Problem.png  used on input line 172.
+Package pdftex.def Info: Images/MAPF-Problem.png  used on input line 170.
 (pdftex.def)             Requested size: 156.2811pt x 156.2811pt.
 
-Overfull \hbox (17.4338pt too wide) in paragraph at lines 172--173
+Overfull \hbox (17.4338pt too wide) in paragraph at lines 170--171
  [][] 
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 175.
+(Font)              <9> on input line 173.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 175.
+(Font)              <6> on input line 173.
 <Images/SP-Example.png, id=39, 390.70969pt x 390.70969pt>
 File: Images/SP-Example.png Graphic file (type png)
 <use Images/SP-Example.png>
-Package pdftex.def Info: Images/SP-Example.png  used on input line 178.
+Package pdftex.def Info: Images/SP-Example.png  used on input line 176.
 (pdftex.def)             Requested size: 156.2811pt x 156.2811pt.
 
-Overfull \hbox (17.4338pt too wide) in paragraph at lines 178--179
+Overfull \hbox (17.4338pt too wide) in paragraph at lines 176--177
  [][] 
  []
 
@@ -607,11 +601,11 @@ Overfull \hbox (2.70953pt too wide) in paragraph at lines 462--466
 Here is how much of TeX's memory you used:
  3513 strings out of 479662
  52323 string characters out of 2863093
- 335326 words of memory out of 3000000
+ 334326 words of memory out of 3000000
  20605 multiletter control sequences out of 15000+200000
  408963 words of font info for 46 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,8n,72p,1989b,999s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 66i,8n,72p,1980b,999s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Adrian/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Adrian/AppData/Local/Programs/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Adrian/AppData/Local/Pr
@@ -629,7 +623,7 @@ rs/Adrian/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy
 sfonts/cm/cmti12.pfb><C:/Users/Adrian/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Adrian/AppData/Local/Programs/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on paper.pdf (27 pages, 842635 bytes).
+Output written on paper.pdf (27 pages, 842623 bytes).
 PDF statistics:
  195 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
